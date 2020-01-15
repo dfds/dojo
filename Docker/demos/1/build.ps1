@@ -1,0 +1,1 @@
+docker build --build-arg UBUNTU_VERSION=18.04 -t docker-training-base:latest . 

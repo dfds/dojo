@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+      tier: backend
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: api
+        tier: backend
+        track: stable
+    spec:
+      containers:
+      - name: api-backend
+        image: toban/k8s-training-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort: 5000
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-backend
+spec:
+  selector:
+    app: api
+    tier: backend
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http
