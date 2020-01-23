@@ -20,7 +20,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 # Global variables for the pipeline
-variables:
+#variables:
   #k8s-service-connection: 'Kubernetes-Hellman-Saml2aws'
   #kubernetes-namespace: 'sandbox-hemor-lbprn'
 
