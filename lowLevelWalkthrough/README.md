@@ -260,3 +260,79 @@ Go back to the root workshop folder
 ```bash
 cd ..
 ```
+
+## Sharing images and running in a pipeline
+
+It is very nice to be able to build images locally and test them out but just like with the terraform state you might want to work together as a team.
+To do so you would need to share the images with your team members and the process for doing so in DFDS is through a pipeline.
+
+In the root workshop folder you will be able to see a file named azure-pipeline.
+This is the final yaml description of the pipeline for this project.
+
+If you inspect it you will see that the first part os about behavior of the pipeline. Triggers, build agent etc.
+
+The next part about Stages is the exciting part since this is where your application is actually built.
+
+The first stage of the pipeline is used to validate if the neccesary input is available.
+If it is not there is no reason to wait for the pipeline to fail since we already know it based on this.
+
+Next one is building the docker image.
+Just like we did locally, we can build the docker image through our pipeline and make an image for the container available.
+
+Right after the build step there is a push task.
+In DFDS the DED team provides a service connection for new projects in ADO for those that need access to the shared docker repository. This one is hosted in AWS and can be seen in the push step as awsCredentials.
+The rest of the arguments is for our image like the name of it, which repository it should be pushed to and which tag it should have.
+Since you can have multiple builds of your image and some of them failing it is very handy to have a history in case you need to use a previous one. For ease of naming the tag is set to the build id so ensure it is unique.
+
+This is set to trigger on any changes to master so we would be able to push new images if the code in here is change. Always keeping it up to date.
+
+If you do a saml2aws login and choose the ECR-Pull role with
+
+```bash
+saml2aws login --force
+```
+
+Then you can do
+
+Windows:
+```Powershell
+aws ecr get-login --no-include-email --region eu-central-1 --profile saml | Invoke-Expression
+```
+
+Unix:
+```bash
+eval $(aws ecr get-login --no-include-email --region eu-central-1 --profile saml)
+```
+
+Then do:
+```bash
+docker pull 579478677147.dkr.ecr.eu-central-1.amazonaws.com/ded/workshops:217340
+docker images
+```
+
+You should be able to see the image at the top of the list with the tag 217340
+
+Do another round of login to get back to your aws account:
+
+```bash
+saml2aws login --force
+```
+
+Set up the s3 bucket with the test file again:
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+You can then test it out with the command from earlier and the new image:
+
+```bash
+docker run \
+-e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
+-e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
+-e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
+-e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
+579478677147.dkr.ecr.eu-central-1.amazonaws.com/ded/workshops:217340
+```
