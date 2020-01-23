@@ -34,7 +34,7 @@ stages:
     steps:   
     - bash:
         echo 'Checking for required authentication variables...'
-        bash -c '[[ -z $AWS_PROFILE || -z $SAML2AWS_ROLE || -z $SAML2AWS_PASSWORD || -z $SAML2AWS_USERNAME ]] && exit 1 || true'
+        #bash -c '[[ -z $AWS_PROFILE || -z $SAML2AWS_ROLE || -z $SAML2AWS_PASSWORD || -z $SAML2AWS_USERNAME ]] && exit 1 || true'
       displayName: Testing environment variables
 
   - job: Build
