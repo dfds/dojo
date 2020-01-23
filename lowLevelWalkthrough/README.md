@@ -142,3 +142,54 @@ Don't forget to clean up
 terraform destroy
 cd ..
 ```
+
+## Docker image
+
+Next we are going to build a docker image that can use our aws s3 bucket.
+
+Go to the docker-3 folder
+
+```bash
+cd docker-3
+```
+
+Inspect the Dockerfile.
+You will see it is build from different components.
+It got a base image which is an image built by somebody else.
+In this case python which we will use to install AWS CLI.
+
+Next we make sure the image is patched and upgraded. Just to follow best practices.
+
+Then we install curl followed by AWS CLI which we will be using.
+
+And last we preset the folders for the image.
+
+Build this image by running:
+
+```bash
+docker build -t awscli .
+```
+
+Once the image is built we can try use it
+
+```bash
+docker run -it \
+-e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
+-e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
+-e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
+awscli s3 ls
+```
+
+What we do here is running the docker image interactively as a container, mounting our credentials we got from saml2aws as environment variables inside the container and executing the command s3 ls.
+
+This should return a list of the s3 buckets in your account. It should at least include the state bucket we created earlier.
+
+This is very handy for local development.
+
+Return to the root folder
+
+```bash
+cd ..
+```
+
