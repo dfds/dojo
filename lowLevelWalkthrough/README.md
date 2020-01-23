@@ -1,9 +1,7 @@
 # ado-k8s-aws-getstarted
 This is sample code for getting up and running with sample code that lets you create an s3 bucket, create a docker image and read from the bucket from within a container running on kubernetes. All through a pipeline.
 
-Checkout step1 to get started.
-
-## step-1-terraform
+## AWS resources
 Sign in with saml2aws
 
 ### Windows
@@ -16,6 +14,11 @@ $env:AWS_PROFILE = 'saml'
 ```bash
 saml2aws login --force
 export AWS_PROFILE=saml
+```
+
+Go to the terraform-1 folder:
+```bash
+cd terraform-1
 ```
 
 Inside the terraform-1 folder you will find a simple terraform file which will include a region to provision in and the recipe for an s3 bucket.
@@ -88,4 +91,54 @@ terraform apply -auto-approve
 End this part by cleaing up with
 ```
 terraform destroy
+```
+
+Go back to the root workshop folder
+```bash
+cd ..
+```
+
+## Terraform for teams and pipelines
+This is all very nice but due to the nature of terraform it saves something called a state. The state keeps track of the resources created with terraform and uses it to handle changes afterwards.
+By default the state is saved in the folder with the terraform files which would be a huge problem if used in a team with more than 1 computer or if done within a pipeline.
+
+To solve this we can introduce a concept of shared state.
+
+Go to terraform-2
+
+```bash
+cd terraform-2
+```
+If you look inside the main.tf file you will notice it is very similar to the previous one. Except for the fact that we have included a terraform block with a backend called s3.
+
+Notice that inside the block there is a bucket name and a key path.
+Change these to something that makes sense for you, and remember that buckets needs to be unique across AWS.
+
+This means that it will store the state of the things it create inside an s3 bucket instead of on your local machine. Unfortunately it won't create the bucket by itself.
+There are tools that can do this for you but let's do it manually just to grasp the concept. Remember to change the bucket name to match what you used inside the block:
+
+```bash
+aws s3 mb s3://dfds-k8sworkshop-bucket-state --region eu-west-1
+```
+
+Now we got a bucket. But just in case something goes wrong like your computer locking up, internet get cut or what ever issues we IT people face, let's also put versioning on our bucket.
+
+If the state is somehow corrupted we can easily role back so we got a working state of our terraform resources.
+
+Remember to change the bucket name and then run this command:
+```bash
+aws s3api put-bucket-versioning --bucket dfds-k8sworkshop-bucket-state --versioning-configuration Status=Enabled
+```
+
+Go a head and follow the same steps as before:
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+Don't forget to clean up
+```bash
+terraform destroy
+cd ..
 ```
