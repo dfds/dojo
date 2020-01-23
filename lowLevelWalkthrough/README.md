@@ -173,19 +173,11 @@ docker build -t awscli .
 Once the image is built we can try use it
 
 ```bash
-docker run -it \
--e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
--e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
--e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
--e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
-awscli s3 ls
+docker run -it awscli
 ```
 
-What we do here is running the docker image interactively as a container, mounting our credentials we got from saml2aws as environment variables inside the container and executing the command s3 ls.
-
-This should return a list of the s3 buckets in your account. It should at least include the state bucket we created earlier.
-
-This is very handy for local development.
+This will return the help text from the AWS CLI since we haven't specified a command.
+Seeing this means that our image works and is ready to accept input.
 
 Return to the root folder
 
@@ -193,3 +185,78 @@ Return to the root folder
 cd ..
 ```
 
+## Combining AWS and Docker
+
+So far we should have learned how to create AWS resources and how to create and run docker images.
+But how do we mix it?
+
+```bash
+cd docker-4
+```
+
+If you inspect the terraform file you will notice another resource is added to the file.
+This one is a bucket file and in this case a simple txt file.
+
+Remember to change the bucket name of the bucket and the state and let's provision it.
+
+```bash
+terraform init
+terraform plan
+terraform apply -auto-approve
+```
+
+Next let's see if we can access the file from our docker image
+
+```bash
+docker run \
+-e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
+-e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
+-e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
+awscli s3 cp s3://dfds-k8sworkshop-bucket/testfile.txt -
+```
+
+This should return the message hello from s3 which corrospond to the content of the file created through terraform.
+
+What we do here is running the docker image as a container, mounting our credentials we got from saml2aws as environment variables inside the container and executing the command s3 copy from path to terminal output.
+
+This is very handy for local development where we can change the file by editing and applying our terraform and handle the file in different ways sending commands to our container.
+
+But wouldn't it be nice if the container just did what we wanted it to without having to write the command?
+
+Ïnspect the Dockerfile.
+You will notice that a script is added and the entrypoint is changed.
+Inspect the script found in get-file.sh.
+You will notice that this file include our "application" which prints the content of an s3 bucket every 5 seconds.
+It finds the content based on an environment variable.
+
+Let's rebuild the image with the changes:
+```bash
+docker build -t awscli .
+```
+One of the neat features with docker build is that it is based on layers. It will find the changes performed and only rebuild everything after that point.
+If you structure it  correctly you can speed up your built process by a lot!
+
+Lets try to run this container with the path to our file. Remember to change bucket and file name.
+
+```bash
+docker run \
+-e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
+-e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
+-e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
+-e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
+awscli
+```
+
+You can exit by clicking "ctrl+c" on your keyboard. 
+
+End this part by cleaing up with
+```
+terraform destroy
+```
+
+Go back to the root workshop folder
+```bash
+cd ..
+```
