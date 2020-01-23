@@ -21,8 +21,8 @@ pool:
 
 # Global variables for the pipeline
 variables:
-  k8s-service-connection: 'Kubernetes-Hellman-Saml2aws'
-  kubernetes-namespace: 'sandbox-hemor-lbprn'
+  #k8s-service-connection: 'Kubernetes-Hellman-Saml2aws'
+  #kubernetes-namespace: 'sandbox-hemor-lbprn'
 
 stages:
 # Continuous Integration steps
