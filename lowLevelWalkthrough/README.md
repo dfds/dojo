@@ -320,6 +320,7 @@ saml2aws login --force
 
 Set up the s3 bucket with the test file again:
 ```bash
+cd pipeline-5
 terraform init
 terraform plan
 terraform apply
@@ -336,3 +337,15 @@ docker run \
 -e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
 579478677147.dkr.ecr.eu-central-1.amazonaws.com/ded/workshops:217340
 ```
+
+You should see the text from the image printed again but this time from the image build by the pipeline and ran on your computer.
+
+That means your image is now shareable with the team and deployable to a kubernetes cluster!
+
+Don't forget to clean up
+```bash
+terraform destroy
+cd ..
+```
+
+## Deploying to kubernetes

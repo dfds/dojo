@@ -58,3 +58,12 @@ stages:
         sourceImageName: 'awscli'
         repositoryName: 'ded/workshops'
         pushTag: '$(Build.BuildId)'
+  - job: Publish
+    steps:
+    # Upload Kubernetes manifests to current artifact Pipeline from folder /k8s
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/k8s'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+        displayName: 'Publish Artifact: manifests'
