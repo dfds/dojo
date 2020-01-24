@@ -141,7 +141,7 @@ stages:
           - task: Bash@3
             displayName: 'Set up s3 bucket'
             inputs:
-              rootDirectory: '$(Pipeline.Workspace)/terraform'
+              workingDirectory: '$(Pipeline.Workspace)/terraform'
               targetType: 'inline'
               script: |
                 # Set up s3 bucket with terraform
