@@ -58,6 +58,7 @@ stages:
         sourceImageName: 'awscli'
         repositoryName: 'ded/workshops'
         pushTag: '$(Build.BuildId)'
+        
   - job: Publish
     steps:
     # Upload Kubernetes manifests to current artifact Pipeline from folder /k8s
@@ -67,6 +68,7 @@ stages:
         artifact: 'manifests'
         publishLocation: 'pipeline'
         displayName: 'Publish Artifact: manifests'
+
     # Upload terraform files to current artifact pipelune from folder /terraform
     - task: PublishPipelineArtifact@1
       inputs:
@@ -74,6 +76,7 @@ stages:
         artifact: 'terraform'
         publishLocation: 'pipeline'
         displayName: 'Publish Artifact: terraform'
+
 # Continuous Deployment steps
 - stage: CD
   displayName: 'Continuous Deployment'
@@ -128,6 +131,11 @@ stages:
           - download: current
             artifact: manifests
             displayName: 'Download Artifact: manifests'
+
+          # Download terraform from current artifacts pipeline
+          - download: current
+            artifact: terraform
+            displayName: 'Download Artifact: terraform'
 
           # Set up s3 bucket
           - task: Bash@3
