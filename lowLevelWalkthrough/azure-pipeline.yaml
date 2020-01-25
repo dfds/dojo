@@ -45,7 +45,7 @@ stages:
       displayName: 'Build Container Image'
       inputs:
         command: 'build'
-        Dockerfile: '**/pipeline-5/Dockerfile'
+        Dockerfile: '**/Dockerfile'
         arguments: '-t awscli'
 
     # Push the image to ECR with a tag based on the current buildnumber
