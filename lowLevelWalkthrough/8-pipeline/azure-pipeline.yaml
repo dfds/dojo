@@ -59,20 +59,10 @@ stages:
         repositoryName: 'ded/workshops'
         pushTag: '$(Build.BuildId)'
 
-  - job: Publish
-    steps:
-    # Upload Kubernetes manifests to current artifact Pipeline from folder /k8s
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/k8s'
-        artifact: 'manifests'
-        publishLocation: 'pipeline'
-        displayName: 'Publish Artifact: manifests'
-
     # Upload terraform files to current artifact pipelune from folder /terraform
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/terraform'
+        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/8-pipeline'
         artifact: 'terraform'
         publishLocation: 'pipeline'
         displayName: 'Publish Artifact: terraform'
@@ -126,11 +116,6 @@ stages:
                 eval $(saml2aws script --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto)
             env:
               SAML2AWS_PASSWORD: $(SAML2AWS_PASSWORD)
-          
-          # Download manifest from current artifacts pipeline
-          - download: current
-            artifact: manifests
-            displayName: 'Download Artifact: manifests'
 
           # Download terraform from current artifacts pipeline
           - download: current
@@ -145,23 +130,4 @@ stages:
               targetType: 'inline'
               script: |
                 terraform init
-                terraform apply -auto-approve     
-          
-          # Replace token values in yaml files with pipeline variables
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace tokens in yaml files'
-            inputs:
-              rootDirectory: '$(Pipeline.Workspace)/manifests/'
-              targetFiles: '*.yaml'
-              tokenPrefix: '$('
-              tokenSuffix: ')'
-          
-          # Apply Kubernetes manifests
-          - task: Kubernetes@1
-            displayName: 'Apply manifests'
-            inputs:
-              connectionType: Kubernetes Service Connection
-              kubernetesServiceEndpoint: '$(k8s-service-connection)'
-              namespace: '$(kubernetes-namespace)'
-              command: apply
-              arguments: '-f $(Pipeline.Workspace)/manifests/'
+                terraform apply -auto-approve

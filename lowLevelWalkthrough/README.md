@@ -440,15 +440,34 @@ terraform destroy
 cd ..
 ```
 
+## 7 - Deploying from a pipeline
 
-If you inspect it you will see that the first part is about behavior of the pipeline. Triggers, build agent etc.
+Lets try to build up a pipeline to bind all this together.
 
-The next part about Stages is the exciting part since this is where your application is actually built.
+```bash
+cd 7-pipeline
+```
 
-The first stage of the pipeline is used to validate if the neccesary input is available.
-If it is not there is no reason to wait for the pipeline to fail since we already know it based on this.
+In this folder you will find the docker files we have seen before and an azure devops pipeline file. This new which describes the way to deploy.
 
-Next one is building the docker image.
+Let's go through the components since it can feel like quite a lot.
+
+### azure-pipeline.yaml
+
+If you inspect the file you will see that the first part is about behavior of the pipeline. Triggers, build agent etc.
+
+Next we get to the stages of the CI part:
+
+Here we have a section for validating inputs.
+It is a good idea to check that you actually got the input for your pipeline set. If they are missing it doesn't make sense to continue the pipeline since it would fail anyway. Catching them early on can save you time in the long run.
+
+For this pipeline we will need a [service connection for the cluster](https://playbooks.dfds.cloud/deployment/k8s-service-connection.html#intro), but instead of the kubeconfig file mentioned here it will soon be recommended to use the common [kubeconfig](https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config)
+.If you are using the workshop project it is already in place.
+The main difference between them are that the common one uses Active Directory service accounts instead of a static token. By using the service accounts each login will aquire a new login making it more secure and actively removing login info from the pipeline making it less likely that you can leak passwords.
+
+When setting up the pipeline you would need to add the variables needed for it to run as well. The variables needed is described here: [Authenticating against AWS and Kubernetes](https://playbooks.dfds.cloud/pipelines/authentication.html#pipeline-variables) and how to obtain the info here: [Obtaining info needed for pipeline](https://playbooks.dfds.cloud/pipelines/obtain-info.html#aws-account-id)
+
+The next part in stages is the exciting part since this is where your application is actually built.
 Just like we did locally, we can build the docker image through our pipeline and make an image for the container available.
 
 Right after the build step there is a push task.
@@ -458,7 +477,178 @@ Since you can have multiple builds of your image and some of them failing it is 
 
 This is set to trigger on any changes to master so we would be able to push new images if the code in here is change. Always keeping it up to date.
 
+The rest is not needed for now.
+
+Try to upload these files to a new repo in Azure DevOps, create a pipeline based on the azure-pipeline.file and configure the variables correctly.
+
+In the ded-workshops project there is an extended version of the pipeline will all this configured for inspiration.
+
+Once complete go back to root
+
+```bash
+cd ..
+```
+
+## 8 - Automating terraform deployment
+
+If you completed the previous step you should have a working pipeline that builds and publishes a docker image with our code for getting content from an s3 bucket.
+
+Next let's try to make the pipeline provision our Terraform bucket.
+
+Go to the module folder
+
+```bash
+cd 8-pipeline
+```
+
+We have the same files as before but added our Terraform from earlier.
+Inspec the pipeline file.
+
+Another step has been added to the CI where we publish our terraform files. When you set up your own pipeline you might need to adjust the path to the folder a bit.
+This step converts our terraform to an artifact which can be used during our CD (deploy phase).
+
+After the publish step the CD stage begings.
+Remember all the tools we needed for this workshop at the beginning? Our buildserver needs those as well so we got a bash step first that prepares the server to handle the way we deploy things. It would be possible to make this step cleaner by converting it to an image etc but to keep it visible and without baking too much in to our application we have decided to keep it here.
+
+It is a recipe for installing and configured it all just like we did at the very beginning.
+
+Next we get the artifacts for Terraform
+
+Followed by a step that... You guessed it... initilize Terraform and deploys the code.
+
+Since we have the shared state bucket for earlier it will just continue to use this and keep the state avaiable here for future use.
+
+Try configuring your own pipeline with these additions.
+
+The pipeline should now create your docker image, publish it and create the s3 bucket with content for reading.
+
+Go back to the root folder
+
+```bash
+cd ..
+```
+
+# 9 - Deploy to Kubernetes
+
+By now we should have an available image and the data storage running in the cloud, all handled by a pipeline. So Lets deploy our application to the cluster and watch it run.
+
+Go to the module folder
+
+```bash
+cd 9-pipeline
+```
+
+We have pretty much the same files as before.
+But we have added the deployment.yaml file.
+
+Inspect the file and see if you can understand it.
+
+The first part of it is a secret. A normal way to deploy applications is by reading environment variables for various things like database connections etc. This enables the same application to span across multiple deployments without having to hardcode these values in to the application. This could also be said for usernames and passwords.
+
+Our application took the path for the file in s3 as an environment variable. It is not a very secret thing but the principle works out just as well so here it is created as a secret.
+For a real secret it should be substituted in to the deployment file when the pipeline ran to avoid having it hardcoded in the code which could be leaked in to git.
+
+The next part is about deploying our application. Here it is made as what is called a "deployment". A deployment can control multiple pods.
+Remember earlier when we mentioned Kubernetes prefering stateless applications to enable updates etc? If you want high availability on your applications it is a very good idea to have multiple replicas of it in case one of them gets shut down during an update etc. We usually recommend a replica of 3 to enable an update and an error to occur at the same time as your application keeps running on the last one. If one of your pods in a replica gets shut down the deployment will spin it up a new place to make sure there is always the required amount but your application can be down while this happens unless you got more of them.
+
+Do replicas. But since this is for testing we just got 1.
+
+We then got some naming and labeling of our application.
+The names, also for the secret should be changed in your version to make it your own. Otherwise you would overwrite each others deployments.
+
+We then reach our actual deployment. a name, the image we built before followed by our environment variable mounted in from the secret.
+
+Last part of the file is resource limits. You should figure out what your application is requiring to run and set this to match it so your application doesn't impact the cluster in case you get a memory or compute leak.
+
+Try to get this up on your own and make a deployment to the cluster.
+
+Once done we can try to inspect it in kubernetes!
+
+in your commandline try this:
+
+```bash
+kubectl get deployments -n ded-workshops-ljmra
+```
+
+You should get a list of the current deployments and most likely yours among them.
+
+We can do the same for secrets to validate it is there:
+
+```bash
+kubectl get secrets -n ded-workshops-ljmra
+```
+
+Great! What about the pod?
+
+```bash
+kubectl get pods -n ded-workshops-ljmra
+```
+Do you see yours on the list?
+It is most likely failing since we forgot a very important thing!
+
+Remember when we ran it locally? We forwarded our credentials for AWS to the container so it could access the s3 bucket.
+
+We didn't specify this for our kubernetes deployment so it got no access to our file in the s3 bucket.
+
+Lets dig in to it
+
+```bash
+kubectl -n ded-workshops-ljmra logs <your pod name>
+```
+
+You will most likely some info about your error from here. With an access denied of some kind.
+
+You can also do something like
+
+```bash
+kubectl -n ded-workshops-ljmra describe pod <your pod name>
+```
+This will show the configuration your pod is deployed with.
+
+But we are missing the credentials so lets get back to the root folder and get started fixing this mistake.
+
+```bash
+cd ..
+```
+
+# 10 - Providing cloud access to kubernetes deployments
+
+Since we are almost there and just need to provide access to our application to use the data we have saved for it lets dig right in to it.
+
+```bash
+cd 10-pipeline
+```
+We don't wish publish keys for our deployment since it could be leaked and which crendential should we even give it? I wouldn't want to use my own since if I changed company or even if my password ran out my prod application could crash along with it.
+
+So what do we do?
+
+The way that AWSCLI and SDK works is that it looks for explicit keys like those we provided our docker container.
+If these are not there it will look for the default configured profile like the one we configured to be saml for local access.
+But there is a third level that works inside this cluster and a few other amazon resources.
+If neither of the previous are there it will ask for access through something called the metadata server.
+
+In AWS there is a service that lets amazon resources ask for their current access level and get temporary access keys for these permissions. If no other are specified it will pull these.
+Our worker nodes are in AWS so our pods can use the access level of the nodes to do what they need.
+
+You might ask how the nodes in the cluster can access the bucket that we just created? And in short it can't. But we can configure it to it.
+
+If you look in the folders Terraform file you will notice there has been added some stuff. We now also create a roll and assign it permissions. The special part about this role is that it is configured to be used by the pods running inside the cluster in our namespace.
+
+In short by adding this code we can allow our pods to access the s3 bucket without ever having to think about credentials or even worse if they could get leaked.
+
+For your own code you need to modify the terraform to create a role and policy with your own name to avoid conflict.
+
+Once this is done we can look at the deployment file yet again.
+
+At line 25 we annotate the pods to use a specific role, the one we create with terraform.
+By doing so we assign the role to our pods with just the permissions needed and thus tying it all together.
+
+Edit your pipeline to include this and deploy it!
+
+And that concludes this module.
+
+The complete files are also available in the root folder of the workshop and is deployed via Azure devops to provide guidance and inspiration
 
 
-## Deploying to kubernetes
+
 

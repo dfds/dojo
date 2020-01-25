@@ -64,7 +64,7 @@ stages:
     # Upload Kubernetes manifests to current artifact Pipeline from folder /k8s
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/k8s'
+        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/9-pipeline'
         artifact: 'manifests'
         publishLocation: 'pipeline'
         displayName: 'Publish Artifact: manifests'
@@ -72,7 +72,7 @@ stages:
     # Upload terraform files to current artifact pipelune from folder /terraform
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/terraform'
+        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/9-pipeline'
         artifact: 'terraform'
         publishLocation: 'pipeline'
         displayName: 'Publish Artifact: terraform'
