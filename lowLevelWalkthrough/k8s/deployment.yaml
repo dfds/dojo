@@ -1,3 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: s3_path
+type: Opaque
+stringData:
+    path_to_file: "s3://dfds-k8sworkshop-bucket/testfile.txt"
+-------------------
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,6 +25,12 @@ spec:
       containers:
       - name: awscli
         image: 579478677147.dkr.ecr.eu-central-1.amazonaws.com/ded/workshops:$(Build.BuildId)
+        env: 
+        - name: path_to_file
+          valueFrom:
+            secretKeyRef:
+                name: s3_path
+                key: path_to_file
         resources:
           requests:
             memory: "64Mi"
