@@ -58,7 +58,7 @@ resource "aws_iam_policy" "test-policy" {
                 "s3:List*",
                 "s3:Describe*"
             ],
-            "Resource": "arn:aws:s3:::dfds-k8sworkshop-bucket"
+            "Resource": "arn:aws:s3:::dfds-k8sworkshop-bucket/*"
         },
         {
             "Effect": "Allow",
