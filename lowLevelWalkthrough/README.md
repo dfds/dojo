@@ -630,7 +630,7 @@ If neither of the previous are there it will ask for access through something ca
 In AWS there is a service that lets amazon resources ask for their current access level and get temporary access keys for these permissions. If no other are specified it will pull these.
 Our worker nodes are in AWS so our pods can use the access level of the nodes to do what they need.
 
-You might ask how the nodes in the cluster can access the bucket that we just created? And in short it can't. But we can configure it to it.
+You might ask how the nodes in the cluster can access the bucket that we just created? And in short it can't. But we can configure it to it. We do this using something called [KIAM](https://playbooks.dfds.cloud/processes/k8s-pods-aws-access-assume-role.html#namespace-configuration)(Kubernetes Identity and Access Management)
 
 If you look in the folders Terraform file you will notice there has been added some stuff. We now also create a roll and assign it permissions. The special part about this role is that it is configured to be used by the pods running inside the cluster in our namespace.
 
@@ -645,10 +645,11 @@ By doing so we assign the role to our pods with just the permissions needed and 
 
 Edit your pipeline to include this and deploy it!
 
+Try debugging it again and see if it gives the right outout this time:
+```bash
+kubectl -n ded-workshops-ljmra logs <your pod name>
+```
+
 And that concludes this module.
 
 The complete files are also available in the root folder of the workshop and is deployed via Azure devops to provide guidance and inspiration
-
-
-
-
