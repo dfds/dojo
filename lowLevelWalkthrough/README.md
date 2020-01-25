@@ -30,7 +30,17 @@ What are the tools for?
 
 Before you begin you should have each of these tools installed, joined the ded-workshops capability at [build.dfds.cloud](https://build.dfds.cloud/capabilitydashboard?capabilityId=f45ec4da-e5d8-4c3e-b688-59e9b1de3fd1) and downloaded the [default kubeconfig file](https://build.dfds.cloud/downloads/kubeconfig)
 
-## AWS resources
+This walkthrough is designed to be ran from command line so depending on your platform, open up a powershell or terminal window and get ready.
+
+## 1 - AWS resources
+Welcome to this walkthrough.
+We are going to build a very simple application that reads a file for a cloud data storage and prints out the content.
+This sample can be expanded to include other types of resources or data manipultation but is kept to the basics to focus on the core practices.
+
+The application is going to run in a kubernetes cluster.
+By design kubernetes is built to host stateless applications. If you do decide to have state inside the cluster you can experience issues during updates of the cluster and rebalancing of the containers/pods running in the cluster.
+The advise is to keep the state of your application outside of the cluster and which is why we start by adding some storage by setting up an s3 bucket with Terraform.
+
 Sign in with saml2aws
 
 ### Windows
@@ -47,12 +57,14 @@ export AWS_PROFILE=saml
 
 Go to the terraform-1 folder:
 ```bash
-cd terraform-1
+cd 1-terraform
 ```
 
-Inside the terraform-1 folder you will find a simple terraform file which will include a region to provision in and the recipe for an s3 bucket.
+Inside the 1-terraform folder you will find a simple terraform file, named main.tf, which will include a region to provision in and the recipe for an s3 bucket.
 
-If running by yourself I would recommend changing the bucket name since it has to be unique across AWS.
+Try opening it and see if you can understand the content. Maybe even talk about it with the person next to you.
+
+When running this sample code by yourself I would recommend changing the bucket name since it has to be unique across AWS. If you run the sample as it is you might experience errors like the bucket already exists.
 
 From within this folder run a terraform init followed by a plan.
 
@@ -62,6 +74,7 @@ terraform plan
 ```
 
 The init sets up the API providers to enable terraform to talk with AWS and the plan will show you what will happen if you apply the terraform.
+The init is only needed the first time terraform is ran from a folder.
 
 You should see something similar to this:
 
@@ -117,6 +130,8 @@ For pipelines etc it is a good idea to use the auto approve since it can be trou
 terraform apply -auto-approve
 ```
 
+You can sign in the AWS console in your browser and verify that the bucket is in fact there.
+
 End this part by cleaing up with
 ```
 terraform destroy
@@ -127,16 +142,19 @@ Go back to the root workshop folder
 cd ..
 ```
 
-## Terraform for teams and pipelines
-This is all very nice but due to the nature of terraform it saves something called a state. The state keeps track of the resources created with terraform and uses it to handle changes afterwards.
-By default the state is saved in the folder with the terraform files which would be a huge problem if used in a team with more than 1 computer or if done within a pipeline.
+## 2- Terraform for teams and pipelines
+You now know how to make a bucket using Infrastrucre as code with Terraform.
+This is all very nice but due to the nature of Terraform it saves something called a state.
+The state keeps track of the resources created with Terraform and uses it to handle changes afterwards.
+By default the state is saved in the folder with the terraform files which would be a huge problem if used in a team with more than 1 computer or if done within a pipeline which is cleaned out after each run. If done so you will get errors like the resources already exists on next run.
 
 To solve this we can introduce a concept of shared state.
+Instead of having the state on our local machine we push it to cloud storage in an s3 bucket. That way everybody who should work on this got the same state.
 
-Go to terraform-2
+Go to the 2-terraform folder
 
 ```bash
-cd terraform-2
+cd 2-terraform
 ```
 If you look inside the main.tf file you will notice it is very similar to the previous one. Except for the fact that we have included a terraform block with a backend called s3.
 
@@ -144,7 +162,7 @@ Notice that inside the block there is a bucket name and a key path.
 Change these to something that makes sense for you, and remember that buckets needs to be unique across AWS.
 
 This means that it will store the state of the things it create inside an s3 bucket instead of on your local machine. Unfortunately it won't create the bucket by itself.
-There are tools that can do this for you but let's do it manually just to grasp the concept. Remember to change the bucket name to match what you used inside the block:
+There are tools that can do this for you. For additional reading you can have a look at [Terragrunt](https://terragrunt.gruntwork.io/docs/getting-started/quick-start/) which can auto create the state bucket and let you run multiple terraforms in parallel. For simplicity let's do it manually just to grasp the concept. Remember to change the bucket name to match what you used inside the block:
 
 ```bash
 aws s3 mb s3://dfds-k8sworkshop-bucket-state --region eu-west-1
@@ -152,7 +170,8 @@ aws s3 mb s3://dfds-k8sworkshop-bucket-state --region eu-west-1
 
 Now we got a bucket. But just in case something goes wrong like your computer locking up, internet get cut or what ever issues we IT people face, let's also put versioning on our bucket.
 
-If the state is somehow corrupted we can easily role back so we got a working state of our terraform resources.
+If the state is somehow corrupted we can easily revert back so we got a working state of our terraform resources.
+Another concept that can be used to protect the state is [state locking](https://www.terraform.io/docs/state/locking.html). State locking means that Terraform locks the state when it begins running to avoid multiple pipelines or people are editing the same resources at once. I recommend doing this for production environments.
 
 Remember to change the bucket name and then run this command:
 ```bash
@@ -166,13 +185,18 @@ terraform plan
 terraform apply
 ```
 
-Don't forget to clean up
+If you go to the AWS console again you should be able to see your 2 buckets. One for content and one for the state. Inside the state bucket you will be able to read the current state of the deployed resources by Terraform.
+The state bucket should be protected since it can contain sensitive information like passwords for databases etc so make sure to limit who and what got access to this.
+
+Don't forget to clean up and go back to the root folder
 ```bash
 terraform destroy
 cd ..
 ```
 
-## Docker image
+## 3 - Docker image
+
+
 
 Next we are going to build a docker image that can use our aws s3 bucket.
 
