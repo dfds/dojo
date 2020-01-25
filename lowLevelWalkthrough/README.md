@@ -132,7 +132,8 @@ terraform apply -auto-approve
 
 You can sign in the AWS console in your browser and verify that the bucket is in fact there.
 
-End this part by cleaing up with
+When playing with cloud resources it is a very good idea to delete your work afterwards. Leaving cloud resources running will generate a cost and since we script it we might as well just remove it afterwards sinc we can easily spin it up again.
+
 ```
 terraform destroy
 ```
@@ -196,32 +197,33 @@ cd ..
 
 ## 3 - Docker image
 
+From the previous modules we built a place to store data for out application and since we got that we should start building our actual application.
 
+ We are going to build a docker image that can use our aws s3 bucket for its data.
 
-Next we are going to build a docker image that can use our aws s3 bucket.
-
-Go to the docker-3 folder
+Go to the 3-docker folder
 
 ```bash
-cd docker-3
+cd 3-docker
 ```
 
 Inspect the Dockerfile.
 You will see it is build from different components.
 It got a base image which is an image built by somebody else.
-In this case python which we will use to install AWS CLI.
+In this case python the base includes system commands and python which we will use to install AWS CLI.
 
 Next we make sure the image is patched and upgraded. Just to follow best practices.
 
-Then we install curl followed by AWS CLI which we will be using.
+Then we install curl followed by AWS CLI which we will be using for our application.
 
 And last we preset the folders for the image.
 
-Build this image by running:
+Build this image with docker by running:
 
 ```bash
 docker build -t awscli .
 ```
+It is important the Dockerfile is named exactly as it is since the build command will just look at the folder path it is stored, in this case ., and build it from there. In this command we also tag our image so it gets an easy name to remember and find it by.
 
 Once the image is built we can try use it
 
@@ -232,6 +234,8 @@ docker run -it awscli
 This will return the help text from the AWS CLI since we haven't specified a command.
 Seeing this means that our image works and is ready to accept input.
 
+In this module we made a docker image and tried running it as a container. This means we got a package of tools that we can spin up as needed without having to install them. This makes it easy to move this package around between machines like deployments on environments etc.
+
 Return to the root folder
 
 ```bash
@@ -240,17 +244,19 @@ cd ..
 
 ## Combining AWS and Docker
 
-So far we should have learned how to create AWS resources and how to create and run docker images.
+In the previous modules we prepared storage in the cloud and made a container that includes the tools we need to utilize our storage.
 But how do we mix it?
 
+Jump in to the folder for module 4:
+
 ```bash
-cd docker-4
+cd 4-docker
 ```
 
-If you inspect the terraform file you will notice another resource is added to the file.
-This one is a bucket file and in this case a simple txt file.
+If you inspect the Terraform file, main.tf, you will notice another resource, named bucket-object, is added to the file.
+This one is a bucket file and in this case is just a simple txt file with a test text inside of it.
 
-Remember to change the bucket name of the bucket and the state and let's provision it.
+Remember to change the bucket name of the bucket and the state in the Terraform file and let us provision it.
 
 ```bash
 terraform init
@@ -258,7 +264,23 @@ terraform plan
 terraform apply -auto-approve
 ```
 
-Next let's see if we can access the file from our docker image
+Next let's see if we can access the file from our docker image.
+
+Since we signed in earlier with saml2aws we got a session on our computer stored to let us interact with the s3 bucket. If you are experiencing issues with this try signing in again:
+
+### Windows
+```Powershell
+saml2aws login --force
+$env:AWS_PROFILE = 'saml'
+```
+
+### Unix
+```bash
+saml2aws login --force
+export AWS_PROFILE=saml
+```
+
+Spin up the docker image with your sessions credentials attached as environment variables and
 
 ```bash
 docker run \
@@ -269,26 +291,51 @@ docker run \
 awscli s3 cp s3://dfds-k8sworkshop-bucket/testfile.txt -
 ```
 
-This should return the message hello from s3 which corrospond to the content of the file created through terraform.
+This should return the message hello from s3 which corrospond to the content of the file created through Terraform.
 
 What we do here is running the docker image as a container, mounting our credentials we got from saml2aws as environment variables inside the container and executing the command s3 copy from path to terminal output.
 
 This is very handy for local development where we can change the file by editing and applying our terraform and handle the file in different ways sending commands to our container.
 
+We are currently utilizing the fact that docker containers are only running as long as the main process is executing. Since we only execute a single command against it, it shuts down once it is done.
+
+That means we don't really have anything to clean up unless we want to remove the images from our local machine.
+
+These don't generate a cost so cleaning those will not be done in this walkthrough.
+
+But shutdown the s3 bucket:
+
+```bash
+terraform destroy
+```
+
+Return to the root:
+
+```bash
+cd ..
+```
+# 5 - Default behavior in docker
+
+in the previous module we created a docker image that included the aws cli tools and accepted commands as input which would return the wanted output.
+
 But wouldn't it be nice if the container just did what we wanted it to without having to write the command?
 
-Ïnspect the Dockerfile.
-You will notice that a script is added and the entrypoint is changed.
-Inspect the script found in get-file.sh.
-You will notice that this file include our "application" which prints the content of an s3 bucket every 5 seconds.
-It finds the content based on an environment variable.
+```bash
+cd 5-docker
+```
 
-Let's rebuild the image with the changes:
+Inspect the Dockerfile.
+You will notice that a script is added and the entrypoint is changed.
+Inspect the script found in get-file.sh
+You will notice that this file include our "application" which prints the content of an s3 bucket every 5 seconds.
+It finds the content based on an environment variable which makes it easier for us to point our "application" to the correct file we want it to read through development to production.
+
+Let us rebuild the image with the changes:
 ```bash
 docker build -t awscli .
 ```
 One of the neat features with docker build is that it is based on layers. It will find the changes performed and only rebuild everything after that point.
-If you structure it  correctly you can speed up your built process by a lot!
+If you structure it correctly you can speed up your built process by a lot!
 
 Lets try to run this container with the path to our file. Remember to change bucket and file name.
 
@@ -301,8 +348,9 @@ docker run \
 -e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
 awscli
 ```
-
 You can exit by clicking "ctrl+c" on your keyboard. 
+
+Notice that we didn't have to specify the aws s3 cp command when running the container and that it kept running even after the first output.
 
 End this part by cleaing up with
 ```
@@ -314,32 +362,23 @@ Go back to the root workshop folder
 cd ..
 ```
 
-## Sharing images and running in a pipeline
+## 6 - Sharing images and running in a pipeline
 
-It is very nice to be able to build images locally and test them out but just like with the terraform state you might want to work together as a team.
+It is very nice to be able to build images locally and test them out but just like with the Terraform state you might want to work together as a team.
 To do so you would need to share the images with your team members and the process for doing so in DFDS is through a pipeline.
 
 In the root workshop folder you will be able to see a file named azure-pipeline.
 This is the final yaml description of the pipeline for this project.
+But if you look at line 40 through 60 you can see the steps performed to build the image through a build agent and afterwards publish the image in the shared container repository for DFDS.
 
-If you inspect it you will see that the first part os about behavior of the pipeline. Triggers, build agent etc.
+Since the images published here can be, and most often are, used for production we disapprove of pushes from a local machine. Instead we encourage people to push here from a pipeline to keep it versioned, consistent and automated.
 
-The next part about Stages is the exciting part since this is where your application is actually built.
+If your team needs to publish images you can request an AWS service connection inside your Azure DevOps project which allows your team to push images for prod use. If you want more control with your images you can run [your own repository](https://playbooks.dfds.cloud/training/ecr-capability.html) and be responsible for creating your own sub repos and the access levels
 
-The first stage of the pipeline is used to validate if the neccesary input is available.
-If it is not there is no reason to wait for the pipeline to fail since we already know it based on this.
+Once an image is published in the repon it can be pulled from your colleagues machines.
+Lets pretend that somebody published an image for us that we want to run locally to see how it works together with the terraform that we have been building.
 
-Next one is building the docker image.
-Just like we did locally, we can build the docker image through our pipeline and make an image for the container available.
-
-Right after the build step there is a push task.
-In DFDS the DED team provides a service connection for new projects in ADO for those that need access to the shared docker repository. This one is hosted in AWS and can be seen in the push step as awsCredentials.
-The rest of the arguments is for our image like the name of it, which repository it should be pushed to and which tag it should have.
-Since you can have multiple builds of your image and some of them failing it is very handy to have a history in case you need to use a previous one. For ease of naming the tag is set to the build id so ensure it is unique.
-
-This is set to trigger on any changes to master so we would be able to push new images if the code in here is change. Always keeping it up to date.
-
-If you do a saml2aws login and choose the ECR-Pull role with
+If you do a saml2aws login and choose the [ECR-Pull role](https://playbooks.dfds.cloud/training/ecr-local.html) with
 
 ```bash
 saml2aws login --force
@@ -373,7 +412,7 @@ saml2aws login --force
 
 Set up the s3 bucket with the test file again:
 ```bash
-cd pipeline-5
+cd 6-docker
 terraform init
 terraform plan
 terraform apply
@@ -393,13 +432,33 @@ docker run \
 
 You should see the text from the image printed again but this time from the image build by the pipeline and ran on your computer.
 
-That means your image is now shareable with the team and deployable to a kubernetes cluster!
+That means the image is now shareable with the team and deployable to a kubernetes cluster!
 
 Don't forget to clean up
 ```bash
 terraform destroy
 cd ..
 ```
+
+
+If you inspect it you will see that the first part is about behavior of the pipeline. Triggers, build agent etc.
+
+The next part about Stages is the exciting part since this is where your application is actually built.
+
+The first stage of the pipeline is used to validate if the neccesary input is available.
+If it is not there is no reason to wait for the pipeline to fail since we already know it based on this.
+
+Next one is building the docker image.
+Just like we did locally, we can build the docker image through our pipeline and make an image for the container available.
+
+Right after the build step there is a push task.
+In DFDS the DED team provides a service connection for new projects in ADO for those that need access to the shared docker repository. This one is hosted in AWS and can be seen in the push step as awsCredentials.
+The rest of the arguments is for our image like the name of it, which repository it should be pushed to and which tag it should have.
+Since you can have multiple builds of your image and some of them failing it is very handy to have a history in case you need to use a previous one. For ease of naming the tag is set to the build id so ensure it is unique.
+
+This is set to trigger on any changes to master so we would be able to push new images if the code in here is change. Always keeping it up to date.
+
+
 
 ## Deploying to kubernetes
 

@@ -40,6 +40,4 @@ VOLUME /root/.aws
 VOLUME /project
 WORKDIR /project
 
-ADD /get-file.sh /project/get-file.sh
-
-ENTRYPOINT ["/project/get-file.sh"]
+ENTRYPOINT ["aws"]
