@@ -21,7 +21,7 @@ spec:
     metadata:
       labels:
         app: awscli
-    annotations:
+      annotations:
         iam.amazonaws.com/role: arn:aws:iam::547767961372:role/test-role
     spec:
       containers:
