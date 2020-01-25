@@ -10,8 +10,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: awscli
-  annotations:
-    iam.amazonaws.com/role: arn:aws:iam::547767961372:role/test-role
   labels:
     app: awscli
 spec:
@@ -23,6 +21,8 @@ spec:
     metadata:
       labels:
         app: awscli
+    annotations:
+        iam.amazonaws.com/role: arn:aws:iam::547767961372:role/test-role
     spec:
       containers:
       - name: awscli
