@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: s3_path
+  name: s3-path
 type: Opaque
 stringData:
     path_to_file: "s3://dfds-k8sworkshop-bucket/testfile.txt"
@@ -29,7 +29,7 @@ spec:
         - name: path_to_file
           valueFrom:
             secretKeyRef:
-                name: s3_path
+                name: s3-path
                 key: path_to_file
         resources:
           requests:
