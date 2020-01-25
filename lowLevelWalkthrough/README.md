@@ -1,5 +1,34 @@
 # ado-k8s-aws-getstarted
-This is sample code for getting up and running with sample code that lets you create an s3 bucket, create a docker image and read from the bucket from within a container running on kubernetes. All through a pipeline.
+This is sample code for getting up and running with sample code that lets you create an s3 bucket, create a docker image and read from the bucket from within a container running on kubernetes. All through a pipeline while utilizing built in features to secure your workload.
+
+## Pre-reqs
+To follow this workshop you will have to the following tools installed:
+* [Docker](https://hub.docker.com/?overlay=onboarding)
+* [Terraform < 0.12.19](https://releases.hashicorp.com/terraform/0.12.19/)
+* [AWS CLI](https://aws.amazon.com/cli/)
+* [KubeCTL](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Saml2aws](https://github.com/Versent/saml2aws)
+* [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
+
+Docker is a well known tool which is easily found on the internet. It is required to have a docker hub account to get it from the [offical source](https://hub.docker.com/?overlay=onboarding) but the install process is described here: [Install Docker Desktop on Windows](https://docs.docker.com/docker-for-windows/install/)
+
+Terraform can be downloaded for the platform you you need.
+In general I recommend the latest version but once you touch the code only your version or above can modify it afterwards. As this is written the current supported version in pipelines is 0.12.19 so I recommend that or a version before it to avoid issues with this walkthrough.
+Also notice that the Terraform download is a single executeable file which should be added to your [path](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) for the best experience.
+
+The last 4 can be installed following this:
+* [Technical prerequisites (Windows)](https://playbooks.dfds.cloud/getting-started/prereqs-win.html#setting-up-tools-as-administrator)
+* [Technical prerequisites (Linux)](https://playbooks.dfds.cloud/getting-started/prereqs-linux.html)
+* [Technical prerequisites (Mac)](https://playbooks.dfds.cloud/getting-started/prereqs-mac.html)
+
+What are the tools for?
+* We will be using docker to build and run containers locally
+* We will use AWS CLI to manage cloud resources and make a sample application
+* We will use KubeCTL to verify our deployments and debug them
+* We will use saml2aws to grant access to our cloud environment via our company account
+* We will use aws-iam-authenticator to convert our cloud environment login to a login for the kubernetes platform
+
+Before you begin you should have each of these tools installed, joined the ded-workshops capability at [build.dfds.cloud](https://build.dfds.cloud/capabilitydashboard?capabilityId=f45ec4da-e5d8-4c3e-b688-59e9b1de3fd1) and downloaded the [default kubeconfig file](https://build.dfds.cloud/downloads/kubeconfig)
 
 ## AWS resources
 Sign in with saml2aws
@@ -349,3 +378,4 @@ cd ..
 ```
 
 ## Deploying to kubernetes
+
