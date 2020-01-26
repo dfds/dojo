@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+  kafka:
+    hostname: kafka
+    image: spotify/kafka    
+    networks:
+      development:
+        aliases:
+          - kafka
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    environment:
+      - "ADVERTISED_HOST=kafka"
+      - "ADVERTISED_PORT=9092"
+      - "AUTO_CREATE_TOPICS=true"
+
+  kafkathebasics:
+    hostname: kafkathebasics
+    build:
+        context: .
+        dockerfile: Dockerfile
+    networks:
+      development:
+        aliases:
+          - kafkathebasics
+    ports:
+      - "50900:50900" 
+    depends_on:
+      - kafka
+    environment:
+      - "ASPNETCORE_URLS=http://+:50900"
+      - "KAFKATHEBASICS_KAFKA_BOOTSTRAP_SERVERS=kafka:9092"
+      - "KAFKATHEBASICS_KAFKA_ENABLE_AUTO_COMMIT=false"
+      - "KAFKATHEBASICS_KAFKA_GROUP_ID=kafkathebasics-consumer"
+
+networks:
+  development:
+    name: development
