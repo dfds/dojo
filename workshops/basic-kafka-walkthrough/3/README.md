@@ -115,7 +115,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Let us try and see it in action.
 
-Go to "workshop/kafka/3" in a terminal emulator, and execute the following:
+Go to "dojo/workshops/basic-kafka-walkthrough/3" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 

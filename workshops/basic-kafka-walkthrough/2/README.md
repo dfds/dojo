@@ -8,7 +8,7 @@ Go to https://dotnet.microsoft.com/download/dotnet-core/3.1, download the latest
 
 ## Project base
 
-Open the 'ded-dojo/kafka-the-basics/2/project' directory found in the git repository you cloned in the last kata, in your preferred IDE/text editor, as well as in a terminal emulator.
+Open the 'ded-dojo/workshops/basic-kafka-walkthrough/2/project' directory found in the git repository you cloned in the last kata, in your preferred IDE/text editor, as well as in a terminal emulator.
 
 In the terminal, run the following command
 
@@ -81,9 +81,9 @@ namespace kafka_the_basics.Enablers
 
 ![](img/04.png) 
 
-Run the project by executing the following command in your terminal emulator, at the project root directory(workshop/kafka/2/project)
+Run the project by executing the following command in your terminal emulator, at the project root directory(ded-dojo/workshops/basic-kafka-walkthrough/2)
 
-`dotnet run .`
+`docker-compose up --build`
 
 If everything is working as expected, the output should look a bit like how it is below:
 ![](img/05.png)
@@ -513,7 +513,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Let us try and see it in action.
 
-Go to "workshop/kafka/2" in a terminal emulator, and execute the following:
+Go to "ded-dojo/workshops/basic-kafka-walkthrough/2" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 

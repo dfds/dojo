@@ -4,7 +4,7 @@
 In this kata, we will be looking at integrating the following schema format:
 ![](img/01.png)
 
-Open a terminal emulator and navigate to the project folder (workshop/kafka/4/project). Then execute the following command:
+Open a terminal emulator and navigate to the project folder (dojo/workshops/basic-kafka-walkthrough/4/project). Then execute the following command:
 
 `dotnet add package Newtonsoft.Json`
 
@@ -124,7 +124,7 @@ The notable changes are that we using a predefined model for our *Payload*, as w
 
 Let us try and see it in action.
 
-Go to "workshop/kafka/4" in a terminal emulator, and execute the following:
+Go to "dojo/workshops/basic-kafka-walkthrough/4" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 
@@ -143,13 +143,13 @@ using System.Linq;
 
 namespace kafka_the_basics.Enablers
 {
-    public class DomainEventRegistry
+    public class EventRegistry
     {
         private readonly List<EventRegistration> _registrations = new List<EventRegistration>();
 
         public IEnumerable<EventRegistration> Registrations => _registrations;
 
-        public DomainEventRegistry Register<TEvent>(string eventTypeName, string topicName)
+        public EventRegistry Register<TEvent>(string eventTypeName, string topicName)
         {
             _registrations.Add(new EventRegistration
             (
@@ -338,7 +338,7 @@ public void ConfigureServices(IServiceCollection services)
 
 ![](img/09.png)
 
-With this specific implementation that I will be using, we will have to give *WorkshopCreated* an additional constructor.
+With this specific implementation that we will be using, we will have to give *WorkshopCreated* an additional constructor.
 
 ```c#
 using kafka_the_basics.Enablers;
@@ -527,7 +527,7 @@ Then we look for any handlers registered to that Class, create an instance of th
 
 Okay.. that was a lot once again. Let's see it in action.
 
-Go to "workshop/kafka/4" in a terminal emulator, and execute the following:
+Go to "dojo/workshops/basic-kafka-walkthrough/4" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 
@@ -538,5 +538,3 @@ This implementation of our schema and the usage of it, is rather naive, and expe
 ---
 
 We now have a .NET Core project that just like before can **Consume** from a **Topic** and **Produce** to a **Topic**, but now also have a way of mapping a message to a specific Class, and handle it accordingly.
-
-In the next next and last kata, we will deploy this .NET Core project to Hellman, our Kubernetes cluster.
