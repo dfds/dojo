@@ -43,7 +43,7 @@ If not, run this instead.
 
 Navigate to kafka-the-basics/1
 
-`cd ded-dojo/kafka-the-basics/1 `
+`cd ded-dojo/workshops/basic-kafka-walkthrough/1 `
 
 Start up Kafka
 
