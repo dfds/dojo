@@ -1,4 +1,4 @@
-DFDS Docker Training - Code kata #5
+DFDS Docker Training - Code kata #6
 ======================================
 
 This training exercise is a **beginner-level** course on Docker that serves as a starting point for Developers looking to onboard the container efforts at DFDS. 
@@ -20,8 +20,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The fifth exercise will help familiarize your with the networking commands in the Docker CLI.
 
 ### 1. Create your project directory
-`mkdir /kata5`<br/>
-`cd /kata5`
+`mkdir /kata6`<br/>
+`cd /kata6`
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named `useMACVLANNetwork.ps1` containing the following code:

@@ -1,4 +1,4 @@
-DFDS Docker Training - Code kata #4
+DFDS Docker Training - Code kata #5
 ======================================
 
 This training exercise is a **beginner-level** course on Docker that serves as a starting point for Developers looking to onboard the container efforts at DFDS. 
@@ -20,8 +20,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The fourth exercise will help familiarize your with the networking commands in the Docker CLI.
 
 ### 1. Create your project directory
-`mkdir /kata4`<br/>
-`cd /kata4`
+`mkdir /kata5`<br/>
+`cd /kata5`
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named `useDefaultBridgeNetwork.ps1` containing the following code:
