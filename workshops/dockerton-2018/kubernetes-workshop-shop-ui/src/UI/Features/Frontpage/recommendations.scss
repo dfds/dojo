@@ -1,0 +1,14 @@
+.recommendations {
+    
+    .recommendation {
+        display: inline-block;
+        width: 320px;
+        height: 320px;
+        padding: 10px;
+
+        img {
+            max-height: 300px;
+            max-width: 300px;
+        }
+    }
+}

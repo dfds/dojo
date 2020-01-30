@@ -1,0 +1,34 @@
+﻿<section id="customer-profile" class="section customer-profile">
+    <div class="container">
+
+        <div class="columns" v-if="hasCustomer">
+            <div class="column is-one-fifth">
+                <img class="customer-image" v-bind:src="getPictureUrl"/>
+            </div>
+            <div class="column">
+                <div>
+                    <p class="heading">Name</p>
+                    <p class="title">{{customer.name}}</p>
+                </div>
+<br />
+                <div>
+                    <p class="heading">E-Mail</p>
+                    <p class="subtitle">{{customer.email}}</p>
+                </div>
+
+<br />
+                <div>
+                    <p class="heading">Address</p>
+                    <p class="subtitle" v-html="getAddress"></p>
+                </div>
+
+            </div>
+        </div>
+        <div v-else>
+            <div class="notification is-danger">
+            <strong>Error!</strong> No customer has been loaded from the backend. Will automatically retry in a few seconds...
+            </div>
+        </div>
+
+    </div>
+</section>

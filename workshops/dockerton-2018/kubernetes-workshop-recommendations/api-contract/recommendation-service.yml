@@ -1,0 +1,41 @@
+swagger: "2.0"
+info:
+  version: 0.0.1
+  title: Recommendations API
+
+paths:
+  /api/customers/{id}/recommendations:
+      get:
+        summary: Returns recommended products for a given customer 
+        tags:
+          - Recommendations
+        parameters:
+          - in: path
+            name: id
+            required: true
+            type: string
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: "#/definitions/product-list"
+
+definitions:
+  product-list:
+    type: object
+    properties:
+      products:
+        type: array
+        items:
+          $ref: "#/definitions/product"
+  product:
+    type: object
+    properties:
+      id:
+        type: string
+      description:
+        type: string
+      imageUrl:
+        type: string
+      price:
+        type: number

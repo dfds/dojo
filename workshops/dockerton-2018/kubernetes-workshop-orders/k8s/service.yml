@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  annotations:
+    prometheus.io/scrape: 'true'
+spec:
+  ports:
+  - name: external
+    port: 80
+    targetPort: web
+  selector:
+    app: order-service
