@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net.Mime;
-using System.Threading;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
@@ -23,7 +20,7 @@ namespace DFDS.OrderService
 
             try
             {
-                Log.Information($"Starting web host {Process.GetCurrentProcess().Id}");
+                Log.Information("Starting web host");
                 BuildWebHost(args).Run();
             }
             catch (Exception exception)
