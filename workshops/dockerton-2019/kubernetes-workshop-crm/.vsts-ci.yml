@@ -1,0 +1,16 @@
+name: $(Build.BuildId)
+queue: Hosted Ubuntu 1604
+trigger:
+- master
+steps:
+- powershell: |
+   sudo pip install awscli
+   $env:AWS_SECRET_ACCESS_KEY = "$(AWS_SECRET_ACCESS_KEY)"
+   ./pipeline.ps1 -push -buildNumber $(Build.BuildId)
+  displayName: Pipeline PowerShell Script
+  enabled: true
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Artifact: manifests"
+  inputs:
+    PathtoPublish: k8s
+    ArtifactName: manifests

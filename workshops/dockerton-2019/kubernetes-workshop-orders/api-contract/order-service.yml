@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  version: 0.0.1
+  title: Order API
+paths:
+  /api/orders:
+    get:
+      summary: Returns all orders
+      tags:
+        - Orders
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/order-list"
+
+definitions:
+  order-list:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/definitions/order"
+
+  order:
+    type: object
+    properties:
+      number:
+        type: string
+      submittet:
+        type: string
+      lines:
+        type: array
+        items:
+          $ref: "#/definitions/line"
+
+  line:
+    type: object
+    properties:
+      description:
+        type: string
+      imageUrl:
+        type: string
+      quantity:
+        type: number
+      price:
+        type: number
