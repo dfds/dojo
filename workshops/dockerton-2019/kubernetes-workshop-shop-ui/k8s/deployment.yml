@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: shopui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shopui
+  template:
+    metadata:
+      labels:
+        app: shopui
+    spec:
+      containers:
+      - name: container
+        image: 579478677147.dkr.ecr.eu-central-1.amazonaws.com/dockerton/shop-ui:$(Build.BuildId)
+        ports:
+        - containerPort: 80
+          name: web
+        env:
+          - name: CRM_SERVICE_URL
+            value: http://crm-service
+          - name: ORDER_SERVICE_URL
+            value: http://order-service
+          - name: RECOMMENDATION_SERVICE_URL
+            value: http://recommendation-service
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
