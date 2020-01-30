@@ -12,149 +12,61 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-In this exercise we will be creating a simple deployment for a containerized Web Api that is pulled from DockerHub @ toban/k8s-training-api:latest
+In this exercise we will be creating a simple pod containing a busybox image to explore some of the inner workings. 
 
 ### 1. Create your project directory
 `mkdir /kata2`<br/>
 `cd /kata2`
 
 ### 2. Create a Kubernetes "app descriptor"
-Create a file named "api_mvc_deployment.yml" and add two Deployment objects for our Web Api + MVC containers and two Service objects to expose the containers to the world:
+Create a file named "my-pod.yml" and add one pod object to hold our busybox container image:
 
 ```
-apiVersion: apps/v1
-kind: Deployment
----
-apiVersion: apps/v1
-kind: Deployment
----
 apiVersion: v1
-kind: Service
----
-apiVersion: v1
-kind: Service
+kind: Pod
 ```
 
-Comment: The "---" is a logical seperator that help kubectl figure out where a object configuration begins and when it ends.
-
-## 3. Configure API Deployment
-Augment the first Deployment object configuration with the following markup:
+## 3. Configure pod metadata and spec
+Augment the pod object configuration with the following markup:
 
 ```
 metadata:
-  name: api-backend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: api
-      tier: backend
-      track: stable
-  template:
-    metadata:
-      labels:
-        app: api
-        tier: backend
-        track: stable
-    spec:
-      containers:
-      - name: api-backend
-        image: toban/k8s-training-api:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-          - name: http
-            containerPort: 5000
-      restartPolicy: Always
-```
-
-## 4. Configure MVC Deployment
-Augment the second Deployment object configuration with the following markup:
-
-```
-metadata:
-  name: mvc-deployment
+  name: my-pod
   labels:
-    app: mvc
+    app: myapp
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mvc
-      tier: frontend
-      track: stable
-  template:
-    metadata:
-      labels:
-        app: mvc
-        tier: frontend
-        track: stable
-    spec:
-      containers:
-      - name: mvc-frontend
-        image: toban/k8s-training-frontend:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 5000
-      restartPolicy: Always
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
 ```
 
-## 5. Configure API Service
-Augment the first Service object configuration with the following markup to expose our API to the world.
+## 4. Create a pod from the yaml definition file
+
+```
+kubectl create -f my-pod.yml
+```
+
+## 5. Edit the pod by updating the yaml definiton with a custom annotation:
 
 ```
 metadata:
-  name: api-backend
-spec:
-  selector:
-    app: api
-    tier: backend
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: http
+  annotation: foo
 ```
 
-## 6. Configure MVC Service
-Augment the second Service object configuration with the following markup to expose our MVC app to the world.
+## 6. Re-applying yaml definiton:
 
 ```
-metadata:
-  name: mvc-frontend
-spec:
-  selector:
-    app: mvc
-    tier: frontend
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 80
-  type: LoadBalancer
+kubectl apply -f my-pod.yml
 ```
 
-## 7. Use "app descriptor" to create a new Kubernetes Deployment
-`kubectl create -f .\api_mvc_deployment.yml`
+## 6. Delete the pod like this:
 
-Just to explain: <br/>
-`kubectl create` - Create a resource from a file or from stdin. <br/>
-`-f .\api_deployment.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
+```
+kubectl delete pod my-pod
+```
 
-## 8. Verify that API deployment is created
-`kubectl describe deployment api-backend`
+## Want to help make our training material better?
 
-Just to explain: <br/>
-`kubectl describe` - Instructs the Kubernetes CLI to fetch metadata related to one or more resources via the API Server. <br/>
-`deployment api-backend` - Indicates that we want to work with the deployment objects named "api-backend"
-
-## 9. Verify that MVC deployment is created
-`kubectl describe deployment mvc-frontend`
-
-Just to explain: <br/>
-`kubectl describe` - Instructs the Kubernetes CLI to fetch metadata about one or more resources via the API Server. <br/>
-`deployment mvc-frontend` - Indicates that we want to work with the deployment objects named "api-backend"
-
-## 10. Watch the frontend service until External IP is assigned
-`kubectl get service mvc-frontend --watch`
-
-Just to explain: <br/>
-`kubectl get` - Instructs the Kubernetes CLI to fetch one or more resources via the API Server. <br/>
-`service mvc-frontend` - Indicates that we want to work with the service object named "mvc-frontend"
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/roadmap/issues).
+ 
