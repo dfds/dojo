@@ -1,4 +1,4 @@
-DFDS Kubernetes Training - Code kata #2
+DFDS Kubernetes Training - Code kata #1
 ======================================
 
 ## Getting started
@@ -12,14 +12,14 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-In this exercise we will be creating a simple deployment for a containerized Web Api that is pulled from DockerHub @ toban/k8s-training-api:latest
+Your team have just finalized their first container project which they have deployed to DockerHub. They are now looking for your help to deploy the containers to the Hellman cluster so they can leverage that managed k8s services and focus on building new features for our company:
 
 ### 1. Create your project directory
-`mkdir /kata2`<br/>
-`cd /kata2`
+`mkdir /kata1`<br/>
+`cd /kata1`
 
-### 2. Create a Kubernetes "app descriptor"
-Create a file named "api_mvc_deployment.yml" and add two Deployment objects for our Web Api + MVC containers and two Service objects to expose the containers to the world:
+### 2. Create deployment manifest
+Create a file named "api_mvc_deployment.yml" and add two Deployment objects for our Web Api + MVC containers:
 
 ```
 apiVersion: apps/v1
@@ -27,24 +27,18 @@ kind: Deployment
 ---
 apiVersion: apps/v1
 kind: Deployment
----
-apiVersion: v1
-kind: Service
----
-apiVersion: v1
-kind: Service
 ```
 
 Comment: The "---" is a logical seperator that help kubectl figure out where a object configuration begins and when it ends.
 
-## 3. Configure API Deployment
-Augment the first Deployment object configuration with the following markup:
+### 3. Configure API Deployment
+Augment the first Deployment object configuration with the following markup to specify the setup for our Web API:
 
 ```
 metadata:
   name: api-backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api
@@ -67,8 +61,8 @@ spec:
       restartPolicy: Always
 ```
 
-## 4. Configure MVC Deployment
-Augment the second Deployment object configuration with the following markup:
+### 4. Configure MVC Deployment
+Augment the second Deployment object configuration with the following markup to specify the setup for our frontend ASP.NET MVC solution:
 
 ```
 metadata:
@@ -76,7 +70,7 @@ metadata:
   labels:
     app: mvc
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: mvc
@@ -98,63 +92,23 @@ spec:
       restartPolicy: Always
 ```
 
-## 5. Configure API Service
-Augment the first Service object configuration with the following markup to expose our API to the world.
-
-```
-metadata:
-  name: api-backend
-spec:
-  selector:
-    app: api
-    tier: backend
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: http
-```
-
-## 6. Configure MVC Service
-Augment the second Service object configuration with the following markup to expose our MVC app to the world.
-
-```
-metadata:
-  name: mvc-frontend
-spec:
-  selector:
-    app: mvc
-    tier: frontend
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 80
-  type: LoadBalancer
-```
-
-## 7. Use "app descriptor" to create a new Kubernetes Deployment
+### 5. Use kubectl to create a two new Kubernetes Deployment from our manifest
 `kubectl create -f .\api_mvc_deployment.yml`
 
 Just to explain: <br/>
 `kubectl create` - Create a resource from a file or from stdin. <br/>
-`-f .\api_deployment.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
+`-f .\api_mvc_deployment.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
 
-## 8. Verify that API deployment is created
+### 6. Verify that Web API deployment is created
 `kubectl describe deployment api-backend`
 
 Just to explain: <br/>
 `kubectl describe` - Instructs the Kubernetes CLI to fetch metadata related to one or more resources via the API Server. <br/>
 `deployment api-backend` - Indicates that we want to work with the deployment objects named "api-backend"
 
-## 9. Verify that MVC deployment is created
+## 7. Verify that MVC deployment is created
 `kubectl describe deployment mvc-frontend`
 
 Just to explain: <br/>
 `kubectl describe` - Instructs the Kubernetes CLI to fetch metadata about one or more resources via the API Server. <br/>
 `deployment mvc-frontend` - Indicates that we want to work with the deployment objects named "api-backend"
-
-## 10. Watch the frontend service until External IP is assigned
-`kubectl get service mvc-frontend --watch`
-
-Just to explain: <br/>
-`kubectl get` - Instructs the Kubernetes CLI to fetch one or more resources via the API Server. <br/>
-`service mvc-frontend` - Indicates that we want to work with the service object named "mvc-frontend"
