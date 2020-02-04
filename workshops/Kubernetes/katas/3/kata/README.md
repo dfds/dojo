@@ -3,7 +3,7 @@ DFDS Kubernetes Training - Code kata #3
 
 ## Getting started
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
+These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
 
 ### Prerequisites
 
@@ -12,9 +12,9 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-Your team has just deployed two components of a web application to Hellman, using deployments with multiple replicas, and you just finished mastering the k8s pod basics! But now they want you to provide dynamic network access for their pod replicas so that there will be uninterrupted access to the components whenever replicas are created, removed, or replaced. The mvc-frontend deployment, the teams .NET core MVC application, needs to be accessible from outside the cluster. The api-backend deployment, their backend, should however only be accessible by other pods in the cluster.
+Your team has just deployed two components of their web application to a managed k8s cluster using deployment objects with multiple replicas. But now they want you to provide dynamic network access for their pod replicas so that there will be uninterrupted access to the components whenever replicas are created, removed, or replaced by their CI/CD pipelines. Furthermore the mvc-frontend deployment, your teams .NET core MVC application, needs to be accessible to users outside the cluster and the api-backend deployment should only be accessible by other pods in the cluster.
 
-### 1. Create your project directory
+### 1. Create a kata directory for our exercise files
 `mkdir /kata3`<br/>
 `cd /kata3`
 

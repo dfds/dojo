@@ -3,7 +3,7 @@ DFDS Kubernetes Training - Code kata #1
 
 ## Getting started
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
+These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
 
 ### Prerequisites
 
@@ -12,10 +12,10 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-Your team have just finalized their first container project which they have deployed to DockerHub. They are now looking for your help to deploy the containers to a k8s cluster so they can leverage its managed services and focus on building new features for DFDS.
+Your team have just finalized their first container project and pushed it to the DockerHub registry. They are now looking for your help to deploy the containers to a k8s cluster so they can leverage its managed services and focus on building new features for DFDS.
 
 
-### 1. Create your project directory
+### 1. Create a kata directory for our exercise files
 `mkdir /kata1`<br/>
 `cd /kata1`
 

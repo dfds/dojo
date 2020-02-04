@@ -3,7 +3,7 @@ DFDS Kubernetes Training - Code kata #4
 
 ## Getting started
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
+These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
 
 ### Prerequisites
 
@@ -12,10 +12,10 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-Your team has succesfully deployed their first .NET core application to the Kubernetes cluster, exposed it to the world via a set of services and is now ready to persist some of the data collected from the end users to our MySQL DB. But beware, here be dragons! Given the empheral nature of containers (they are either there or not) a key challenge of transitioning application to the cloud remains, namely providing persistant storage for those parts of the application that needs to maintain state (data) beyond the span of a container lifecycle. Luckily k8s has a myriad of solutions to this problem, depending on your needs and the architecture of your storage provider, but for the purpose of our kata we will focus on the most simple kind of storage "localdisk": 
+Your team has succesfully deployed their first .NET core application to the Kubernetes cluster, exposed it to the world via a set of services and is now ready to persist some of the data collected from the end users to our MySQL DB. But beware, here be dragons! Given the empheral nature of containers (they are either there or not) a key challenge of transitioning application to the cloud remains, namely providing persistant storage for those parts of the application that needs to maintain state (data) beyond the span of a containers lifecycle. Luckily k8s has a myriad of solutions to this problem, depending on your needs and the architecture of your storage provider. For the purpose of our kata we will focus on the most simple kind of storage, "localdisk": 
 
 
-### 1. Create your project directory
+### 1. Create a kata directory for our exercise files
 `mkdir /kata4`<br/>
 `cd /kata4`
 
@@ -67,8 +67,8 @@ Just to explain: <br/>
 ### 5. Use kubectl to apply our new storage claim
 `kubectl apply -f mysql-pvc.yml`
 
-### 6. Create a PersistantVolumeClaim descriptor file to acquire some storage from our new "cluster partition"
-Create a file named "mysql-pod.yml" and add a Pod definition:
+### 6. Create a mysql pod definition to consume our new PersistentVolume resource via an appropriate PersistantVolumeClaim and mount it as volume on our mysql container.
+Create a file named "my-sql-pod.yml" and add a Pod definition:
 
 ```
 apiVersion: v1

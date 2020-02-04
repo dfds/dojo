@@ -3,7 +3,7 @@ DFDS Kubernetes Training - Code kata #2
 
 ## Getting started
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
+These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
 
 ### Prerequisites
 
@@ -12,9 +12,9 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-Before we move on to expose our deployments to the world we will first take a quick stop to examine some of the basic mechanics of Kubernetes pods to better prepare us for the road ahead.
+Before we move on to expose our application to the world we need to take a quick stop to examine some of the basic mechanics of Kubernetes pods to better prepare us for the road ahead.
 
-### 1. Create your project directory
+### 1. Create a kata directory for our exercise files
 `mkdir /kata2`<br/>
 `cd /kata2`
 
@@ -43,17 +43,23 @@ Just to explain: <br/>
 ### 3. Create a pod from out manifest file
 `kubectl create -f my-pod.yml`
 
-### 4. Edit the pod by updating the yaml file with a custom annotation:
+### 4. Inspect the pod configuration. Notice how k8s has added ALOT of meta data to ensure it can maintain our desired state
+`kubectl inspect pod my-pod`
+
+### 5. Edit the pod by updating the yaml file with a custom annotation
 
 ```
 metadata:
   annotation: my-annotation
 ```
 
-### 5. Re-applying manifest to update existing pod:
+### 6. Re-applying manifest to update existing pod
 `kubectl apply -f my-pod.yml`
 
-### 6. Delete the pod once your done:
+### 7. Inspect the pod configuration to verify that the new annotation has been applied
+`kubectl inspect pod my-pod`
+
+### 8. Delete the pod once your done
 `kubectl delete pod my-pod`
 
 ## Want to help make our training material better?
