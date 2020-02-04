@@ -38,6 +38,12 @@ spec:
     targetPort: 80
 ```
 
+Just to explain: <br/>
+`.kind: Service` - Specifies a need to create an object of kind (type) Service. <br/>
+`.metadata.name: my-pod` - Instructs k8s to name our pod "my-pod" so we can reference it via kubectl, from other manifests, etc. <br/>
+`.metadata.labels: ` - Labels are intended to be used to specify identifying attributes of objects that are meaningful and relevant to users, but do not directly imply semantics to the core system. Labels can be used to organize and to select subsets of objects.<br/>
+`.spec.type: NodePort` - Instructs k8s to expose our service using an IP that is external to the cluster. <br/>
+
 ### 3. Use kubectl to create our new service
 `kubectl apply -f mvc-svc.yml`
 
@@ -62,6 +68,9 @@ spec:
     port: 8080
     targetPort: 80
 ```
+
+Just to explain: <br/>
+`.spec.type: ClusterIP` - Instructs k8s to expose our service using an IP that is internal to the cluster. <br/>
 
 ### 5. Use kubectl to create our new service
 `kubectl apply -f api-svc.yml`

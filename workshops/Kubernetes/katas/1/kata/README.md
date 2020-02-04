@@ -29,7 +29,8 @@ apiVersion: apps/v1
 kind: Deployment
 ```
 
-Comment: The "---" is a logical seperator that help kubectl figure out where a object configuration begins and when it ends.
+Just to explain: <br/>
+`.kind: Deployment` - Specifies a need to create an object of kind (type) Deployment. <br/>
 
 ### 3. Configure API Deployment
 Augment the first Deployment object configuration with the following markup to specify the setup for our Web API:
@@ -60,6 +61,10 @@ spec:
             containerPort: 5000
       restartPolicy: Always
 ```
+
+Just to explain: <br/>
+`.metadata.name: api-backend` - Instructs k8s to name our deployment "api-backend" so we can reference it via kubectl, from other manifests, etc. <br/>
+`.spec: ` - Specifies the blueprint for our deployment. <br/>
 
 ### 4. Configure MVC Deployment
 Augment the second Deployment object configuration with the following markup to specify the setup for our frontend ASP.NET MVC solution:
@@ -108,7 +113,3 @@ Just to explain: <br/>
 
 ## 7. Verify that MVC deployment is created
 `kubectl describe deployment mvc-frontend`
-
-Just to explain: <br/>
-`kubectl describe` - Instructs the Kubernetes CLI to fetch metadata about one or more resources via the API Server. <br/>
-`deployment mvc-frontend` - Indicates that we want to work with the deployment objects named "api-backend"

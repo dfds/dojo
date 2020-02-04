@@ -26,6 +26,9 @@ apiVersion: v1
 kind: Pod
 ```
 
+Just to explain: <br/>
+`.kind: Pod` - Specifies a need to create an object of kind (type) Pod. <br/>
+
 ### 3. Configure pod metadata and spec
 Augment the pod object configuration with the following markup:
 
@@ -40,6 +43,10 @@ spec:
     image: busybox
     command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
 ```
+
+Just to explain: <br/>
+`.metadata.name: my-pod` - Instructs k8s to name our pod "my-pod" so we can reference it via kubectl, from other manifests, etc. <br/>
+`.metadata.labels: ` - Labels are intended to be used to specify identifying attributes of objects that are meaningful and relevant to users, but do not directly imply semantics to the core system. Labels can be used to organize and to select subsets of objects.<br/>
 
 ### 4. Create a pod from out manifest file
 `kubectl create -f my-pod.yml`
