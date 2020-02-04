@@ -12,9 +12,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-Your team has just deployed two components of a web application to Hellman, using deployments with multiple replicas. Now you need a way to provide dynamic network access to these replicas so that there will be uninterrupted access to the components whenever replicas are created, removed, or replaced. One deployment is called mvc-frontend, an .NET core MVC application that needs to be accessible from outside the cluster. The other is called api-backend, and it is a component designed to be accessed only by other pods within the cluster.
-
-Your team wants you to create two services to expose these deployments:
+Your team has just deployed two components of a web application to Hellman, using deployments with multiple replicas, and you just finished mastering the k8s pod basics! But now they want you to provide dynamic network access for their pod replicas so that there will be uninterrupted access to the components whenever replicas are created, removed, or replaced. The mvc-frontend deployment, the teams .NET core MVC application, needs to be accessible from outside the cluster. The api-backend deployment, their backend, should however only be accessible by other pods in the cluster.
 
 ### 1. Create your project directory
 `mkdir /kata3`<br/>

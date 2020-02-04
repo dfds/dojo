@@ -12,14 +12,15 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-Your team have just finalized their first container project which they have deployed to DockerHub. They are now looking for your help to deploy the containers to the Hellman cluster so they can leverage that managed k8s services and focus on building new features for our company:
+Your team have just finalized their first container project which they have deployed to DockerHub. They are now looking for your help to deploy the containers to a k8s cluster so they can leverage its managed services and focus on building new features for DFDS.
+
 
 ### 1. Create your project directory
 `mkdir /kata1`<br/>
 `cd /kata1`
 
 ### 2. Create deployment manifest
-Create a file named "api_mvc_deployment.yml" and add two Deployment objects for our Web Api + MVC containers:
+Create a file named "solution_deployments.yml" and add two Deployment objects for our api + mvc containers:
 
 ```
 apiVersion: apps/v1
@@ -30,14 +31,16 @@ kind: Deployment
 ```
 
 Just to explain: <br/>
-`.kind: Deployment` - Specifies a need to create an object of kind (type) Deployment. <br/>
+`.kind: Deployment` - Specifies a need for the k8s API controller to create an object of kind (type) Deployment. <br/>
 
-### 3. Configure API Deployment
-Augment the first Deployment object configuration with the following markup to specify the setup for our Web API:
+### 3. Configure api-backend Deployment
+Augment the first Deployment object configuration with the following markup to specify the setup for our api-backend deployment:
 
 ```
 metadata:
   name: api-backend
+  labels:
+    app: api
 spec:
   replicas: 2
   selector:
@@ -65,6 +68,8 @@ spec:
 Just to explain: <br/>
 `.metadata.name: api-backend` - Instructs k8s to name our deployment "api-backend" so we can reference it via kubectl, from other manifests, etc. <br/>
 `.spec: ` - Specifies the blueprint for our deployment. <br/>
+`.spec.replicas: ` - Indicates the number of replicas we want k8s to maintain. <br/>
+`.spec.template.spec.containers.ports: ` - Specifies the port that k8s uses to proxy container networking.<br/>
 
 ### 4. Configure MVC Deployment
 Augment the second Deployment object configuration with the following markup to specify the setup for our frontend ASP.NET MVC solution:
@@ -98,11 +103,11 @@ spec:
 ```
 
 ### 5. Use kubectl to create a two new Kubernetes Deployment from our manifest
-`kubectl create -f .\api_mvc_deployment.yml`
+`kubectl create -f .\solution_deployments.yml`
 
 Just to explain: <br/>
 `kubectl create` - Create a resource from a file or from stdin. <br/>
-`-f .\api_mvc_deployment.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
+`-f .\solution_deployments.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
 
 ### 6. Verify that Web API deployment is created
 `kubectl describe deployment api-backend`
