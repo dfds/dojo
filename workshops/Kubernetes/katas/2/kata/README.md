@@ -7,7 +7,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ### Prerequisites
 
-* [Kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise

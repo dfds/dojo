@@ -7,7 +7,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ### Prerequisites
 
-* [Kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise
@@ -69,10 +70,10 @@ spec:
 ```     
 
 ### 6. Apply the readiness probe configuration to the cluster
-kubectl apply -f readiness-probe.yml
+`kubectl apply -f readiness-probe.yml`
 
 ### 7. Give it a few seconds then let’s see how the readiness probe worked
-kubectl describe pods nodedelayed
+`kubectl describe pods nodedelayed`
 
 ## Want to help make our training material better?
 

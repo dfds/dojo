@@ -7,7 +7,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ### Prerequisites
 
-* [Kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise
@@ -38,7 +39,7 @@ Augment the first Deployment object configuration with the following markup to s
 
 ```
 metadata:
-  name: api-backend
+  name: api-deployment
   labels:
     app: api
 spec:
@@ -110,11 +111,11 @@ Just to explain: <br/>
 `-f .\solution_deployments.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
 
 ### 6. Verify that Web API deployment is created
-`kubectl describe deployment api-backend`
+`kubectl describe deployment api-deployment`
 
 Just to explain: <br/>
 `kubectl describe` - Instructs the Kubernetes CLI to fetch metadata related to one or more resources via the API Server. <br/>
 `deployment api-backend` - Indicates that we want to work with the deployment objects named "api-backend"
 
 ## 7. Verify that MVC deployment is created
-`kubectl describe deployment mvc-frontend`
+`kubectl describe deployment mvc-deployment`

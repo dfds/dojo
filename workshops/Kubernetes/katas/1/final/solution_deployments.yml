@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-backend
+  name: api-deployment
 spec:
   replicas: 1
   selector:
@@ -52,31 +52,3 @@ spec:
         ports:
         - containerPort: 5000
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: api-backend
-spec:
-  selector:
-    app: api
-    tier: backend
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mvc-frontend
-spec:
-  selector:
-    app: mvc
-    tier: frontend
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 80
-  type: LoadBalancer
-
