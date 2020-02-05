@@ -12,9 +12,9 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ## Exercise
 
-In this exercise we will focus on how k8s probes can be leveraged to ensure that your teams application abide by the high-observability principles:
+In this exercise we will focus on how k8s probes can be leveraged to ensure that your teams application abide by the high-observability principles.
 
-### 1. Create your project directory
+### 1. Create a kata directory for our exercise files
 `mkdir /kata7`<br/>
 `cd /kata7`
 

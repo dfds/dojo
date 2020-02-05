@@ -15,7 +15,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 By default, Kubernetes pods have unrestricted network access both inside and outside the cluster. However it is often desirable to restrict network access to and from pods, particularly for security reasons, which has lead your team to identify a need to restrict access to the mysql pod and their precious data. Thankfully Kubernetes NetworkPolicies provide a flexible way to implement these networking restrictions, giving you control over all of the network traffic involving your pods. 
 
 
-### 1. Create your project directory
+### 1. Create a kata directory for our exercise files
 `mkdir /kata5`<br/>
 `cd /kata5`
 
@@ -49,6 +49,8 @@ Just to explain: <br/>
 ### 3. Use kubectl to apply our new network policy
 `kubectl apply -f mysql-network-policy.yml`
 
+### 4. Use kubectl to examine the newly created network policy
+`kubectl describe networkpolicy mysql-network-policy`
 
 ## Want to help make our training material better?
 
