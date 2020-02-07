@@ -29,7 +29,7 @@ apiVersion: v1
 metadata:
   name: mysql-pv
 spec:
-  storageClassName: localdisk
+  storageClassName: local
   capacity:
     storage: 1Gi
   accessModes:
@@ -54,7 +54,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
 spec:
-  storageClassName: localdisk
+  storageClassName: local
   accessModes:
     - ReadWriteOnce
   resources:
