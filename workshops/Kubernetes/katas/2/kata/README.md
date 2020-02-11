@@ -47,7 +47,7 @@ Just to explain: <br/>
 ### 4. Inspect the pod configuration. Notice how k8s has added ALOT of meta data to ensure it can maintain our desired state
 `kubectl inspect pod my-pod`
 
-### 5. Edit the pod by updating the yaml file with a custom annotation
+### 5. Edit the pod by updating the yaml file with a custom annotation (be mindful of the indendation when you add this)
 
 ```
 metadata:

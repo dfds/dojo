@@ -10,11 +10,11 @@ To follow this workshop you will have to the following tools installed:
 * [Saml2aws](https://github.com/Versent/saml2aws)
 * [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 
-Docker is a well known tool which is easily found on the internet. It is required to have a docker hub account to get it from the [offical source](https://hub.docker.com/?overlay=onboarding) but the install process is described here: [Install Docker Desktop on Windows](https://docs.docker.com/docker-for-windows/install/)
+Docker is a well known tool which is easily found on the internet. It is required to have a docker hub account to get it from the [official source](https://hub.docker.com/?overlay=onboarding) but the install process is described here: [Install Docker Desktop on Windows](https://docs.docker.com/docker-for-windows/install/)
 
 Terraform can be downloaded for the platform you you need.
-In general I recommend the latest version but once you touch the code only your version or above can modify it afterwards. As this is written the current supported version in pipelines is 0.12.19 so I recommend that or a version before it to avoid issues with this walkthrough.
-Also notice that the Terraform download is a single executeable file which should be added to your [path](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) for the best experience.
+In general I recommend the latest version but once you touch the code only your version or above can modify it afterwards. As this is written the current supported version in pipelines is 0.12.19 so I recommend that or a version before it to avoid issues with this walk-through.
+Also notice that the Terraform download is a single executable file which should be added to your [path](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) for the best experience.
 
 The last 4 can be installed following this:
 * [Technical prerequisites (Windows)](https://playbooks.dfds.cloud/getting-started/prereqs-win.html#setting-up-tools-as-administrator)
@@ -30,15 +30,15 @@ What are the tools for?
 
 Before you begin you should have each of these tools installed, joined the ded-workshops capability at [build.dfds.cloud](https://build.dfds.cloud/capabilitydashboard?capabilityId=f45ec4da-e5d8-4c3e-b688-59e9b1de3fd1) and downloaded the [default kubeconfig file](https://build.dfds.cloud/downloads/kubeconfig)
 
-This walkthrough is designed to be ran from command line so depending on your platform, open up a powershell or terminal window and get ready.
+This walk-through is designed to be ran from command line so depending on your platform, open up a powershell or terminal window and get ready.
 
 ## 1 - AWS resources
-Welcome to this walkthrough.
+Welcome to this walk-through.
 We are going to build a very simple application that reads a file for a cloud data storage and prints out the content.
-This sample can be expanded to include other types of resources or data manipultation but is kept to the basics to focus on the core practices.
+This sample can be expanded to include other types of resources or data manipulation but is kept to the basics to focus on the core practices.
 
 The application is going to run in a kubernetes cluster.
-By design kubernetes is built to host stateless applications. If you do decide to have state inside the cluster you can experience issues during updates of the cluster and rebalancing of the containers/pods running in the cluster.
+By design kubernetes is built to host stateless applications. If you do decide to have state inside the cluster you can experience issues during updates of the cluster and re-balancing of the containers/pods running in the cluster.
 The advise is to keep the state of your application outside of the cluster and which is why we start by adding some storage by setting up an s3 bucket with Terraform.
 
 Sign in with saml2aws
@@ -113,7 +113,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 The important to notice part here is the line with the plan. It will inform you if your terraform will create new resources, change some or even delete.
 
 If you do mistakes in your code you will very likely experience that your resources will be listed as destroy.
-This can become a huge issue if it targets your database in production and accidentially delete your whole database.
+This can become a huge issue if it targets your database in production and accidentally delete your whole database.
 It is a very good idea to do the plan and look it over before moving on.
 
 For this it shouldn't be an issue and you can safely do the apply.
@@ -144,7 +144,7 @@ cd ..
 ```
 
 ## 2- Terraform for teams and pipelines
-You now know how to make a bucket using Infrastrucre as code with Terraform.
+You now know how to make a bucket using Infrastructure as code with Terraform.
 This is all very nice but due to the nature of Terraform it saves something called a state.
 The state keeps track of the resources created with Terraform and uses it to handle changes afterwards.
 By default the state is saved in the folder with the terraform files which would be a huge problem if used in a team with more than 1 computer or if done within a pipeline which is cleaned out after each run. If done so you will get errors like the resources already exists on next run.
@@ -287,11 +287,12 @@ docker run \
 -e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
 -e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
 -e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e AWS_SESSION_TOKEN=$(aws configure get saml.aws_session_token) \
 -e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
 awscli s3 cp s3://dfds-k8sworkshop-bucket/testfile.txt -
 ```
 
-This should return the message hello from s3 which corrospond to the content of the file created through Terraform.
+This should return the message hello from s3 which correspond to the content of the file created through Terraform.
 
 What we do here is running the docker image as a container, mounting our credentials we got from saml2aws as environment variables inside the container and executing the command s3 copy from path to terminal output.
 
@@ -301,7 +302,7 @@ We are currently utilizing the fact that docker containers are only running as l
 
 That means we don't really have anything to clean up unless we want to remove the images from our local machine.
 
-These don't generate a cost so cleaning those will not be done in this walkthrough.
+These don't generate a cost so cleaning those will not be done in this walk-through.
 
 But shutdown the s3 bucket:
 
@@ -344,6 +345,7 @@ docker run \
 -e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
 -e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
 -e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e AWS_SESSION_TOKEN=$(aws configure get saml.aws_session_token) \
 -e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
 -e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
 awscli
@@ -352,12 +354,14 @@ You can exit by clicking "ctrl+c" on your keyboard.
 
 Notice that we didn't have to specify the aws s3 cp command when running the container and that it kept running even after the first output.
 
-End this part by cleaing up with
+End this part by cleaning up with
+
 ```
 terraform destroy
 ```
 
 Go back to the root workshop folder
+
 ```bash
 cd ..
 ```
@@ -373,9 +377,9 @@ But if you look at line 40 through 60 you can see the steps performed to build t
 
 Since the images published here can be, and most often are, used for production we disapprove of pushes from a local machine. Instead we encourage people to push here from a pipeline to keep it versioned, consistent and automated.
 
-If your team needs to publish images you can request an AWS service connection inside your Azure DevOps project which allows your team to push images for prod use. If you want more control with your images you can run [your own repository](https://playbooks.dfds.cloud/training/ecr-capability.html) and be responsible for creating your own sub repos and the access levels
+If your team needs to publish images you can request an AWS service connection inside your Azure DevOps project which allows your team to push images for prod use. If you want more control with your images you can run [your own repository](https://playbooks.dfds.cloud/training/ecr-capability.html) and be responsible for creating your own sub repository and the access levels
 
-Once an image is published in the repon it can be pulled from your colleagues machines.
+Once an image is published in the repository it can be pulled from your colleagues machines.
 Lets pretend that somebody published an image for us that we want to run locally to see how it works together with the terraform that we have been building.
 
 If you do a saml2aws login and choose the [ECR-Pull role](https://playbooks.dfds.cloud/training/ecr-local.html) with
@@ -411,6 +415,7 @@ saml2aws login --force
 ```
 
 Set up the s3 bucket with the test file again:
+
 ```bash
 cd 6-docker
 terraform init
@@ -425,6 +430,7 @@ docker run \
 -e AWS_ACCESS_KEY_ID=$(aws configure get saml.aws_access_key_id) \
 -e AWS_SECRET_ACCESS_KEY=$(aws configure get saml.aws_secret_access_key) \
 -e AWS_SECURITY_TOKEN=$(aws configure get saml.aws_session_token) \
+-e AWS_SESSION_TOKEN=$(aws configure get saml.aws_session_token) \
 -e X_PRINCIPAL_ARN=$(aws configure get saml.x_principal_arn) \
 -e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
 579478677147.dkr.ecr.eu-central-1.amazonaws.com/ded/workshops:217340
@@ -435,6 +441,7 @@ You should see the text from the image printed again but this time from the imag
 That means the image is now shareable with the team and deployable to a kubernetes cluster!
 
 Don't forget to clean up
+
 ```bash
 terraform destroy
 cd ..
@@ -461,9 +468,9 @@ Next we get to the stages of the CI part:
 Here we have a section for validating inputs.
 It is a good idea to check that you actually got the input for your pipeline set. If they are missing it doesn't make sense to continue the pipeline since it would fail anyway. Catching them early on can save you time in the long run.
 
-For this pipeline we will need a [service connection for the cluster](https://playbooks.dfds.cloud/deployment/k8s-service-connection.html#intro), but instead of the kubeconfig file mentioned here it will soon be recommended to use the common [kubeconfig](https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config)
-.If you are using the workshop project it is already in place.
-The main difference between them are that the common one uses Active Directory service accounts instead of a static token. By using the service accounts each login will aquire a new login making it more secure and actively removing login info from the pipeline making it less likely that you can leak passwords.
+For this pipeline we will need a [service connection for the cluster](https://playbooks.dfds.cloud/deployment/k8s-service-connection.html#intro), but instead of the kubeconfig file mentioned here it will soon be recommended to use the common [kubeconfig](https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config).
+If you are using the workshop project it is already in place.
+The main difference between them are that the common one uses Active Directory service accounts instead of a static token. By using the service accounts each login will acquire a new login making it more secure and actively removing login info from the pipeline making it less likely that you can leak passwords.
 
 When setting up the pipeline you would need to add the variables needed for it to run as well. The variables needed is described here: [Authenticating against AWS and Kubernetes](https://playbooks.dfds.cloud/pipelines/authentication.html#pipeline-variables) and how to obtain the info here: [Obtaining info needed for pipeline](https://playbooks.dfds.cloud/pipelines/obtain-info.html#aws-account-id)
 
@@ -502,21 +509,21 @@ cd 8-pipeline
 ```
 
 We have the same files as before but added our Terraform from earlier.
-Inspec the pipeline file.
+Inspect the pipeline file.
 
 Another step has been added to the CI where we publish our terraform files. When you set up your own pipeline you might need to adjust the path to the folder a bit.
 This step converts our terraform to an artifact which can be used during our CD (deploy phase).
 
-After the publish step the CD stage begings.
-Remember all the tools we needed for this workshop at the beginning? Our buildserver needs those as well so we got a bash step first that prepares the server to handle the way we deploy things. It would be possible to make this step cleaner by converting it to an image etc but to keep it visible and without baking too much in to our application we have decided to keep it here.
+After the publish step the CD stage begins.
+Remember all the tools we needed for this workshop at the beginning? Our build-server needs those as well so we got a bash step first that prepares the server to handle the way we deploy things. It would be possible to make this step cleaner by converting it to an image etc but to keep it visible and without baking too much in to our application we have decided to keep it here.
 
 It is a recipe for installing and configured it all just like we did at the very beginning.
 
 Next we get the artifacts for Terraform
 
-Followed by a step that... You guessed it... initilize Terraform and deploys the code.
+Followed by a step that... You guessed it... initialize Terraform and deploys the code.
 
-Since we have the shared state bucket for earlier it will just continue to use this and keep the state avaiable here for future use.
+Since we have the shared state bucket for earlier it will just continue to use this and keep the state available here for future use.
 
 Try configuring your own pipeline with these additions.
 
@@ -549,7 +556,7 @@ Our application took the path for the file in s3 as an environment variable. It 
 For a real secret it should be substituted in to the deployment file when the pipeline ran to avoid having it hardcoded in the code which could be leaked in to git.
 
 The next part is about deploying our application. Here it is made as what is called a "deployment". A deployment can control multiple pods.
-Remember earlier when we mentioned Kubernetes prefering stateless applications to enable updates etc? If you want high availability on your applications it is a very good idea to have multiple replicas of it in case one of them gets shut down during an update etc. We usually recommend a replica of 3 to enable an update and an error to occur at the same time as your application keeps running on the last one. If one of your pods in a replica gets shut down the deployment will spin it up a new place to make sure there is always the required amount but your application can be down while this happens unless you got more of them.
+Remember earlier when we mentioned Kubernetes preferring stateless applications to enable updates etc? If you want high availability on your applications it is a very good idea to have multiple replicas of it in case one of them gets shut down during an update etc. We usually recommend a replica of 3 to enable an update and an error to occur at the same time as your application keeps running on the last one. If one of your pods in a replica gets shut down the deployment will spin it up a new place to make sure there is always the required amount but your application can be down while this happens unless you got more of them.
 
 Do replicas. But since this is for testing we just got 1.
 
@@ -583,6 +590,7 @@ Great! What about the pod?
 ```bash
 kubectl get pods -n ded-workshops-ljmra
 ```
+
 Do you see yours on the list?
 It is most likely failing since we forgot a very important thing!
 
@@ -618,7 +626,8 @@ Since we are almost there and just need to provide access to our application to 
 ```bash
 cd 10-pipeline
 ```
-We don't wish publish keys for our deployment since it could be leaked and which crendential should we even give it? I wouldn't want to use my own since if I changed company or even if my password ran out my prod application could crash along with it.
+
+We don't wish publish keys for our deployment since it could be leaked and which credential should we even give it? I wouldn't want to use my own since if I changed company or even if my password ran out my prod application could crash along with it.
 
 So what do we do?
 
@@ -645,11 +654,12 @@ By doing so we assign the role to our pods with just the permissions needed and 
 
 Edit your pipeline to include this and deploy it!
 
-Try debugging it again and see if it gives the right outout this time:
+Try debugging it again and see if it gives the right output this time:
+
 ```bash
 kubectl -n ded-workshops-ljmra logs <your pod name>
 ```
 
 And that concludes this module.
 
-The complete files are also available in the root folder of the workshop and is deployed via Azure devops to provide guidance and inspiration
+The complete files are also available in the root folder of the workshop and is deployed via Azure DevOps to provide guidance and inspiration.
