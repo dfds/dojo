@@ -1,1 +1,0 @@
-docker run -d --name docker-training-webapi -v /path/to/app/directory:/app docker-training-webapi:latest

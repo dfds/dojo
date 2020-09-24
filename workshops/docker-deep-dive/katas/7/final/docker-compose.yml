@@ -1,0 +1,21 @@
+version: '3.7'
+
+services: 
+  docker-training-webapi: 
+    hostname: webapi 
+    image: docker-training-webapi 
+    labels: 
+      com.example.description: "Training API" 
+      com.example.department: "IT" 
+      com.example.label-with-empty-value: "" 
+    ports: 
+      - "5001:5000" 
+  docker-training-mvc: 
+    hostname: mvc 
+    image: docker-training-mvc 
+    labels: 
+      com.example.description: "Training MVC" 
+      com.example.department: "IT" 
+      com.example.label-with-empty-value: "" 
+    ports: 
+      - "5002:5000"

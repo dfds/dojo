@@ -1,1 +1,0 @@
-docker build -t docker-training-api:latest . 

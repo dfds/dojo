@@ -1,0 +1,1 @@
+docker build -t docker-training-hello:latest . 
