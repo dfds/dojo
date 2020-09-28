@@ -1,0 +1,12 @@
+<html>
+<body>
+    <link rel="import" href="messages.html" />
+    <script>      
+        var htmlImport = document.querySelector('link[rel="import"]').import;
+        var htmlMessage = htmlDoc.querySelector('.message-success');
+
+        document.body.appendChild(htmlMessage.cloneNode(true));
+    </script>
+    
+</body>
+</html>
