@@ -2,7 +2,7 @@
 <body>  
     <script src="custom-element.js"></script>
     <script>      
-        document.registerElement('custom-element', CustomElement); 
+        customElements.define('custom-element', CustomElement); 
     </script>    
     <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
     <script>    
@@ -16,7 +16,7 @@
             };
         }
 
-        document.registerElement('custom-element-child', CustomElementChild);
+        customElements.define('custom-element-child', CustomElementChild);
     </script>
     <custom-element/>
     <custom-element-child/>

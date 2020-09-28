@@ -64,14 +64,14 @@ class CustomElement extends HTMLElement {
 
 
 ### 3. Add reference to our newly created javascript file and register our custom-element
-Open `fun-with-custom-elements.html` to add our script reference and element registration code:
+Open `fun-with-custom-elements.html` to add our script reference and register our custom element with the customElements API define method:
 
 ```
 <html>
 <body>  
     <script src="custom-element.js"></script>
     <script>      
-        document.registerElement('custom-element', CustomElement); 
+        customElements.define('custom-element', CustomElement); 
     </script>
 </body>
 </html>
@@ -86,7 +86,7 @@ Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/wo
 <body>  
     <script src="custom-element.js"></script>
     <script>      
-        document.registerElement('custom-element', CustomElement); 
+        customElements.define('custom-element', CustomElement); 
     </script>    
     <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
     <script>    
@@ -100,7 +100,7 @@ Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/wo
             };
         }
 
-        document.registerElement('custom-element-child', CustomElementChild);
+        customElements.define('custom-element-child', CustomElementChild);
     </script>
 </body>
 </html>
@@ -108,14 +108,14 @@ Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/wo
 
 
 ### 5. Add our newly minted custom elements to the page
-Once we have registered our custom elements in the DOM using them is simply a matter adding our custom mark-up.
+Once we have defined our custom elements in the DOM using them is simply a matter adding our custom mark-up.
 
 ```
 <html>
 <body>  
     <script src="custom-element.js"></script>
     <script>      
-        document.registerElement('custom-element', CustomElement); 
+        customElements.define('custom-element', CustomElement); 
     </script>    
     <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
     <script>    
@@ -129,7 +129,7 @@ Once we have registered our custom elements in the DOM using them is simply a ma
             };
         }
 
-        document.registerElement('custom-element-child', CustomElementChild);
+        customElements.define('custom-element-child', CustomElementChild);
     </script>
     <custom-element/>
     <custom-element-child/>
