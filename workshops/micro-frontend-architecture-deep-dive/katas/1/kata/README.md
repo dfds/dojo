@@ -27,9 +27,6 @@ Your first assignment will see you build a simple template that will allows us t
 ### 2. Create a simple HTML document
 It's pretty simple: create a file named `fun-with-templates.html` containing the following code:
 
-***Note*** <br/>
-You can use `vi` to edit the file: <br/>
-`fun-with-templates.html` will create the file and open the editor.
 
 ```
 <html>
@@ -37,6 +34,10 @@ You can use `vi` to edit the file: <br/>
 </body>
 </html>
 ```
+
+***Note*** <br/>
+You can use `vi` to edit the file: <br/>
+`vi fun-with-templates.html` will create the file and open the editor.
 
 
 ### 3. Create a simple template
