@@ -27,10 +27,6 @@ Your third assignment will see you create your very own custom element which can
 ### 2. Create a simple HTML document
 Create a file named `fun-with-custom-elements.html` containing the following code:
 
-***Note*** <br/>
-You can use `vi` to edit the file: <br/>
-`fun-with-custom-elements.html` will create the file and open the editor.
-
 ```
 <html>
 <body>
@@ -38,10 +34,12 @@ You can use `vi` to edit the file: <br/>
 </html>
 ```
 
+***Note*** <br/>
+You can use `vi` to edit the file. `vi fun-with-custom-elements.html` will create the file and open the editor.
+
 
 ### 2. Create a javascript file for our custom-element code
 Create a file named `custom-element.js` and add the following code:
-
 
 ```
 class CustomElement extends HTMLElement {
@@ -65,8 +63,8 @@ class CustomElement extends HTMLElement {
 ```
 
 
-### 3. Add reference to our newly created javascript file and create a new script block to register our custom-element
-Open `fun-with-custom-elements.html` and add our script reference and element registration code:
+### 3. Add reference to our newly created javascript file and register our custom-element
+Open `fun-with-custom-elements.html` to add our script reference and element registration code:
 
 ```
 <html>
@@ -112,9 +110,6 @@ Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/wo
 ### 5. Add our newly minted custom elements to the page
 Once we have registered our custom elements in the DOM using them is simply a matter adding our custom mark-up.
 
-***Note*** <br/>
-You can use the browsers developer tooling via `F12` to via the console.log messages and verify the components are working.
-
 ```
 <html>
 <body>  
@@ -141,6 +136,9 @@ You can use the browsers developer tooling via `F12` to via the console.log mess
 </body>
 </html>
 ```
+
+***Note*** <br/>
+You can use the browsers developer tooling via `F12` to via the console.log messages and verify the components are working.
 
 
 ## Want to help make our training material better?
