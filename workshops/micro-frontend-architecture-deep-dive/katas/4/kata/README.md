@@ -98,9 +98,6 @@ Simple add the `custom-element-with-shadow` tag above our script block. Use the 
 </html>
 ```
 
-***Note*** <br/>
-While it makes sense that this will work when our shadow mode is `open`, it can also works when it is `closed`, which can be confusing at times. This behavior is due to the fact that NOTHING in the global DOM is truly secure. However what it does do is protect our global DOM from malicious components that are encapsulated by shadow DOM as these wont be able to break into the global DOM.
-
 ## Want to help make our training material better?
 
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
