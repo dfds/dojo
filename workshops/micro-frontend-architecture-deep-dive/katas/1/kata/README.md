@@ -36,8 +36,7 @@ It's pretty simple: create a file named `fun-with-templates.html` containing the
 ```
 
 ***Note*** <br/>
-You can use `vi` to edit the file: <br/>
-`vi fun-with-templates.html` will create the file and open the editor.
+You can use `vi` to edit the file. `vi fun-with-templates.html` will create the file and open the editor.
 
 
 ### 3. Create a simple template

@@ -27,16 +27,15 @@ Your second assignment will see you import an existing template from https://raw
 ### 2. Create a simple HTML document
 It's pretty simple: create a file named `fun-with-imports.html` containing the following code:
 
-***Note*** <br/>
-You can use `vi` to edit the file: <br/>
-`fun-with-imports.html` will create the file and open the editor.
-
 ```
 <html>
 <body>
 </body>
 </html>
 ```
+
+***Note*** <br/>
+You can use `vi` to edit the file. `vi fun-with-imports.html` will create the file and open the editor.
 
 
 ### 3. Create a simple HTML import to fetch our template
