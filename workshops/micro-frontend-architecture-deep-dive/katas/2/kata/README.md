@@ -39,7 +39,7 @@ You can use `vi` to edit the file. `vi fun-with-imports.html` will create the fi
 
 
 ### 3. Create a simple HTML import to fetch our template
-Create a link element with `rel="import"` to specify the expected behavior and a href pointing to our github-based template @ https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html. 
+Create a link element with its `rel` attribute set to `import` and a href pointing to our github-based template @ https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html. 
 
 ```
 <html>
@@ -51,7 +51,7 @@ Create a link element with `rel="import"` to specify the expected behavior and a
 
 
 ### 4. Fetch a template from the imported document by importing it into our import referrers and clone its into the master document
-Add a script block to our import referrer that uses the querySelector API to fetch the imported document, exposed by the `import property`, which in turn can be used to retrieve our message template and append it to the master document DOM.
+Add a script block to our import referrer which uses the querySelector API to fetch our imported document, exposed by the `import property`, which in turn can be used to retrieve a message template and append it to the master document DOM.
 
 ```
 <html>
