@@ -1,12 +1,11 @@
 <html>
 <body>
-    <link rel="import" href="messages.html" />
+    <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
     <script>      
         var htmlImport = document.querySelector('link[rel="import"]').import;
-        var htmlMessage = htmlDoc.querySelector('.message-success');
+        var htmlMessage = htmlImport.querySelector('.message-success');
 
         document.body.appendChild(htmlMessage.cloneNode(true));
-    </script>
-    
+    </script>    
 </body>
 </html>

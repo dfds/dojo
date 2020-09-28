@@ -11,12 +11,12 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ### Prerequisites
 
-* [NodeJS](https://nodejs.org/en/)
+* [Visual Studio Code](https://code.visualstudio.com/download)
 
 
 ## Exercise
 
-Your first assignment will see you build a simple HTML Template that will allows us to declare fragments of HTML that can be cloned and inserted in a document by scripts.
+Your first assignment will see you build a simple template that will allows us to declare a re-usable fragments of HTML that can be rendered as part of our DOM.
 
 
 ### 1. Create your project directory
@@ -39,8 +39,8 @@ You can use `vi` to edit the file: <br/>
 ```
 
 
-### 3. Create a simple HTML template
-Now that we have a HTML document to work in its time to add a template element to it so we can specify the layout of our re-usable UI fragment. We will add a simple element with the id `mytemplate` which contains a image element for the worlds greatest image and a comment field for ad-hoc shout outs.
+### 3. Create a simple template
+Now that we have a HTML document to work in its time to add a template element to it so we can specify the layout of our re-usable UI fragment. We will add a simple element with the id `mytemplate` which contains a image element for the worlds greatest image and a comment field for ad-hoc shout-outs.
 
 ```
 <html>
@@ -54,8 +54,10 @@ Now that we have a HTML document to work in its time to add a template element t
 ```
 
 
-### 4. Use the HTML template to create new UI elements 
-Add a script element to our document with the id `myscript`. Use the document querySelector API to fetch the previously added template element and drill into its content section to set the source of our image to `logo.png` (or any other image you might have handy if you dont want a broken image link) and the comment to `lorum ipsum`. Once the template node has been populated we can now use the importNode API to clone & bind it to the DOM.
+### 4. Use the template to inject new UI elements in our DOM 
+Now that we have created our UI fragment we need to add a script block to our document in order to fetch the template element via the browsers querySelector API which will yield a result that expose the "template DOM" via a `content` property which we can manipulate to load and configure elements nested within the template. E.g. set the source of our image to `does-not-exist.png` and the comment to `lorum ipsum`. 
+
+Once the template node has been data-bound (populated) we can proceed to using the importNode API to inject a copy of itself into the "document DOM".
 
 ```
 <html>
@@ -81,4 +83,3 @@ Add a script element to our document with the id `myscript`. Use the document qu
 ## Want to help make our training material better?
 
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
- 
