@@ -50,7 +50,7 @@ Create a link element with its `rel` attribute set to `import` and a href pointi
 ```
 
 
-### 4. Fetch a template from the imported document by importing it into our import referrers and clone its into the master document
+### 4. Extract the template from our imported document
 Add a script block to our import referrer which uses the querySelector API to fetch our imported document, exposed by the `import property`, which in turn can be used to retrieve a message template and append it to the master document DOM.
 
 ```
