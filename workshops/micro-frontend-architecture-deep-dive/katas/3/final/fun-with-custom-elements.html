@@ -1,18 +1,7 @@
 <html>
 <body>
-    <template id="mytemplate">
-        <img src="" alt="great image">
-        <div class="comment"></div>
-    </template>
-    <script id="myscript">
-        var t = document.querySelector('#mytemplate');
+    <script>
         
-        t.content.querySelector('img').src = 'logo.png';
-        t.content.querySelector('div').textContent = 'lorum ipsum';
-
-        var clone = document.importNode(t.content, true);
-
-        document.body.appendChild(clone);
     </script>
 </body>
 </html>

@@ -55,9 +55,9 @@ Now that we have a HTML document to work in its time to add a template element t
 
 
 ### 4. Use the template to inject new UI elements in our DOM 
-Now that we have created our UI fragment we need to add a script block to our document in order to fetch the template element via the browsers querySelector API which will yield a result that expose the "template DOM" via a `content` property which we can manipulate to load and configure elements nested within the template. E.g. set the source of our image to `does-not-exist.png` and the comment to `lorum ipsum`. 
+Now that we have created our UI fragment we need to add a script block to our document in order to fetch the template element via the browsers querySelector API which will yield a result that expose the "template DOM" via a `content` property that we can manipulate to load and configure elements nested within the template. E.g. set the source of our image to `does-not-exist.png` and the comment to `lorum ipsum`. 
 
-Once the template node has been data-bound (populated) we can proceed to using the importNode API to inject a copy of itself into the "document DOM".
+Once the template node has been data-bound (populated) we can proceed to using the importNode API to inject (clone) a copy of it into the "document DOM".
 
 ```
 <html>
@@ -66,7 +66,7 @@ Once the template node has been data-bound (populated) we can proceed to using t
         <img src="" alt="great image">
         <div class="comment"></div>
     </template>
-    <script id="myscript">
+    <script>
         var t = document.querySelector('#mytemplate');
         
         t.content.querySelector('img').src = 'logo.png';

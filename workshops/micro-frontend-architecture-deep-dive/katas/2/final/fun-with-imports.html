@@ -3,9 +3,9 @@
     <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
     <script>      
         var htmlImport = document.querySelector('link[rel="import"]').import;
-        var htmlMessage = htmlImport.querySelector('.message-success');
+        var htmlTemplate = htmlImport.querySelector('#mytemplate');
 
-        document.body.appendChild(htmlMessage.cloneNode(true));
+        document.body.appendChild(document.importNode(htmlTemplate.content, true));
     </script>    
 </body>
 </html>
