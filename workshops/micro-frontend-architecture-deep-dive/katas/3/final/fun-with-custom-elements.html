@@ -1,7 +1,24 @@
 <html>
-<body>
-    <script>
-        
+<body>  
+    <script src="custom-element.js"></script>
+    <script>      
+        document.registerElement('custom-element', CustomElement); 
+    </script>    
+    <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
+    <script>    
+        class CustomElementChild extends CustomElement
+        {
+            attachedCallback() {
+                const htmlImport = document.querySelector('link[rel="import"]').import;
+                const htmlTemplate = htmlImport.querySelector('#mytemplate');
+
+                this.appendChild(document.importNode(htmlTemplate.content, true)); 
+            };
+        }
+
+        document.registerElement('custom-element-child', CustomElementChild);
     </script>
+    <custom-element/>
+    <custom-element-child/>
 </body>
 </html>

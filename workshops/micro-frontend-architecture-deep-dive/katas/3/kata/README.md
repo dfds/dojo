@@ -1,4 +1,4 @@
-DFDS MFA Training - Code Kata #1
+DFDS MFA Training - Code Kata #3
 ======================================
 
 This training exercise is a **beginner-level** course on micro frontend architecture that serves as a starting point for developers looking to onboard the MFA efforts at DFDS.
@@ -11,25 +11,25 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ### Prerequisites
 
-* [NodeJS](https://nodejs.org/en/)
+* [Visual Studio Code](https://code.visualstudio.com/download)
 
 
 ## Exercise
 
-Your first assignment will see you build a simple HTML Template that will allows us to declare fragments of HTML that can be cloned and inserted in a document by scripts.
+Your third assignment will see you create your very own custom element which can be imported and used in any HTML5-enabled context!
 
 
 ### 1. Create your project directory
-`mkdir /kata1`<br/>
-`cd /kata1`
+`mkdir /kata3`<br/>
+`cd /kata3`
 
 
 ### 2. Create a simple HTML document
-It's pretty simple: create a file named `fun-with-templates.html` containing the following code:
+Create a file named `fun-with-custom-elements.html` containing the following code:
 
 ***Note*** <br/>
 You can use `vi` to edit the file: <br/>
-`fun-with-templates.html` will create the file and open the editor.
+`fun-with-custom-elements.html` will create the file and open the editor.
 
 ```
 <html>
@@ -39,44 +39,109 @@ You can use `vi` to edit the file: <br/>
 ```
 
 
-### 3. Create a simple HTML template
-Now that we have a HTML document to work in its time to add a template element to it so we can specify the layout of our re-usable UI fragment. We will add a simple element with the id `mytemplate` which contains a image element for the worlds greatest image and a comment field for ad-hoc shout outs.
+### 2. Create a javascript file for our custom-element code
+Create a file named `custom-element.js` and add the following code:
+
+
+```
+class CustomElement extends HTMLElement {
+    // Fires when an instance of the element is created.
+    createdCallback() {
+        console.log('Created', this);
+    };
+    // Fires when an instance was inserted into the document.
+    attachedCallback() {
+        console.log('Attached', this);
+    };
+    // Fires when an instance was removed from the document.
+    detachedCallback() {
+        console.log('Detatched', this);
+    };
+    // Fires when an attribute was added, removed, or updated.
+    attributeChangedCallback(attr, oldVal, newVal) {
+        console.log('Attribute changed', attr, oldVal, newVal);
+    };
+}
+```
+
+
+### 3. Add reference to our newly created javascript file and create a new script block to register our custom-element
+Open `fun-with-custom-elements.html` and add our script reference and element registration code:
 
 ```
 <html>
-<body>
-    <template id="mytemplate">
-        <img src="" alt="great image">
-        <div class="comment"></div>
-    </template>
-</body>
-</html>
-```
-
-
-### 4. Use the HTML template to create new UI elements 
-Add a script element to our document with the id `myscript`. Use the document querySelector API to fetch the previously added template element and drill into its content section to set the source of our image to `logo.png` (or any other image you might have handy if you dont want a broken image link) and the comment to `lorum ipsum`. Once the template node has been populated we can now use the importNode API to clone & bind it to the DOM.
-
-```
-<html>
-<body>
-    <template id="mytemplate">
-        <img src="" alt="great image">
-        <div class="comment"></div>
-    </template>
-    <script id="myscript">
-        var t = document.querySelector('#mytemplate');
-        
-        t.content.querySelector('img').src = 'logo.png';
-        t.content.querySelector('div').text = 'lorum ipsum';
-
-        var clone = document.importNode(t.content, true);
-
-        document.body.appendChild(clone);
+<body>  
+    <script src="custom-element.js"></script>
+    <script>      
+        document.registerElement('custom-element', CustomElement); 
     </script>
 </body>
 </html>
 ```
+
+
+### 4. We can easily extend our existing component and create new child components
+Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html via a link element and add a script block to host and register our new child component. 
+
+```
+<html>
+<body>  
+    <script src="custom-element.js"></script>
+    <script>      
+        document.registerElement('custom-element', CustomElement); 
+    </script>    
+    <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
+    <script>    
+        class CustomElementChild extends CustomElement
+        {
+            attachedCallback() {
+                const htmlImport = document.querySelector('link[rel="import"]').import;
+                const htmlTemplate = htmlImport.querySelector('#mytemplate');
+
+                this.appendChild(document.importNode(htmlTemplate.content, true));   
+            };
+        }
+
+        document.registerElement('custom-element-child', CustomElementChild);
+    </script>
+</body>
+</html>
+```
+
+
+### 5. Add our newly minted custom elements to the page
+Once we have registered our custom elements in the DOM using them is simply a matter adding our custom mark-up.
+
+***Note*** <br/>
+You can use the browsers developer tooling via `F12` to via the console.log messages and verify the components are working.
+
+```
+<html>
+<body>  
+    <script src="custom-element.js"></script>
+    <script>      
+        document.registerElement('custom-element', CustomElement); 
+    </script>    
+    <link rel="import" href="https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html" />
+    <script>    
+        class CustomElementChild extends CustomElement
+        {
+            attachedCallback() {
+                const htmlImport = document.querySelector('link[rel="import"]').import;
+                const htmlTemplate = htmlImport.querySelector('#mytemplate');
+
+                this.appendChild(document.importNode(htmlTemplate.content, true));   
+            };
+        }
+
+        document.registerElement('custom-element-child', CustomElementChild);
+    </script>
+    <custom-element/>
+    <custom-element-child/>
+</body>
+</html>
+```
+
 
 ## Want to help make our training material better?
 
