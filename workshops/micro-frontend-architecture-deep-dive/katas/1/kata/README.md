@@ -70,7 +70,7 @@ Once the template node has been data-bound (populated) we can proceed to using t
         var t = document.querySelector('#mytemplate');
         
         t.content.querySelector('img').src = 'logo.png';
-        t.content.querySelector('div').text = 'lorum ipsum';
+        t.content.querySelector('div').innerHTML = 'lorum ipsum';
 
         var clone = document.importNode(t.content, true);
 
