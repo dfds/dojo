@@ -8,7 +8,7 @@
     <script>    
         class CustomElementChild extends CustomElement
         {
-            attachedCallback() {
+            connectedCallback() {
                 const htmlImport = document.querySelector('link[rel="import"]').import;
                 const htmlTemplate = htmlImport.querySelector('#mytemplate');
 
