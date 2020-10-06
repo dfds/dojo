@@ -19,8 +19,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The third exercise will see you build a container containing a AspNetCore MVC application that prints a welcome message obtained from a WebApi listening on the hostname "server" and using the HelloWorldController we created in the previous exercise.
 
 ### 1. Create your project directory
-`mkdir /kata3`<br/>
-`cd /kata3`
+`mkdir kata3`<br/>
+`cd kata3`
 
 ### 2. Create a simple MVC controller
 It's pretty simple: create a file named `HomeController.cs` containing the following code:

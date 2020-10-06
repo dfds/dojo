@@ -20,8 +20,8 @@ Your fourth assignment will get you acquainted with Shadow DOM.
 
 
 ### 1. Create your project directory
-`mkdir /kata4`<br/>
-`cd /kata4`
+`mkdir kata4`<br/>
+`cd kata4`
 
 
 ### 2. Create a simple HTML document

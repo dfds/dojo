@@ -20,8 +20,8 @@ Your second assignment will see you import an existing template from https://raw
 
 
 ### 1. Create your project directory
-`mkdir /kata2`<br/>
-`cd /kata2`
+`mkdir kata2`<br/>
+`cd kata2`
 
 
 ### 2. Create a simple HTML document

@@ -20,8 +20,8 @@ Your first assignment will see you build a simple template that will allows us t
 
 
 ### 1. Create your project directory
-`mkdir /kata1`<br/>
-`cd /kata1`
+`mkdir kata1`<br/>
+`cd kata1`
 
 
 ### 2. Create a simple HTML document

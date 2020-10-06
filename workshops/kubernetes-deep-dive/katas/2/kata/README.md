@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 Before we move on to expose our application to the world we need to take a quick stop to examine some of the basic mechanics of Kubernetes pods to better prepare us for the road ahead.
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata2`<br/>
-`cd /kata2`
+`mkdir kata2`<br/>
+`cd kata2`
 
 ### 2. Configure pod metadata and spec
 Augment the pod object configuration with the following markup:

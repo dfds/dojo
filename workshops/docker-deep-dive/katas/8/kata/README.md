@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The eigth exercise will help you get a better understanding of how to debug your docker containers via the CLI or your IDE.
 
 ### 1. Create your project directory
-`mkdir /kata8`<br/>
-`cd /kata8`
+`mkdir kata8`<br/>
+`cd kata8`
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named debuggingViaCLI.ps1 containing the following code:

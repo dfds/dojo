@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The sixth exercise will see you build your very first compose file that will bring together some of the work from earlier katas and deploy it as a single interconnected unit. 
 
 ### 1. Create your project directory
-`mkdir /kata7`<br/>
-`cd /kata7`
+`mkdir kata7`<br/>
+`cd kata7`
 
 ### 2. Create a docker-compose.yml file to setup your "composition"
 It's pretty simple: create a file named `docker-compose.yml` containing the following mark-up:

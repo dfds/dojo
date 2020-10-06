@@ -17,8 +17,8 @@ Your team has succesfully deployed their first .NET core application to the Kube
 
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata4`<br/>
-`cd /kata4`
+`mkdir kata4`<br/>
+`cd kata4`
 
 ### 2. Create a PersistantVolume descriptor file to allocate some storage in our cluster
 Create a file named "mysql-pv.yml" and add a PersistantVolume definition:

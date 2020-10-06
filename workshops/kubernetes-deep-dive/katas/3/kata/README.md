@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 Your team has just deployed two components of their web application to a managed k8s cluster using deployment objects with multiple replicas. But now they want you to provide dynamic network access for their pod replicas so that there will be uninterrupted access to the components whenever replicas are created, removed, or replaced by their CI/CD pipelines. Furthermore the mvc-frontend deployment, your teams .NET core MVC application, needs to be accessible to users outside the cluster and the api-backend deployment should only be accessible by other pods in the cluster.
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata3`<br/>
-`cd /kata3`
+`mkdir kata3`<br/>
+`cd kata3`
 
 ### 2. Create a service descriptor file for our mvc-frontend deployment
 Create a file named "mvc-svc.yml" and add a service definition:

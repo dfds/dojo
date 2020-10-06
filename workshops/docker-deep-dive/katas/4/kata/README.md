@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The fourth exercise will help you get a better understanding of docker volumes and prepare you for some of the more advanced katas down the road.
 
 ### 1. Create your project directory
-`mkdir /kata4`<br/>
-`cd /kata4`
+`mkdir kata4`<br/>
+`cd kata4`
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named playingWithMounts.ps1 containing the following code:

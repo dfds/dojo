@@ -17,8 +17,8 @@ By default, Kubernetes pods have unrestricted network access both inside and out
 
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata5`<br/>
-`cd /kata5`
+`mkdir kata5`<br/>
+`cd kata5`
 
 ### 2. Create a NetworkPolicy descriptor file to allocate some storage in our cluster
 Create a file named "mysql-network-policy.yml" and add a NetworkPolicy definition:

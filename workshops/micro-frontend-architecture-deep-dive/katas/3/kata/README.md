@@ -20,8 +20,8 @@ Your third assignment will see you create your very own custom element which can
 
 
 ### 1. Create your project directory
-`mkdir /kata3`<br/>
-`cd /kata3`
+`mkdir kata3`<br/>
+`cd kata3`
 
 
 ### 2. Create a simple HTML document

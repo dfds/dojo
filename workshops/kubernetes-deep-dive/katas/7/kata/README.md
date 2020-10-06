@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 In this exercise we will focus on how k8s probes can be leveraged to ensure that your teams application abide by the high-observability principles.
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata7`<br/>
-`cd /kata7`
+`mkdir kata7`<br/>
+`cd kata7`
 
 ### 2. Create a k8s manifest for liveness probe
 Create a file named "liveness-probe.yml". We will be using the node500 image from magalix which contains a simple NodeJS web application that responds with a 500 to any HTTP request which will trigger our liveness-probe to restart the pod:

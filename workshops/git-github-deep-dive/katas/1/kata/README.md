@@ -1,7 +1,7 @@
-DFDS MFA Training - Code Kata #1
+DFDS Git Training - Code Kata #1
 ======================================
 
-This training exercise is a **beginner-level** course on micro frontend architecture that serves as a starting point for developers looking to onboard the MFA efforts at DFDS.
+This training exercise is a **beginner-level** course on how to use Git for version control and serves as a starting point for developers looking to onboard Git at DFDS.
 
 
 ## Getting started
@@ -11,74 +11,54 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 ### Prerequisites
 
-* [Visual Studio Code](https://code.visualstudio.com/download)
+* [Git](https://git-scm.com/downloads)
 
 
 ## Exercise
 
-Your first assignment will see you build a simple template that will allows us to declare a re-usable fragments of HTML that can be rendered as part of our DOM.
+In our first exercise we will focus on setting up a local repository and subsequently cloning it to give us a better understanding of how version control works in a peer-2-peer context (every client is a server).
 
 
 ### 1. Create your project directory
-`mkdir /kata1`<br/>
-`cd /kata1`
+`mkdir kata1`<br/>
+`cd kata1`
 
 
-### 2. Create a simple HTML document
-It's pretty simple: create a file named `fun-with-templates.html` containing the following code:
-
+### 2. Create a new repository on your local machine
+It's pretty simple, navigate to desired root directory (/kata1) and run the following command:
 
 ```
-<html>
-<body>
-</body>
-</html>
+git init my-local-repo
+```
+
+
+### 3. Create a file to be tracked by our local repository
+Once the repository is initialized run the following command to create a simple text file:
+
+```
+echo HelloWorld > my-local-repo/text.txt
+```
+
+
+### 4. Instruct Git to add the file to its "index"
+Now that we have added an asset to our workspace we need to update our index to help Git keep track of our changes. This is achieved by stepping into the root folder of our newly created repository and running the "add" command:
+
+```
+cd my-local-repo
+git add text.txt
 ```
 
 ***Note*** <br/>
-You can use `vi` to edit the file. `vi fun-with-templates.html` will create the file and open the editor.
+You can use `git add .` to perform bulk updates on the Git index. We will visit `git add` in more detail in later katas.
 
 
-### 3. Create a simple template
-Now that we have a HTML document to work in its time to add a template element to it so we can specify the layout of our re-usable UI fragment. We will add a simple element with the id `mytemplate` which contains a image element for the worlds greatest image and a comment field for ad-hoc shout-outs.
-
-```
-<html>
-<body>
-    <template id="mytemplate">
-        <img src="" alt="great image">
-        <div class="comment"></div>
-    </template>
-</body>
-</html>
-```
-
-
-### 4. Use the template to inject new UI elements in our DOM 
-Now that we have created our UI fragment we need to add a script block to our document in order to fetch the template element via the browsers querySelector API which will yield a result that expose the "template DOM" via a `content` property that we can manipulate to load and configure elements nested within the template. E.g. set the source of our image to `does-not-exist.png` and the comment to `lorum ipsum`. 
-
-Once the template node has been data-bound (populated) we can proceed to using the importNode API to inject (clone) a copy of it into the "document DOM".
+### 5. Commit the file to the local repository
+Once we have added the desired assets to our index we can the proceed to commit them to the local repository via the following command:
 
 ```
-<html>
-<body>
-    <template id="mytemplate">
-        <img src="" alt="great image">
-        <div class="comment"></div>
-    </template>
-    <script>
-        var t = document.querySelector('#mytemplate');
-        
-        t.content.querySelector('img').src = 'logo.png';
-        t.content.querySelector('div').innerHTML = 'lorum ipsum';
-
-        var clone = document.importNode(t.content, true);
-
-        document.body.appendChild(clone);
-    </script>
-</body>
-</html>
+git commit -m "Added text.txt"
 ```
+
 
 ## Want to help make our training material better?
 

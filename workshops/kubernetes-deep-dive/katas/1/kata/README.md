@@ -17,8 +17,8 @@ Your team have just finalized their first container project and pushed it to the
 
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata1`<br/>
-`cd /kata1`
+`mkdir kata1`<br/>
+`cd kata1`
 
 ### 2. Create deployment manifest
 Create a file named "solution_deployments.yml" and add two Deployment objects for our api + mvc containers:

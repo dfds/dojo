@@ -20,8 +20,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 The fifth exercise will help familiarize your with the networking commands in the Docker CLI.
 
 ### 1. Create your project directory
-`mkdir /kata6`<br/>
-`cd /kata6`
+`mkdir kata6`<br/>
+`cd kata6`
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named `useMACVLANNetwork.ps1` containing the following code:

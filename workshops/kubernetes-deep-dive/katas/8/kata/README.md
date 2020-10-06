@@ -16,8 +16,8 @@ These instructions will help you prepare for the code kata and make sure that yo
 [TODO]
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata8`<br/>
-`cd /kata8`
+`mkdir kata8`<br/>
+`cd kata8`
 
 ### 2. Create a "sandbox" namespace to protect the remaining cluster from our experiment
 `kubectl create namespace sandbox`

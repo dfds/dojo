@@ -17,8 +17,8 @@ Secrets.
 
 
 ### 1. Create a kata directory for our exercise files
-`mkdir /kata6`<br/>
-`cd /kata6`
+`mkdir kata6`<br/>
+`cd kata6`
 
 ### 2. Create a NetworkPolicy descriptor file to allocate some storage in our cluster
 Create a file named "my-secret.yml" and add a Secret definition:
