@@ -63,7 +63,7 @@ It's pretty simple: create a file named `useCustomBridgeNetwork.ps1` containing 
 
 ***Note*** <br/>
 You can use `vi` to edit the file: <br/>
-`vi useDefaultBridgeNetwork.ps1` will create the file and open the editor.
+`vi useCustomBridgeNetwork.ps1` will create the file and open the editor.
 
 ```
 #Create the alpine-net network.

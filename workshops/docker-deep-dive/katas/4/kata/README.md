@@ -24,9 +24,11 @@ It's pretty simple: create a file named playingWithMounts.ps1 containing the fol
 
 Note <br/> You can use vi to edit the file: <br/> vi playingWithMounts.ps1 will create the file and open the editor.
 
+```
 docker run -d --name docker-training-webapi \
     -v /path/to/app/directory:/app \
     docker-training-webapi:latest
+```
 
 ### 3. Run the powershell script
     pwsh .\playingWithMounts.ps1
@@ -36,11 +38,13 @@ It's pretty simple: create a file named playingWithVolumes.ps1 containing the fo
 
 Note <br/> You can use vi to edit the file: <br/> vi playingWithVolumes.ps1 will create the file and open the editor.
 
+```
 docker rm docker-training-webapi
 docker volume create demo_volume
 docker run -d --name docker-training-webapi \
     -v demo_volume:/app \
     docker-training-webapi:latest
+```
 
 ### 5. Run the powershell script
 pwsh .\playingWithVolumes.ps1
