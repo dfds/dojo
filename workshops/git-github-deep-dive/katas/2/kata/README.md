@@ -20,7 +20,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 In our second exercise we will focus on substituting Gits default diff/merge tooling for Visual Studio Code in order to provide a GUI-based editor experience for conflict resolution, diffing, etc.
 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata2`<br/>
 `cd kata2`
 

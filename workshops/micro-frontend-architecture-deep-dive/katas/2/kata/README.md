@@ -19,7 +19,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 Your second assignment will see you import an existing template from https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html and use it to inject some content into a new document.
 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata2`<br/>
 `cd kata2`
 

@@ -15,7 +15,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 ## Exercise
 The sixth exercise will see you build your very first compose file that will bring together some of the work from earlier katas and deploy it as a single interconnected unit. 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata7`<br/>
 `cd kata7`
 

@@ -15,7 +15,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 Your second assignment will see you build a container containing a .Net Core WebApi with a simple HelloWorldController that returns the value "Hello, World!".
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata2`<br/>
 `cd kata2`
 

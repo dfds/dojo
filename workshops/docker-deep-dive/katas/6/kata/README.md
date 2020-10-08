@@ -19,7 +19,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 The fifth exercise will help familiarize your with the networking commands in the Docker CLI.
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata6`<br/>
 `cd kata6`
 

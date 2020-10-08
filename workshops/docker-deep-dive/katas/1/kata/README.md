@@ -18,7 +18,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 
 Your first assignment will see you build a container whose job is to **print "Hello!" every 10 seconds... forever**. Simple, no? Let's start then!
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata1`<br/>
 `cd kata1`
 

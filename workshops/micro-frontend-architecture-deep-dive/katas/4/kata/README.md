@@ -19,7 +19,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 Your fourth assignment will get you acquainted with Shadow DOM.
 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata4`<br/>
 `cd kata4`
 

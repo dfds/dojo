@@ -15,7 +15,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 ## Exercise
 The eigth exercise will help you get a better understanding of how to debug your docker containers via the CLI or your IDE.
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata8`<br/>
 `cd kata8`
 

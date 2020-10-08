@@ -19,7 +19,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 Your third assignment will see you create your very own custom element which can be imported and used in any HTML5-enabled context!
 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata3`<br/>
 `cd kata3`
 

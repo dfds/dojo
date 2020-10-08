@@ -19,7 +19,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 In our first exercise we will focus on setting up a local repository and subsequently cloning it to give us a better understanding of how version control works in a peer-2-peer context (every client is a server).
 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata1`<br/>
 `cd kata1`
 

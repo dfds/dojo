@@ -19,7 +19,7 @@ These instructions will help you prepare for the code kata and make sure that yo
 Your first assignment will see you build a simple template that will allows us to declare a re-usable fragments of HTML that can be rendered as part of our DOM.
 
 
-### 1. Create your project directory
+### 1. Create your kata directory
 `mkdir kata1`<br/>
 `cd kata1`
 
