@@ -1,4 +1,4 @@
-DFDS Git Training - Code Kata #5
+DFDS Git Training - Code Kata #6
 ======================================
 
 This training exercise is a **beginner-level** course on Git version control and serves as a starting point for developers looking to onboard our [Github.com](https://github.com/dfds) efforts.
