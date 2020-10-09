@@ -45,7 +45,7 @@ git commit -a -m "Adding a file to main branch"
 ***Note*** <br/>
 `git commit -a -m` is shorthand for `git add . & git commit -m`.
 
-### 4. Create a new branch
+### 4. Create a new branch called "our-new-branch"
 Once we have staged some changes in our `main` branch, lets try to create a new branch and see what happens:
 
 ```
@@ -55,7 +55,7 @@ git checkout -b our-new-branch
 ***Note*** <br/>
 `git checkout -b our-new-branch` is shorthand for `git branch our-new-branch & git checkout our-new-branch`.
 
-### 5. Add some changes to our "main" branch
+### 5. Add some changes to our "our-new-branch"
 Once we have performed a checkout of `our-new-branch` we can proceed to "stage" a file and commit it:
 
 ```
@@ -70,7 +70,7 @@ We can use the `git status` command to verify that `our-new-branch` is now ahead
 git status
 ```
 
-### 7. Marge changes from "our-new-branch" to "main"
+### 7. Merge changes from "our-new-branch" to "main"
 Finally we can proceed to merge our changes from `our-new-branch` to `main`: 
 
 ```
