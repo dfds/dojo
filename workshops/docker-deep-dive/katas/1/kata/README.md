@@ -3,24 +3,22 @@ DFDS Docker Training - Code kata #1
 
 This training exercise is a **beginner-level** course on Docker that serves as a starting point for Developers looking to onboard the container efforts at DFDS.
 
-
 ## Getting started
-
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the correct tools installed and configured.
-
+These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Docker](https://www.docker.com/get-started)
 
-
 ## Exercise
-
 Your first assignment will see you build a container whose job is to **print "Hello!" every 10 seconds... forever**. Simple, no? Let's start then!
 
-### 1. Create your kata directory
-`mkdir kata1`<br/>
-`cd kata1`
+### 1. Create a kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
+
+```
+mkdir kata1
+cd kata1
+```
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named `hello.ps1` containing the following code:
@@ -84,6 +82,5 @@ To restart it: <br/>
 `docker rm kata1 -f`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
  

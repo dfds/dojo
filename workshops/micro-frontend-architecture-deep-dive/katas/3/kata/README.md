@@ -3,26 +3,22 @@ DFDS MFA Training - Code Kata #3
 
 This training exercise is a **beginner-level** course on micro frontend architecture that serves as a starting point for developers looking to onboard the MFA efforts at DFDS.
 
-
 ## Getting started
-
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the correct tools installed and configured.
-
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Visual Studio Code](https://code.visualstudio.com/download)
 
-
 ## Exercise
-
 Your third assignment will see you create your very own custom element which can be imported and used in any HTML5-enabled context!
 
+### 1. Create a kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
 
-### 1. Create your kata directory
-`mkdir kata3`<br/>
-`cd kata3`
-
+```
+mkdir kata3
+cd kata3
+```
 
 ### 2. Create a simple HTML document
 Create a file named `fun-with-custom-elements.html` containing the following code:
@@ -36,7 +32,6 @@ Create a file named `fun-with-custom-elements.html` containing the following cod
 
 ***Note*** <br/>
 You can use `vi` to edit the file. `vi fun-with-custom-elements.html` will create the file and open the editor.
-
 
 ### 2. Create a javascript file for our custom-element code
 Create a file named `custom-element.js` and add the following code:
@@ -62,7 +57,6 @@ class CustomElement extends HTMLElement {
 }
 ```
 
-
 ### 3. Add reference to our newly created javascript file and register our custom-element
 Open `fun-with-custom-elements.html` to add our script reference and register our custom element with the customElements API define method:
 
@@ -76,7 +70,6 @@ Open `fun-with-custom-elements.html` to add our script reference and register ou
 </body>
 </html>
 ```
-
 
 ### 4. We can easily extend our existing component and create new child components
 Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/workshops/micro-frontend-architecture-deep-dive/katas/2/final/messages.html via a link element and add a script block to host and register our new child component. 
@@ -105,7 +98,6 @@ Import a template from https://raw.githubusercontent.com/dfds/ded-dojo/master/wo
 </body>
 </html>
 ```
-
 
 ### 5. Add our newly minted custom elements to the page
 Once we have defined our custom elements in the DOM using them is simply a matter adding our custom mark-up.
@@ -140,8 +132,6 @@ Once we have defined our custom elements in the DOM using them is simply a matte
 ***Note*** <br/>
 You can use the browsers developer tooling via `F12` to via the console.log messages and verify the components are working.
 
-
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
  

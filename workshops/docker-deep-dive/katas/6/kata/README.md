@@ -3,25 +3,23 @@ DFDS Docker Training - Code kata #6
 
 This training exercise is a **beginner-level** course on Docker that serves as a starting point for Developers looking to onboard the container efforts at DFDS. 
 
-
 ## Getting started
-
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
-
+These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Docker](https://www.docker.com/get-started)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
-
 ## Exercise
-
 The fifth exercise will help familiarize your with the networking commands in the Docker CLI.
 
-### 1. Create your kata directory
-`mkdir kata6`<br/>
-`cd kata6`
+### 1. Create a kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
+
+```
+mkdir kata6
+cd kata6
+```
 
 ### 2. Create a simple powershell script
 It's pretty simple: create a file named `useMACVLANNetwork.ps1` containing the following code:
@@ -47,7 +45,6 @@ docker network rm alpine-net
 ```
 
 ## 3. Run the powershell script and review the output
-
 `pwsh .\useMACVLANNetwork.ps1`
 
 ### 4. Create a simple powershell script
@@ -74,10 +71,8 @@ docker network rm alpine-net
 ```
 
 ## 5. Run the powershell script and review the output
-
 `pwsh .\useIPVLANNetwork.ps1`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
  

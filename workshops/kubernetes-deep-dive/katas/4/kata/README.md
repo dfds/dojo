@@ -1,24 +1,26 @@
 DFDS Kubernetes Training - Code kata #4
 ======================================
 
-## Getting started
+This training exercise is a **beginner-level** course on Kubernetes that serves as a starting point for developers looking get started with container orchestration at DFDS.
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
+## Getting started
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise
-
 Your team has succesfully deployed their first .NET core application to the Kubernetes cluster, exposed it to the world via a set of services and is now ready to persist some of the data collected from the end users to our MySQL DB. But beware, here be dragons! Given the empheral nature of containers (they are either there or not) a key challenge of transitioning application to the cloud remains, namely providing persistant storage for those parts of the application that needs to maintain state (data) beyond the span of a containers lifecycle. Luckily k8s has a myriad of solutions to this problem, depending on your needs and the architecture of your storage provider. For the purpose of our kata we will focus on the most simple kind of storage, "localdisk": 
 
+### 1. Create your kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
 
-### 1. Create a kata directory for our exercise files
-`mkdir kata4`<br/>
-`cd kata4`
+```
+mkdir kata4
+cd kata4
+```
 
 ### 2. Create a PersistantVolume descriptor file to allocate some storage in our cluster
 Create a file named "mysql-pv.yml" and add a PersistantVolume definition:
@@ -98,6 +100,4 @@ spec:
 `kubectl apply -f mysql-pod.yml`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
- 
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

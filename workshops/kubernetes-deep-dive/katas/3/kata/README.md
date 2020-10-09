@@ -1,23 +1,26 @@
 DFDS Kubernetes Training - Code kata #3
 ======================================
 
-## Getting started
+This training exercise is a **beginner-level** course on Kubernetes that serves as a starting point for developers looking get started with container orchestration at DFDS.
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
+## Getting started
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise
-
 Your team has just deployed two components of their web application to a managed k8s cluster using deployment objects with multiple replicas. But now they want you to provide dynamic network access for their pod replicas so that there will be uninterrupted access to the components whenever replicas are created, removed, or replaced by their CI/CD pipelines. Furthermore the mvc-frontend deployment, your teams .NET core MVC application, needs to be accessible to users outside the cluster and the api-backend deployment should only be accessible by other pods in the cluster.
 
-### 1. Create a kata directory for our exercise files
-`mkdir kata3`<br/>
-`cd kata3`
+### 1. Create your kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
+
+```
+mkdir kata3
+cd kata3
+```
 
 ### 2. Create a service descriptor file for our mvc-frontend deployment
 Create a file named "mvc-svc.yml" and add a service definition:
@@ -90,6 +93,4 @@ Just to explain: <br/>
 `kubectl get pods -l app=api, app=mvc`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
- 
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

@@ -3,24 +3,22 @@ DFDS Docker Training - Code kata #3
 
 This training exercise is a **beginner-level** course on Docker that serves as a starting point for Developers looking to onboard the container efforts at DFDS. 
 
-
 ## Getting started
-
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
-
+These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Docker](https://www.docker.com/get-started)
 
-
 ## Exercise
-
 The third exercise will see you build a container containing a AspNetCore MVC application that prints a welcome message obtained from a WebApi listening on the hostname "server" and using the HelloWorldController we created in the previous exercise.
 
-### 1. Create your kata directory
-`mkdir kata3`<br/>
-`cd kata3`
+### 1. Create a kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
+
+```
+mkdir kata3
+cd kata3
+```
 
 ### 2. Create a simple MVC controller
 It's pretty simple: create a file named `HomeController.cs` containing the following code:
@@ -157,6 +155,5 @@ To restart it: <br/>
 `docker rm kata3`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
  

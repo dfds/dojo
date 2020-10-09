@@ -3,26 +3,27 @@ DFDS Docker Training - Code kata #7
 
 This training exercise is a **beginner-level** course on Docker that serves as a starting point for Developers looking to onboard the container efforts at DFDS. 
 
-
 ## Getting started
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
-
+These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
 * [Docker](https://www.docker.com/get-started)
-
 
 ## Exercise
 The sixth exercise will see you build your very first compose file that will bring together some of the work from earlier katas and deploy it as a single interconnected unit. 
 
 ### 1. Create your kata directory
-`mkdir kata7`<br/>
-`cd kata7`
+First we setup a directory for our exercise files. It's pretty straight forward:
+
+```
+mkdir kata7
+cd kata7
+```
 
 ### 2. Create a docker-compose.yml file to setup your "composition"
 It's pretty simple: create a file named `docker-compose.yml` containing the following mark-up:
 
-***Note*** <br/>
+```
 version: '3.7'
 
 services:
@@ -110,9 +111,8 @@ It's pretty simple: Open up a new console, navigate to the folder containing you
 `docker-compose down`<br/>
 
 Just to explain: <br/>
-`docker-compose down:` - instructs the docker-compose CLI to parse & destroy all resources created based on thecontents of the docker-compose.yaml in the current directory.
+`docker-compose down:` - instructs the docker-compose CLI to parse & destroy all resources created based on the contents of the docker-compose.yaml in the current directory.
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
  

@@ -1,23 +1,27 @@
 DFDS Kubernetes Training - Code kata #2
 ======================================
 
-## Getting started
+This training exercise is a **beginner-level** course on Kubernetes that serves as a starting point for developers looking get started with container orchestration at DFDS.
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the right tools installed and configured.
+## Getting started
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
+
 
 ### Prerequisites
-
 * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise
-
 Before we move on to expose our application to the world we need to take a quick stop to examine some of the basic mechanics of Kubernetes pods to better prepare us for the road ahead.
 
-### 1. Create a kata directory for our exercise files
-`mkdir kata2`<br/>
-`cd kata2`
+### 1. Create your kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
+
+```
+mkdir kata2
+cd kata2
+```
 
 ### 2. Configure pod metadata and spec
 Augment the pod object configuration with the following markup:
@@ -48,7 +52,6 @@ Just to explain: <br/>
 `kubectl inspect pod my-pod`
 
 ### 5. Edit the pod by updating the yaml file with a custom annotation (be mindful of the indendation when you add this)
-
 ```
 metadata:
   annotation: my-annotation
@@ -60,9 +63,9 @@ metadata:
 ### 7. Inspect the pod configuration to verify that the new annotation has been applied
 `kubectl inspect pod my-pod`
 
+
 ### 8. Delete the pod once your done
 `kubectl delete pod my-pod`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

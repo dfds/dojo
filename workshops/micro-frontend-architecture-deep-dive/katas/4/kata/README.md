@@ -1,28 +1,24 @@
-DFDS MFA Training - Code Kata #2
+DFDS MFA Training - Code Kata #4
 ======================================
 
 This training exercise is a **beginner-level** course on micro frontend architecture that serves as a starting point for developers looking to onboard the MFA efforts at DFDS.
 
-
 ## Getting started
-
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the correct tools installed and configured.
-
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/ded-dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dfds-dojo/pulls).
 
 ### Prerequisites
-
 * [Visual Studio Code](https://code.visualstudio.com/download)
 
-
 ## Exercise
-
 Your fourth assignment will get you acquainted with Shadow DOM.
 
+### 1. Create a kata directory
+First we setup a directory for our exercise files. It's pretty straight forward:
 
-### 1. Create your kata directory
-`mkdir kata4`<br/>
-`cd kata4`
-
+```
+mkdir kata4
+cd kata4
+```
 
 ### 2. Create a simple HTML document
 It's pretty simple: create a file named `fun-with-shadow-dom.html` containing the following code:
@@ -36,7 +32,6 @@ It's pretty simple: create a file named `fun-with-shadow-dom.html` containing th
 
 ***Note*** <br/>
 You can use `vi` to edit the file. `vi fun-with-shadow-dom.html` will create the file and open the editor.
-
 
 ### 3. Create a javascript file for our custom-element code
 Create a file named `custom-element-with-shadow.js` and add the following code:
@@ -85,7 +80,6 @@ Open `fun-with-shadow-dom.html` to add our newly created script resource:
 </html>
 ```
 
-
 ### 5. Add our newly minted custom elements to the page
 Simple add the `custom-element-with-shadow` tag above our script block. Use the `data-text` attribute to data-bind a custom message to our component logic which is currently nested inside our Shadow DOM. 
 
@@ -99,6 +93,5 @@ Simple add the `custom-element-with-shadow` tag above our script block. Use the 
 ```
 
 ## Want to help make our training material better?
-
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
  

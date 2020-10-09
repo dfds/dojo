@@ -1,23 +1,27 @@
 DFDS Kubernetes Training - Code kata #8
 ======================================
 
-## Getting started
+This training exercise is a **beginner-level** course on Kubernetes that serves as a starting point for developers looking get started with container orchestration at DFDS.
 
-These instructions will help you prepare for the code kata and make sure that your local developer machine has the following tools installed and configured:
+
+## Getting started
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-
 * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [Docker](https://www.docker.com/products/docker-desktop)
 * [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
 
 ## Exercise
+Fixing a broken pod.
 
-[TODO]
+### 1. Create your kata directory
+First we setup a directory for our kata exercise files. It's pretty straight forward:
 
-### 1. Create a kata directory for our exercise files
-`mkdir kata8`<br/>
-`cd kata8`
+```
+mkdir kata8
+cd kata8
+```
 
 ### 2. Create a "sandbox" namespace to protect the remaining cluster from our experiment
 `kubectl create namespace sandbox`
@@ -65,6 +69,5 @@ Just to explain: <br/>
 `kubectl get pod nginx -n sandbox`
 
 ## Want to help make our training material better?
-
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/ded-dojo/issues).
+ * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
  
