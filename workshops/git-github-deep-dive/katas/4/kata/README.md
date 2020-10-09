@@ -70,6 +70,14 @@ We can use the `git status` command to verify that `our-new-branch` is now ahead
 git status
 ```
 
+### 7. Marge changes from "our-new-branch" to "main"
+Finally we can proceed to merge our changes from `our-new-branch` to `main`: 
+
+```
+git checkout main
+git merge our-new-branch
+```
+
 ## Want to help make our training material better?
 
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
