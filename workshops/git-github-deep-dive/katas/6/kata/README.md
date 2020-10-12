@@ -69,7 +69,7 @@ git commit -m "Commit #3 on main"
 Now that our branches have diverge we can re-consolidate the changes and tidy up our commit history via `git rebase`:
 
 ```
-git checkout feature
+git checkout rebase-target
 git rebase master
 ```
 
