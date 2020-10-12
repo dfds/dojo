@@ -48,7 +48,7 @@ git commit -m "Add existing file"
 Rollback the last commit we applied to `playing-with-files` in order to undo changes:
 
 ```
-git reset --soft HEAD~1
+git reset --soft HEAD
 ```
 
 ### 6. Unstage our changes from the index
