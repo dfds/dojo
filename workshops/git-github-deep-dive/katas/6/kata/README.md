@@ -46,6 +46,7 @@ git commit -m "Commit #2 on main branch"
 In order to better understand how `git rebase` works we need to create a second branch with its own commit history:
 
 ```
+git branch rebase-target
 git checkout rebase-target
 
 echo HelloFile3 > text3.txt
