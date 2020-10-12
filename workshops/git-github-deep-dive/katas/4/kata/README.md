@@ -31,13 +31,14 @@ Create a new repository to serve a sandbox for our kata:
 git init playing-with-branches
 ```
 
-### 3. Add some changes to our "main" branch
-Once we have initialized `playing-with-branches` we can proceed to "stage" a file and commit it to our `main` branch:
+### 3. Add some changes to our "master" branch
+Once we have initialized `playing-with-branches` we can proceed to "stage" a file and commit it to our `master` branch:
 
 ```
 cd playing-with-branches
 echo HelloFile > text.txt
-git commit -a -m "Adding a file to main branch"
+git add .
+git commit -m "Adding a file to main branch"
 ```
 
 ***Note*** <br/>
@@ -58,21 +59,22 @@ Once we have performed a checkout of `our-new-branch` we can proceed to "stage" 
 
 ```
 echo HelloFile > text2.txt
-git commit -a -m "Adding a file to our-new-branch branch"
+git add .
+git commit -m "Adding a file to our-new-branch branch"
 ```
 
-### 6. Verify that "our-new-branch" has diverged from "main"
-We can use the `git status` command to verify that `our-new-branch` is now ahead of `main`: 
+### 6. Verify that "our-new-branch" has diverged from "master"
+We can use the `git status` command to verify that `our-new-branch` is now ahead of `master`: 
 
 ```
 git status
 ```
 
-### 7. Merge changes from "our-new-branch" to "main"
-Finally we can proceed to merge our changes from `our-new-branch` to `main`: 
+### 7. Merge changes from "our-new-branch" to "master"
+Finally we can proceed to merge our changes from `our-new-branch` to `master`: 
 
 ```
-git checkout main
+git checkout master
 git merge our-new-branch
 ```
 
