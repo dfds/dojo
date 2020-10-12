@@ -27,7 +27,7 @@ Create a new repository to serve a sandbox for our kata:
 git init playing-with-rebase
 ```
 
-### 3. Add some commits to our "main" branch
+### 3. Add some commits to our "master" branch
 Once we have initialized `playing-with-rebase` we can proceed to add a few commits to built up a branch history so we can use it to try out the `git rebase` command:
 
 ```
@@ -53,18 +53,18 @@ git add text3.txt
 git commit -m "Commit #1 on rebase-target"
 ```
 
-### 5. Checkout our "main" branch and add a new commit
-By adding a new commit to `main` at this step we are forcing a divergence of the two branches:
+### 5. Checkout our "master" branch and add a new commit
+By adding a new commit to `master` at this step we are forcing a divergence of the two branches:
 
 ```
-git checkout main
+git checkout master
 
 echo HelloFile4 > text3.txt
 git add text3.txt
 git commit -m "Commit #3 on main"
 ```
 
-### 6. Rebase "main" onto "rebase-target" 
+### 6. Rebase "master" onto "rebase-target" 
 Now that our branches have diverge we can re-consolidate the changes and tidy up our commit history via `git rebase`:
 
 ```
@@ -72,7 +72,7 @@ git checkout feature
 git rebase master
 ```
 
-### 6. Review "rebase-target" commit history
+### 7. Review "rebase-target" commit history
 Once our changes are reconsolidated we can use `git log` to see the new commit history for `rebase-target`:
 
 ```
