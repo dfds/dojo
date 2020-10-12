@@ -27,13 +27,14 @@ Create a new repository to serve a sandbox for our kata:
 git init playing-with-commit
 ```
 
-### 3. Add some changes to our "main" branch
-Once we have initialized `playing-with-commit` we can proceed to "stage" a file and commit it to our `main` branch:
+### 3. Add some changes to our "master" branch
+Once we have initialized `playing-with-commit` we can proceed to "stage" a file and commit it to our `master` branch:
 
 ```
 cd playing-with-commit
 echo HelloFile > text.txt
-git commit -a -m "Foobar"
+git add .
+git commit -m "Foobar"
 ```
 
 ***Note*** <br/>
