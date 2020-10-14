@@ -20,11 +20,12 @@ mkdir kata7
 cd kata7
 ```
 
-### 2. Clone the DFDS dojo repository
+### 2. Clone and enter the DFDS dojo
 It's simple, just use the following command:
 
 ```
 git clone https://github.com/dfds/dojo.git
+cd dojo
 ```
 
 ### 3. Verify remote with shortname "origin" has been added
@@ -41,21 +42,30 @@ When you use the -v flag it shows you the URLs that Git has stored for the short
 In some cases we want to add a remote without cloning it or we simply want to control the shortname assigned to a given remote repository. In order to do this we can use the `git remote` command directly to avoid cloning the contents of the remote repository until we are need it:
 
 ```
+git init ../my-named-remote-repo
+cd ../my-named-remote-repo
 git remote add my-named-remote https://github.com/dfds/resource-provisioning-ssu-mvp
 ```
 
-### 5. Fetching our remote repository
-Once we have added `my-named-remote` we can proceed to fetching the contents of the remote repository. In order to do this we simply run the following command:
+### 5. Verify that remote changes can be safely integrated
+Once we have added `my-named-remote` we can proceed to fetching the contents of the remote repository to verify the its contents can be safely integrated into our local repository. In order to do this we simply run the following command:
 
 ```
 git fetch my-named-remote
 ```
 
-### 6. Pushing to remote repository
-After a while we might want to push changes in our local repository back to the remote. To do this we use the `git push <remote> <branch>` command as follows:
+### 6. Pull from remote
+To pull the work from our remote into our "workspace" we need to take an additional step and use the `git pull  <remote> <branch>` command as follows:
 
 ```
-git push my-named-remote master
+git pull my-named-remote master
+```
+
+### 7. Push to remote
+After a while we might want to push changes in our local repository back to the remote. To do this we use the `git push` command as follows:
+
+```
+git push --set-upstream my-named-remote master
 ```
 
 ## Want to help make our training material better?

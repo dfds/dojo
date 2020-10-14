@@ -20,21 +20,21 @@ mkdir kata1
 cd kata1
 ```
 
-### 2. Create a new repository on your local machine
+### 2. Create a new git repository
 Next we have to instruct Git to initialize a new local repository called `my-local-repo`. It's pretty simple, run the following command:
 
 ```
 git init my-local-repo
 ```
 
-### 3. Create a file to be tracked by our local repository
+### 3. Create a file to be tracked by "my-local-repo"
 Once the repository is initialized add a simple text file:
 
 ```
 echo HelloWorld > my-local-repo/text.txt
 ```
 
-### 4. Instruct Git to add the file to its "index"
+### 4. Instruct Git to "stage" our file
 Proceed to add a text file to our workspace and update our repository index to help Git keep track of the changes, this process is often referred to as ["staging"](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository). We achieve this by stepping into the root folder of our newly created `my-local-repo` repository and executing the `git add` command like so:
 
 ```
@@ -45,11 +45,18 @@ git add text.txt
 ***Note*** <br/>
 You can use `git add .` to perform bulk updates on the Git index.
 
-### 5. Commit the file to the local repository
+### 5. Commit staged changes to "my-local-repo"
 Once we have added the desired assets to our index we can then proceed to commit them to `my-local-repo` as follows:
 
 ```
 git commit -m "Added text.txt"
+```
+
+### 6. Verify that our commit was successful
+Once we have commited our changes to `my-local-repo` we can use the `git log` command to check that its now the "HEAD" of our branch.
+
+```
+git log
 ```
 
 ## Want to help make our training material better?

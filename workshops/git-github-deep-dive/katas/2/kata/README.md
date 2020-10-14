@@ -12,7 +12,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * [Visual Studio Code](https://code.visualstudio.com/download)
 
 ## Exercise
-In our second exercise we will focus on substituting Gits default diff/merge tooling for [Visual Studio Code](https://code.visualstudio.com/download) in order to provide a GUI-based editor experience for conflict resolution.
+In our second exercise we will focus on substituting Gits default diff & merge tooling for [Visual Studio Code](https://code.visualstudio.com/download) in order to provide a GUI-based editor experience for conflict resolution.
 
 ### 1. Create your kata directory
 First we setup a directory for our exercise files. It's pretty straight forward:
@@ -38,7 +38,7 @@ git config --global mergetool.vscode.cmd "code --wait \"$MERGED\""
 git config --global difftool.vscode.cmd "code --wait --diff \"$LOCAL\" \"$REMOTE\""
 ```
 
-### 4. Clone a repo and make some changes so we can test that our difftool is working
+### 4. Clone "my-local-repo" into "your-local-repo" and make some changes
 Now that we have the tooling setup lets take a moment to verify that its working. We can do this by simply cloning the `my-local-repo` repository into a new repository named `your-local-repo` and staging a simple change:
 
 ```
@@ -46,12 +46,19 @@ git clone ../kata1/my-local-repo your-local-repo
 echo HelloWorld2 > your-local-repo/text.txt
 ```
 
-### 5. Step into our repo and launch the git difftool
+### 5. Step into "your-local-repo" and perform diff operations
 Once we have changed the file we can instruct Git to launch our editor of choice and begin "diffing" the contents in our index to see how it has diverged from the "baseline" in `your-local-repo`:
 
 ```
 cd your-local-repo
 git difftool -y
+```
+
+### 6. Verify that no files need merging
+Once we have completed our diff process we can also check to see if there are any pending merge operations as follows:
+
+```
+git mergetool
 ```
 
 ## Want to help make our training material better?

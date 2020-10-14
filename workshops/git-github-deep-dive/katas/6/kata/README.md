@@ -20,7 +20,7 @@ mkdir kata6
 cd kata6
 ```
 
-### 2. Initialize a new repository
+### 2. Initialize a new Git repository
 Create a new repository to serve a sandbox for our kata:
 
 ```
@@ -42,7 +42,7 @@ git add text2.txt
 git commit -m "Commit #2 on main branch"
 ```
 
-### 4. Create a new branch called "rebase-target" with some commits
+### 4. Create a new branch called "rebase-target" with some more commits
 In order to better understand how `git rebase` works we need to create a second branch with its own commit history:
 
 ```
@@ -54,7 +54,14 @@ git add text3.txt
 git commit -m "Commit #1 on rebase-target"
 ```
 
-### 5. Checkout our "master" branch and add a new commit
+### 5. Verify last commit is the HEAD of our "rebase-target" branch
+We can easily verify that our last commit is now the "tip" (a.k.a HEAD) of our current branch (rebase-target) via the `git log` command:
+
+```
+git log
+```
+
+### 6. Checkout our "master" branch and add a new commit
 By adding a new commit to `master` at this step we are forcing a divergence of the two branches:
 
 ```
@@ -65,7 +72,14 @@ git add text3.txt
 git commit -m "Commit #3 on main"
 ```
 
-### 6. Rebase "master" onto "rebase-target" 
+### 7. Verify last commit is the HEAD of our "master" branch
+We can easily verify that our last commit is now the "tip" (a.k.a HEAD) of our current branch (master) via the `git log` command:
+
+```
+git log
+```
+
+### 8. Rebase "master" onto "rebase-target" 
 Now that our branches have diverge we can re-consolidate the changes and tidy up our commit history via `git rebase`:
 
 ```
@@ -73,8 +87,22 @@ git checkout rebase-target
 git rebase master
 ```
 
-### 7. Review "rebase-target" commit history
-Once our changes are reconsolidated we can use `git log` to see the new commit history for `rebase-target`:
+### 9. Launch Git merge tool to fix merge conflicts
+Unfortunately there was a merge conflict that Git cant handle for us automatically. Thankfully we can solve it easily using the merge tooling we configured in kata2:
+
+```
+git mergetool -y
+```
+
+### 10. Instruct Git to continue our rebase operation once conflicts are resolved
+Once we have solved all our merge conflicts we can instruct Git to proceed with the rebase operation:
+
+```
+git rebase --continue
+```
+
+### 11. Verify "rebase-target" commit history
+Finally we can reconsolidated our changes and use `git log` to verify our new commit history:
 
 ```
 git log

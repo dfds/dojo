@@ -34,11 +34,8 @@ Once we have initialized `playing-with-commit` we can proceed to "stage" a file 
 cd playing-with-commit
 echo HelloFile > text.txt
 git add .
-git commit -m "Foobar"
+git commit -m "Initial commit"
 ```
-
-***Note*** <br/>
-`git commit -a -m` is shorthand for `git add . & git commit -m`.
 
 ### 4. Undo changes in "last" commit and re-submit
 Having just committed a "change set" to `playing-with-commit` we realize the we forgot to add a file and provide a proper commit message, luckily the `--amend` flag can help us with this. Lets try it out!:

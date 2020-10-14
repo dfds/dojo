@@ -9,8 +9,8 @@ git add .
 #Commit the tracked changes
 git commit -m "Add existing file"
 
-#Remove the commit we just created to modify files
-git reset --soft HEAD~1
+#Rollback our commit to undo changes
+git update-ref -d HEAD
 
-#Unstage our file from the index
-git reset HEAD text.txt
+#Unstage our changes from the index
+git rm text.txt --cached

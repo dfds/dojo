@@ -41,9 +41,6 @@ git add .
 git commit -m "Adding a file to main branch"
 ```
 
-***Note*** <br/>
-`git commit -a -m` is shorthand for `git add . & git commit -m`.
-
 ### 4. Create a new branch called "our-new-branch"
 Once we have staged some changes in our `main` branch, lets try to create a new branch and see what happens:
 
@@ -63,11 +60,11 @@ git add .
 git commit -m "Adding a file to our-new-branch branch"
 ```
 
-### 6. Verify that "our-new-branch" has diverged from "master"
-We can use the `git status` command to verify that `our-new-branch` is now ahead of `master`: 
+### 6. Verify that "our-new-branch" is ahead of "master"
+We can use the `git diff` command to verify that `our-new-branch` is ahead (+1) of `master`: 
 
 ```
-git status
+git diff master our-new-branch
 ```
 
 ### 7. Merge changes from "our-new-branch" to "master"
@@ -76,6 +73,13 @@ Finally we can proceed to merge our changes from `our-new-branch` to `master`:
 ```
 git checkout master
 git merge our-new-branch
+```
+
+### 8. Verify that "our-new-branch" is now aligned with "master"
+We can use the `git diff` command again to verify that `our-new-branch` aligned with `master`: 
+
+```
+git diff master our-new-branch
 ```
 
 ## Want to help make our training material better?

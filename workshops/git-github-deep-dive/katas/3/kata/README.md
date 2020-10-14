@@ -21,7 +21,7 @@ mkdir kata3
 cd kata3
 ```
 
-### 2. Initialize a new repository
+### 2. Initialize a new Git repository
 Then we initialize a new repository named `playing-with-files` to serve a sandbox for our kata:
 
 ```
@@ -45,17 +45,20 @@ git commit -m "Add existing file"
 ```
 
 ### 5. Rollback our commit to undo changes
-Rollback the last commit we applied to `playing-with-files` in order to undo changes:
+Rollback the initial commit we applied to `playing-with-files` in order to undo changes:
 
 ```
-git reset --soft HEAD
+git update-ref -d HEAD
 ```
+
+***Note*** <br/>
+The above command we are using is ONLY for the initial commit (also called the root commit). If you are working on a branch with an existing commit history the correct way to achieve this would be via `git reset --soft HEAD~1`. However in newly created repositories this command will not work thus we are forced to use `git update-ref -d HEAD` which essentially deletes the branch and recreates it.
 
 ### 6. Unstage our changes from the index
 Once we have succesfully reset the "tip" of our `playing-with-files` repository we can safely remove file(s) from the index so we don't add them in future commits:
  
 ```
-git reset HEAD text.txt
+git rm text.txt --cached
 ```
 
 ## Want to help make our training material better?
