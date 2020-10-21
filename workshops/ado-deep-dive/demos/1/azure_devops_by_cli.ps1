@@ -1,3 +1,6 @@
+#Remove container from previous runs
+docker rm ado-demo -f
+
 #Run the CLI in a docker container
 docker run --name=ado-demo -d -i mcr.microsoft.com/azure-cli
 
