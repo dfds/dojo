@@ -1,0 +1,60 @@
+name: $(Build.BuildId)
+
+# Triggers Pipeline only on Master
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    # Changes to these files does not trigger a new build / release
+    exclude:
+    - README.md
+    - LICENSE
+    - azure-pipeline.yaml
+
+# Disables triggering Pipeline run at creation of every Pull Request
+pr: none
+
+# Default agent pool to use for build pipeline
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Global variables for the pipeline
+variables:
+  k8s-service-connection: 'Kubernetes-Hellman-Saml2aws'
+  kubernetes-namespace: 'ded-workshops-ljmra'
+
+stages:
+# Continuous Integration steps
+- stage: CI
+  displayName: 'Continuous Integration'
+  jobs:
+  - job: Validate   
+   # Validate pipeline / group variables
+    steps:   
+    - bash:
+        echo 'Checking for required authentication variables...'
+        bash -c '[[ -z $AWS_PROFILE || -z $SAML2AWS_ROLE || -z $SAML2AWS_PASSWORD || -z $SAML2AWS_USERNAME ]] && exit 1 || true'
+      displayName: Testing environment variables
+
+  - job: Build
+    # Use multistage image to compile code and build image
+    displayName: 'Build image and push to ECR'
+    steps:
+    - task: Docker@2
+      displayName: 'Build Container Image'
+      inputs:
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+        arguments: '-t awscli'
+
+    # Push the image to ECR with a tag based on the current buildnumber
+    - task: ECRPushImage@1
+      displayName: 'Push Image to Shared ECR'
+      inputs:
+        awsCredentials: 'Shared-Prod ECR-Push'
+        regionName: 'eu-central-1'
+        imageSource: 'imagename'
+        sourceImageName: 'awscli'
+        repositoryName: 'ded/workshops'
+        pushTag: '$(Build.BuildId)'
