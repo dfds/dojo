@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: recommendation-service
   annotations:
-    kubernetes.io/ingress.class: traefik
     traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
