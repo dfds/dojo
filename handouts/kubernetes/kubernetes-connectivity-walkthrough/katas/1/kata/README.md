@@ -131,7 +131,7 @@ Now that we have finalized our `Dockerfile` we can build it out via the `docker 
 
 ```
 docker build .
-docker run -it -e "SAML2AWS_USERNAME={DFDS_USERNAME}" -e "SAML2AWS_PASSWORD={DFDS_PASSWORD}" 94645b7b4db2
+docker run -it -e "SAML2AWS_USERNAME={DFDS_USERNAME}" -e "SAML2AWS_PASSWORD={DFDS_PASSWORD}" {IMAGE_ID}
 ```
 
 ## Want to help make our training material better?
