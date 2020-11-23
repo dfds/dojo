@@ -1,7 +1,7 @@
 DFDS Kubectl Training - Code kata #1
 ======================================
 
-This training exercise is a **beginner-level** course on Kubectl and serves as a starting point for developers looking to connect to Hellman.
+This training exercise is a **beginner-level** course on Kubectl which serves as a starting point for developers looking to connect with Hellman.
 
 ## Getting started
 These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
@@ -10,7 +10,7 @@ These instructions will help you prepare for the kata exercise and ensure that y
 * [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Exercise
-In this exercise we will learn how to connect to Hellman via Docker so we have a portable process that can be re-used in different contexts (e.g. local development, Azure DevOps pipelines, etc)
+In this exercise we will learn how to connect to Hellman using a multi-stage Docker container that contains a pre-configured `kubectl` process that can be re-used in different contexts (e.g. local development, Azure DevOps pipelines, etc). 
 
 ### 1. Create your kata directory
 First we setup a directory for our exercise files. It's pretty straight forward:
@@ -20,24 +20,18 @@ mkdir kata1
 cd kata1
 ```
 
-### 2. Fetch Capability ARN
-TODO
-
-### 3. Create a Dockerfile
-TODO
-
-### 4. Specify base image
-TODO
+### 2. Create a Dockerfile & specify base image
+Next we create a `Dockerfile` and add the following content:
 
 ```
 FROM ubuntu:18.04 as base
 ```
 
 Just to explain: <br/>
-`FROM ubuntu:18.04 as base` - TODO.
+`FROM ubuntu:18.04 as base` - Instructs Docker to create an `image stage` labeled `base` based on the `ubuntu:18.04` image from DockerHub.
 
-### 5. Setup install-stage and install various dependencies
-TODO
+### 3. Setup install-stage and install various dependencies
+Once we have selected our base image-stage we can start "compiling" our `install-stage` which take care of installing basic dependencies required for `kubectl` to work:
 
 ```
 FROM base as install-stage
@@ -48,10 +42,10 @@ RUN pip3 install --upgrade pip
 ```
 
 Just to explain: <br/>
-`RUN apt -y install sudo curl python3-pip apt-transport-https ca-certificates apt-utils` - TODO.
+`RUN apt -y install sudo curl python3-pip apt-transport-https ca-certificates apt-utils` - Instructs the APT package manager to fetch various dependencies needed by `kubectl`.
 
-### 6. Install kubectl
-TODO
+### 5. Install kubectl
+Having installed the required dependencies we can now begin the process of installing `kubectl` which requires us to add the Google GPG key to our container so we can access their package feed via HTTPs:
 
 ```
 RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -62,20 +56,20 @@ RUN apt -y install kubectl
 ```
 
 Just to explain: <br/>
-`curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -` - TODO.
+`curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -` - Fetches & adds the GPG key to our local container image.
 
-### 7. Install AWS CLI
-TODO
+### 6. Install AWS CLI
+After installing Kubectl we need to install the `awscli` so we can use it to authenticate our DFDS user credentials and fetch an access token to interface with the AWS API:
 
 ```
 RUN pip3 install awscli --upgrade
 ```
 
 Just to explain: <br/>
-`RUN pip3 install awscli --upgrade` - TODO.
+`RUN pip3 install awscli --upgrade` - Using Pip3 we install the `awscli` and instruct it to upgrade to the latest available version.
 
-### 8. Install aws-iam-authenticator
-TODO
+### 7. Install aws-iam-authenticator
+Once the `awscli` is in place we need to install the `aws-iam-authenticator` which Amazon EKS uses IAM to provide authentication to Kubernetes clusters:
 
 ```
 ENV VERSION=1.14.6
@@ -88,8 +82,8 @@ RUN chmod +x $LOCAL_FILE
 RUN sudo mv $LOCAL_FILE /usr/local/bin
 ```
 
-### 9. Install saml2aws
-TODO
+### 8. Install saml2aws
+The last piece of the puzzle in our `install-stage` is the `saml2aws` which wraps the `awscli` and makes it possible for us to authenticate via SAML2:
 
 ```
 ENV VERSION=2.20.0
@@ -102,51 +96,42 @@ RUN rm $LOCAL_FILE
 RUN sudo mv saml2aws /usr/local/bin
 ```
 
-### 10. Setup configure-stage
-TODO
+### 9. Setup configure-stage
+Once our base `install-stage` is finalized we can commence to the `configure-stage` where we will configure `kubectl` to access Hellman:
 
 ```
 FROM install-stage as configure-stage
-```
 
-### 11. Configure Kubectl
-TODO
-
-```
 ENV DOWNLOAD_URL=https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config
 ENV LOCAL_FILE=~/.kube/hellman-saml.config
 ENV KUBECONFIG=~/.kube/hellman-saml.config
 
 RUN mkdir -p $(dirname $LOCAL_FILE)
 RUN curl -Lo $LOCAL_FILE $DOWNLOAD_URL
-```
 
-Just to explain: <br/>
-`ENV DOWNLOAD_URL=https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config` - TODO.
-
-### 12. Configure saml2aws
-TODO
-
-```
 ENV AWS_PROFILE=saml
 RUN saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt
 ```
 
 Just to explain: <br/>
-`RUN saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt` - TODO.
+`ENV DOWNLOAD_URL=https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config` - Uri to the latests known "self-service" configuration for Hellman.<br/>
+`RUN saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt` - Configures `saml2aws` to target the DFDS ADFS instance in Azure.
 
-### 13. Setup authentication-stage image
-TODO
+### 10. Setup authentication-stage image
+The last stage in our "build-chain" is the `authentication-stage` where we will use `saml2aws` to fetch login credentials and launch a `bash` shell with our pre-configured `kubectl` process:
 
 ```
 FROM configure-stage as authentication-stage
-```
 
-### 13. Launch saml2aws login command and leave user with a bash shell
-TODO
-
-```
 CMD saml2aws login && bash
+```
+
+### 12. Build & run container image
+Now that we have finalized our `Dockerfile` we can build it out via the `docker build` command and launch it using `docker run` as follows:
+
+```
+docker build .
+docker run -it -e "SAML2AWS_USERNAME={DFDS_USERNAME}" -e "SAML2AWS_PASSWORD={DFDS_PASSWORD}" 94645b7b4db2
 ```
 
 ## Want to help make our training material better?
