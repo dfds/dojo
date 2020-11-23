@@ -53,14 +53,44 @@ Just to explain: <br/>
 Once the service connection is in place we can move on to creating our pipeline. Luckily the guys at Redmond has made it easy for us with another one-liner and an interactive process:
 
 ```
-az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch master --repository-type tfsgit
+az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch main --repository-type tfsgit
+```
+
+Once the interactive process launches select the default option (1) to setup a starter pipeline and in the following step choose to edit the pipeline using option (2) which will launch your default text editor. Once the editor loads copy the following contents to the azure-pipelines.yaml file and substitute the required template values (namespace & arguments):
+
+```
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      # Apply Kubernetes manifests
+      - task: Kubernetes@1
+        displayName: 'Apply manifests'
+        inputs:
+          connectionType: Kubernetes Service Connection
+          kubernetesServiceEndpoint: 'Hellman-Sample'
+          namespace: '{target-namespace-in-hellman}'
+          command: apply
+          arguments: '-f $(Build.SourcesDirectory)/{path-to-folder-container-k8s-assets}/'
 ```
 
 Just to explain: <br/>
-`az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch master --repository-type tfsgit` - Launches an interactive console that guides users through setting up a new pipeline for their repository.
-
-### 5. Update pipeline (use service conn + apply step)
-TODO
+`az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch main --repository-type tfsgit` - Launches an interactive console that guides users through setting up a new pipeline for their repository.
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
