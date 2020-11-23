@@ -1,0 +1,23 @@
+{
+    "id": "cad70cae-7ec2-4ec7-b83d-09663fa558bc",
+    "description": "Sample service connection for Kubernetes",
+    "administratorsGroup": null,
+    "authorization": {
+      "parameters": {
+        "kubeConfig":"apiVersion: v1\nclusters:\n- cluster:\n    server: https://B182759F93D251942CB146063F57036B.yl4.eu-west-1.eks.amazonaws.com\n    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1ETXdNVEE1TkRJd01Wb1hEVEk1TURJeU5qQTVOREl3TVZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTHR3CjZlckJUcWJzdEs2UFlRU28xb09PRGh6RzU5K1NmOTVJRXNZOWR6N212UGQ5QzgrZlAvV2hkSmxRUEk1dU1MNWEKNWlmb1RwdHNrdVY4Mkh6SVJkZlhNZUhxWndLVUxqeGtpd3hoZzhhcEhxU2ZROTI5K3Z0UkxRNFFvZ3pQVWp3MwpkZVgyWUJDSTh2V0JiR2lyMEJBMVVHbDM2ZU53Nm5VdGFEalc5endvWHpoazQ3akNTZlBoVzBwaXk1RjQrWURLCjRKRnlrR1BvS3Q4Yk9wN2ROZXZXVHE2QkxGNlFMS3A1cVNUUFgyMGRhWnczOVVodDFHdDhzbGVTeTNaRk53S2IKTS9wVjlyaXVhWml1SllXS3c2dU4xUkJJcTNNMHZBNkpKdUtHY1hJblllVy9raSt2aHNDVEw1WGFOTno4dElrWApNMUxQQWpzTjl0VE5wcXYvcHYwQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFGSjJ5NVhWNHdrK1g2QS81eFl0c2I3VWt4bHkKb0IzOENjaFlZRGU5ZjFZOWlISU9udXVLL0E3bVhsRGFsOW0xci9RbnUxeWE5UmkvbkJDMkI0bW40YnYveVlLNgpHaVpBcDJ5cjlzSGNnTzFZZ2N3Y01ocm9uZ0VSTSt5VVcwWWFMZmpNR0ZXK2JBTmRoZC9xYlg0aGR0ZmowRE9tClIrVUd4bFBJU0dGTW5WR2kxYzliei8xeEV1UCtNMlNkdWRyTzZnS2NXOXkySXhJemg5YXkwcnBRdFZVaExMRHcKTmZIUWFsTkhWVWx1ejR3eUVVMXpkUkhMWDl0VXp6bGgvcGRPZjhCZVNGMCtEYzkyMW5pYzBRTkpwQXVGSjhtRgpHVVpLdGdvR2NPVmxncWN4QzJRdEYvMmJrb0Y4SHZ6QXVRN3o1YTJESENRSSswNkI1aXpKdWwzVVE0RT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=\n  name: hellman\ncontexts:\n- context:\n    cluster: hellman\n    user: hellman-saml\n  name: hellman-saml\ncurrent-context: hellman-saml\nkind: Config\npreferences: {}\nusers:\n- name: hellman-saml\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1alpha1\n      command: aws-iam-authenticator\n      args:\n        - \"token\"\n        - \"-i\"\n        - \"hellman\"\n      env:\n        - name: AWS_PROFILE\n          value: \"saml\"",
+        "clusterContext":"hellman-saml"
+      },
+      "scheme": "Kubernetes"
+    },
+    "name": "Kubernetes Sample Connection",
+    "type": "kubernetes",
+    "url": "https://B182759F93D251942CB146063F57036B.yl4.eu-west-1.eks.amazonaws.com",
+    "createdBy": null,
+    "data": {
+      "authorizationType": "Kubeconfig"
+    },
+    "isShared": false,
+    "isReady": true,
+    "owner": "library",
+    "serviceEndpointProjectReferences": null
+  }

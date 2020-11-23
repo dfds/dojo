@@ -40,12 +40,26 @@ az devops configure --defaults organization=https://dev.azure.com/{ado-org-name}
 ```
 
 ### 4. Create a service account
-TODO
+Having setup the CLI we can now commence with the process of creating the service account required by Azure DevOps to connect with our Hellman cluster: 
+
+```
+az devops service-endpoint create --service-endpoint-configuration=service_endpoint_configuration.json
+```
+
+Just to explain: <br/>
+`az devops service-endpoint create --service-endpoint-configuration=service_endpoint_configuration.json` - This one-liner uses a pre-configured json file which contains the request payload expected by Azure DevOps REST API.
 
 ### 5. Create a pipeline
-TODO
+Once the service connection is in place we can move on to creating our pipeline. Luckily the guys at Redmond has made it easy for us with another one-liner and an interactive process:
 
-### 6. Configure pipeline variables
+```
+az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch master --repository-type tfsgit
+```
+
+Just to explain: <br/>
+`az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch master --repository-type tfsgit` - Launches an interactive console that guides users through setting up a new pipeline for their repository.
+
+### 5. Update pipeline (use service conn + apply step)
 TODO
 
 ## Want to help make our training material better?

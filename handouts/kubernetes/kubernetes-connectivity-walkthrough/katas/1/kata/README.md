@@ -114,7 +114,7 @@ RUN saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.as
 ```
 
 Just to explain: <br/>
-`ENV DOWNLOAD_URL=https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config` - Uri to the latests known "self-service" configuration for Hellman.<br/>
+`ENV DOWNLOAD_URL=https://dfds-oxygen-k8s-public.s3-eu-west-1.amazonaws.com/kubeconfig/hellman-saml.config` - Uri to the latests known "self-service" configuration for Hellman.<br/><br/>
 `RUN saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt` - Configures `saml2aws` to target the DFDS ADFS instance in Azure.
 
 ### 10. Setup authentication-stage image
