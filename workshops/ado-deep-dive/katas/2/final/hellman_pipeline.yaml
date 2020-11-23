@@ -1,0 +1,28 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      # Apply Kubernetes manifests
+      - task: Kubernetes@1
+        displayName: 'Apply manifests'
+        inputs:
+          connectionType: Kubernetes Service Connection
+          kubernetesServiceEndpoint: 'Hellman-Sample'
+          namespace: 'self-service'
+          command: apply
+          arguments: '-f $(Build.SourcesDirectory)/k8s/'

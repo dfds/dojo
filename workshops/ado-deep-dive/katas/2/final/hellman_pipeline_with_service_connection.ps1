@@ -11,4 +11,4 @@ az devops configure --defaults organization=https://dev.azure.com/{my-org-name} 
 az devops service-endpoint create --service-endpoint-configuration=service_endpoint_configuration.json
 
 #Create pipeline
-az pipelines create --name Hellman-Sample --skip-first-run --repository {ado-project-repo-name} --branch master --repository-type tfsgit
+az pipelines create --name Hellman-Sample --skip-first-run --repository {ado-project-repo-name} --branch main --repository-type tfsgit
