@@ -88,7 +88,7 @@ ENTRYPOINT ["dotnet", "run"]
 Just to explain: <br/>
 `docker run` - starts an image <br/>
 `-d` - runs the container in the background (STDIN closed). Use `-i` instead if you want to keep STDIN open.<br/>
-'-p bind container port to localhost port'
+`-p` bind container port to localhost port<br/>
 `--name kata2` - give the name `kata2` to the running container. If no name is provided you can still referee the container by ID<br/>
 `docker-training-webapi` - it's the image name
 
