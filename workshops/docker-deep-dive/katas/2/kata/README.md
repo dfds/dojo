@@ -83,13 +83,16 @@ ENTRYPOINT ["dotnet", "run"]
 `docker build -t docker-training-webapi .`
 
 ## 5. Run your container
-`docker run -d --name kata2 docker-training-webapi`
+'docker run -d -p 5000:5000  --name kata2 docker-training-webapi'
 
 Just to explain: <br/>
 `docker run` - starts an image <br/>
 `-d` - runs the container in the background (STDIN closed). Use `-i` instead if you want to keep STDIN open.<br/>
+'-p bind container port to localhost port'
 `--name kata2` - give the name `kata2` to the running container. If no name is provided you can still referee the container by ID<br/>
 `docker-training-webapi` - it's the image name
+
+'Test that is working http://localhost:5000/api/helloworld'
 
 ## 6. List running containers
 `docker ps` <br />
