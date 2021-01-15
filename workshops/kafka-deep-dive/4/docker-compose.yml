@@ -16,15 +16,15 @@ services:
       - "ADVERTISED_PORT=9092"
       - "AUTO_CREATE_TOPICS=true"
 
-  kafkathebasics:
-    hostname: kafkathebasics
+  kafkadeepdive:
+    hostname: kafkadeepdive
     build:
         context: .
         dockerfile: Dockerfile
     networks:
       development:
         aliases:
-          - kafkathebasics
+          - kafkadeepdive
     ports:
       - "50900:50900" 
     depends_on:
@@ -33,7 +33,7 @@ services:
       - "ASPNETCORE_URLS=http://+:50900"
       - "KAFKATHEBASICS_KAFKA_BOOTSTRAP_SERVERS=kafka:9092"
       - "KAFKATHEBASICS_KAFKA_ENABLE_AUTO_COMMIT=false"
-      - "KAFKATHEBASICS_KAFKA_GROUP_ID=kafkathebasics-consumer"
+      - "KAFKATHEBASICS_KAFKA_GROUP_ID=kafkadeepdive-consumer"
 
 networks:
   development:
