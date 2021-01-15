@@ -8,7 +8,7 @@ Just like the previous kata, where we create a *KafkaConsumerFactory*, we will a
 using System;
 using Confluent.Kafka;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaProducerFactory
     {
@@ -49,7 +49,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaProducer : BackgroundService
     {
@@ -115,7 +115,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Let us try and see it in action.
 
-Go to "dojo/workshops/basic-kafka-walkthrough/3" in a terminal emulator, and execute the following:
+Go to "dojo/workshops/kafka-deep-dive/3" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 
