@@ -8,7 +8,7 @@ Go to https://dotnet.microsoft.com/download/dotnet-core/3.1, download the latest
 
 ## Project base
 
-Open the 'ded-dojo/workshops/basic-kafka-walkthrough/2/project' directory found in the git repository you cloned in the last kata, in your preferred IDE/text editor, as well as in a terminal emulator.
+Open the 'ded-dojo/workshops/kafka-deep-dive/2/project' directory found in the git repository you cloned in the last kata, in your preferred IDE/text editor, as well as in a terminal emulator.
 
 In the terminal, run the following command
 
@@ -28,7 +28,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumer : IHostedService
     {
@@ -61,7 +61,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumer : IHostedService
     {
@@ -81,7 +81,7 @@ namespace kafka_the_basics.Enablers
 
 ![](img/04.png) 
 
-Run the project by executing the following command in your terminal emulator, at the project root directory(ded-dojo/workshops/basic-kafka-walkthrough/2)
+Run the project by executing the following command in your terminal emulator, at the project root directory(ded-dojo/workshops/kafka-deep-dive/2)
 
 `docker-compose up --build`
 
@@ -100,7 +100,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumer : IHostedService
     {
@@ -173,11 +173,11 @@ using System.Linq;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConfiguration
     {
-        private const string KEY_PREFIX = "KAFKATHEBASICS_KAFKA_";
+        private const string KEY_PREFIX = "KAFKADEEPDIVE_KAFKA_";
         private readonly IConfiguration _configuration;
 
         public KafkaConfiguration(IConfiguration configuration)
@@ -242,7 +242,7 @@ namespace kafka_the_basics.Enablers
 
 That was quite the code dump. Let's delve a bit more into some key parts of it.
 
-`private const string KEY_PREFIX = "KAFKATHEBASICS_KAFKA_";`
+`private const string KEY_PREFIX = "KAFKADEEPDIVE_KAFKA_";`
 
 The above code snippet allows us to use a prefix for all our configuration environment variables, thereby allowing for the potential of connecting to multiple different Kafka servers
 
@@ -277,7 +277,7 @@ public IEnumerable<KeyValuePair<string, string>> AsEnumerable()
 
 With the *GetConfiguration* helper method, we're able to use our *KEY_PREFIX* in combination with the specified configuration values above, like "group.id", "bootstrap.servers" and "enable.auto.commit", to find the configurations stored as environment variables.
 
-So, "bootstrap.servers" would in a environment variable with the above code in mind, be "KAFKATHEBASICS_KAFKA_BOOTSTRAP_SERVERS", and "enable.auto.commit" would be "KAFKATHEBASICS_KAFKA_ENABLE_AUTO_COMMIT".
+So, "bootstrap.servers" would in a environment variable with the above code in mind, be "KAFKADEEPDIVE_KAFKA_BOOTSTRAP_SERVERS", and "enable.auto.commit" would be "KAFKADEEPDIVE_KAFKA_ENABLE_AUTO_COMMIT".
 
 ```c#
 public ConsumerConfig GetConsumerConfiguration()
@@ -300,7 +300,7 @@ With our *KafkaConfiguration* Class now ready, it is time to turn our attention 
 using System;
 using Confluent.Kafka;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumerFactory
     {
@@ -343,7 +343,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumer : IHostedService
     {
@@ -513,7 +513,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Let us try and see it in action.
 
-Go to "ded-dojo/workshops/basic-kafka-walkthrough/2" in a terminal emulator, and execute the following:
+Go to "ded-dojo/workshops/kafka-deep-dive/2" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 
