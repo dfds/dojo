@@ -1,3 +1,3 @@
 #!/bin/bash
 sleep 5
-dotnet kafka-the-basics.dll
+dotnet kafka-deep-dive.dll
