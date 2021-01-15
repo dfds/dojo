@@ -4,7 +4,7 @@
 In this kata, we will be looking at integrating the following schema format:
 ![](img/01.png)
 
-Open a terminal emulator and navigate to the project folder (dojo/workshops/basic-kafka-walkthrough/4/project). Then execute the following command:
+Open a terminal emulator and navigate to the project folder (dojo/workshops/kafka-deep-dive/4/project). Then execute the following command:
 
 `dotnet add package Newtonsoft.Json`
 
@@ -15,7 +15,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class MessagingHelper
     {
@@ -79,7 +79,7 @@ With our Message model and helper utiltiies in place, we can begin using it in o
 Let us create a test Event, that will function as our Payload in a Message.
 
 ```c#
-namespace kafka_the_basics.Models
+namespace kafka_deep_dive.Models
 {
     public class WorkshopCreated
     {
@@ -124,7 +124,7 @@ The notable changes are that we using a predefined model for our *Payload*, as w
 
 Let us try and see it in action.
 
-Go to "dojo/workshops/basic-kafka-walkthrough/4" in a terminal emulator, and execute the following:
+Go to "dojo/workshops/kafka-deep-dive/4" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 
@@ -141,7 +141,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class EventRegistry
     {
@@ -263,7 +263,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class EventHandlerFactory
     {
@@ -296,7 +296,7 @@ using System;
 using System.Threading.Tasks;
 using kafka_the_basics.Enablers;
 
-namespace kafka_the_basics.Models
+namespace kafka_deep_dive.Models
 {
     public class WorkshopCreatedHandler : IEventHandler<WorkshopCreated>
     {
@@ -344,7 +344,7 @@ With this specific implementation that we will be using, we will have to give *W
 using kafka_the_basics.Enablers;
 using Newtonsoft.Json.Linq;
 
-namespace kafka_the_basics.Models
+namespace kafka_deep_dive.Models
 {
     public class WorkshopCreated
     {
@@ -379,7 +379,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumer : IHostedService
     {
@@ -527,7 +527,7 @@ Then we look for any handlers registered to that Class, create an instance of th
 
 Okay.. that was a lot once again. Let's see it in action.
 
-Go to "dojo/workshops/basic-kafka-walkthrough/4" in a terminal emulator, and execute the following:
+Go to "dojo/workshops/kafka-deep-dive/4" in a terminal emulator, and execute the following:
 
 `docker-compose up --build`
 
