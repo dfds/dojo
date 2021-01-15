@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using kafka_the_basics.Enablers;
+using kafka_deep_dive.Enablers;
 
-namespace kafka_the_basics.Models
+namespace kafka_deep_dive.Models
 {
     public class WorkshopCreatedHandler : IEventHandler<WorkshopCreated>
     {

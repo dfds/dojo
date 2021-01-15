@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class MessagingHelper
     {

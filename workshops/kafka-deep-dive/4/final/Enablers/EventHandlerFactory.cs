@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class EventHandlerFactory
     {

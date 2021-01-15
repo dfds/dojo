@@ -87,7 +87,7 @@ namespace kafka_deep_dive.Enablers
                 await producer.ProduceAsync(topic: topic, message: new Message<string, string>()
                 {
                     Key = Guid.NewGuid().ToString(),
-                    Value = $"kafka-the-basics is running. This message ID is {Guid.NewGuid().ToString()}"
+                    Value = $"kafka-deep-dive is running. This message ID is {Guid.NewGuid().ToString()}"
                 });
             }
         }

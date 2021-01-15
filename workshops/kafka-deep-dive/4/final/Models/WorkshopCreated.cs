@@ -1,7 +1,7 @@
-﻿using kafka_the_basics.Enablers;
+﻿using kafka_deep_dive.Enablers;
 using Newtonsoft.Json.Linq;
 
-namespace kafka_the_basics.Models
+namespace kafka_deep_dive.Models
 {
     public class WorkshopCreated
     {

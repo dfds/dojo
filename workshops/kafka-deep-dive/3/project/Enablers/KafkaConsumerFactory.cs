@@ -1,7 +1,7 @@
 ﻿using System;
 using Confluent.Kafka;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConsumerFactory
     {

@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Confluent.Kafka;
-using kafka_the_basics.Models;
+using kafka_deep_dive.Models;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaProducer : BackgroundService
     {

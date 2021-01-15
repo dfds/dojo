@@ -1,6 +1,6 @@
 using System;
 
-namespace kafka_the_basics.Models
+namespace kafka_deep_dive.Models
 {
     public class ErrorViewModel
     {

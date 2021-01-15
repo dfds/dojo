@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace kafka_the_basics
+namespace kafka_deep_dive
 {
     public class Program
     {

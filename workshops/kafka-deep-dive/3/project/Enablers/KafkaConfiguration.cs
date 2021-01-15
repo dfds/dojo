@@ -4,7 +4,7 @@ using System.Linq;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 
-namespace kafka_the_basics.Enablers
+namespace kafka_deep_dive.Enablers
 {
     public class KafkaConfiguration
     {

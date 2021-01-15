@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using kafka_the_basics.Models;
+using kafka_deep_dive.Models;
 
-namespace kafka_the_basics.Controllers
+namespace kafka_deep_dive.Controllers
 {
     public class HomeController : Controller
     {

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>kafka_the_basics</RootNamespace>
+    <RootNamespace>kafka_deep_dive</RootNamespace>
   </PropertyGroup>
 
 

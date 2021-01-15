@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics
+namespace kafka_deep_dive
 {
     public class Startup
     {

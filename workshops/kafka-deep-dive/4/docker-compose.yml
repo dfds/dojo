@@ -31,9 +31,9 @@ services:
       - kafka
     environment:
       - "ASPNETCORE_URLS=http://+:50900"
-      - "KAFKATHEBASICS_KAFKA_BOOTSTRAP_SERVERS=kafka:9092"
-      - "KAFKATHEBASICS_KAFKA_ENABLE_AUTO_COMMIT=false"
-      - "KAFKATHEBASICS_KAFKA_GROUP_ID=kafkadeepdive-consumer"
+      - "KAFKADEEPDIVE_KAFKA_BOOTSTRAP_SERVERS=kafka:9092"
+      - "KAFKADEEPDIVE_KAFKA_ENABLE_AUTO_COMMIT=false"
+      - "KAFKADEEPDIVE_KAFKA_GROUP_ID=kafkadeepdive-consumer"
 
 networks:
   development:

@@ -294,7 +294,7 @@ With the EventHandlerFactory in place, let's create a Handler for our WorkshopCr
 ```c#
 using System;
 using System.Threading.Tasks;
-using kafka_the_basics.Enablers;
+using kafka_deep_dive.Enablers;
 
 namespace kafka_deep_dive.Models
 {
@@ -341,7 +341,7 @@ public void ConfigureServices(IServiceCollection services)
 With this specific implementation that we will be using, we will have to give *WorkshopCreated* an additional constructor.
 
 ```c#
-using kafka_the_basics.Enablers;
+using kafka_deep_dive.Enablers;
 using Newtonsoft.Json.Linq;
 
 namespace kafka_deep_dive.Models

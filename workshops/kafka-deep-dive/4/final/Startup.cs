@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using kafka_the_basics.Enablers;
-using kafka_the_basics.Models;
+using kafka_deep_dive.Enablers;
+using kafka_deep_dive.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace kafka_the_basics
+namespace kafka_deep_dive
 {
     public class Startup
     {
