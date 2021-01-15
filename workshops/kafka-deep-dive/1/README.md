@@ -41,9 +41,9 @@ If not, run this instead.
 
 `git clone https://github.com/dfds/ded-dojo.git` 
 
-Navigate to kafka-the-basics/1
+Navigate to kafka-deep-dive/1
 
-`cd ded-dojo/workshops/basic-kafka-walkthrough/1 `
+`cd ded-dojo/workshops/kafka-deep-dive/1 `
 
 Start up Kafka
 
