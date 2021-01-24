@@ -52,15 +52,15 @@ Start up Kafka
 If it worked out as expected, it should look a bit like this:
 ![docker-compose up](img/02.png)
 
-Now we will make use of a tool called *kafkacat*. Use of this tool natively on Windows.. is not the easiest, so to make this more simple, we'll be making use of a Docker image with the tool precompiled and installed. Go ahead and pull the following Docker image *edenhill/kafkacat:1.5.0*
+Now we will make use of a tool called *kafkacat*. Use of this tool natively on Windows.. is not the easiest, so to make this more simple, we'll be making use of a Docker image with the tool precompiled and installed. Go ahead and pull the following Docker image *edenhill/kafkacat:1.6.0*
 
-`docker pull edenhill/kafkacat:1.5.0`
+`docker pull edenhill/kafkacat:1.6.0`
 
 Usually with Kafka, one must create a Topic manually, however with how Kafka is set up in our *docker-compose.yml*, it'll automatically create any Topic names we use.
 
 Let's try and **consume** a Topic.
 
-`docker run -it --rm --network=development edenhill/kafkacat:1.5.0 -C -b kafka:9092 -t build.workshop.something`
+`docker run -it --rm --network=development edenhill/kafkacat:1.6.0 -C -b kafka:9092 -t build.workshop.something`
 
 Our topic name is in this case, 'build.workshop.something'.
 
@@ -68,7 +68,7 @@ Our topic name is in this case, 'build.workshop.something'.
 
 Oh, it doesn't work? Good, this is what is supposed to happen. When we try to consume the Topic ''build.workshop.something'', it doesn't exist at the time. Now however, our Kafka instance should've created that Topic automatically since we attempted to Consume from it. Let's try again.
 
-`docker run -it --rm --network=development edenhill/kafkacat:1.5.0 -C -b kafka:9092 -t build.workshop.something`
+`docker run -it --rm --network=development edenhill/kafkacat:1.6.0 -C -b kafka:9092 -t build.workshop.something`
 
 ![kafka consume 02](img/04.png)
 
@@ -76,7 +76,7 @@ Now it'll continually listen for anything posted(or rather, in Kafka terms, **Pr
 
 While having that running, open a separate terminal emulator. Let us try and Produce something to the Topic.
 
-`docker run -it --rm --network=development edenhill/kafkacat:1.5.0 -P -b kafka:9092 -t build.workshop.something`
+`docker run -it --rm --network=development edenhill/kafkacat:1.6.0 -P -b kafka:9092 -t build.workshop.something`
 
 Now, the terminal should take any input you type, and as soon as you hit ENTER(or whatever creates a newline in your terminal emulator), send that content to your Topic.
 
