@@ -177,7 +177,7 @@ namespace kafka_deep_dive.Enablers
 {
     public class KafkaConfiguration
     {
-        private const string KEY_PREFIX = "KAFKADEEPDIVE_KAFKA_";
+        private const string KEY_PREFIX = "KAFKATHEBASICS_KAFKA_";
         private readonly IConfiguration _configuration;
 
         public KafkaConfiguration(IConfiguration configuration)
@@ -242,7 +242,7 @@ namespace kafka_deep_dive.Enablers
 
 That was quite the code dump. Let's delve a bit more into some key parts of it.
 
-`private const string KEY_PREFIX = "KAFKADEEPDIVE_KAFKA_";`
+`private const string KEY_PREFIX = "KAFKATHEBASICS_KAFKA_";`
 
 The above code snippet allows us to use a prefix for all our configuration environment variables, thereby allowing for the potential of connecting to multiple different Kafka servers
 
@@ -277,7 +277,7 @@ public IEnumerable<KeyValuePair<string, string>> AsEnumerable()
 
 With the *GetConfiguration* helper method, we're able to use our *KEY_PREFIX* in combination with the specified configuration values above, like "group.id", "bootstrap.servers" and "enable.auto.commit", to find the configurations stored as environment variables.
 
-So, "bootstrap.servers" would in a environment variable with the above code in mind, be "KAFKADEEPDIVE_KAFKA_BOOTSTRAP_SERVERS", and "enable.auto.commit" would be "KAFKADEEPDIVE_KAFKA_ENABLE_AUTO_COMMIT".
+So, "bootstrap.servers" would in a environment variable with the above code in mind, be "KAFKATHEBASICS_KAFKA_BOOTSTRAP_SERVERS", and "enable.auto.commit" would be "KAFKATHEBASICS_KAFKA_ENABLE_AUTO_COMMIT".
 
 ```c#
 public ConsumerConfig GetConsumerConfiguration()

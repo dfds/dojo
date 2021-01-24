@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Confluent.Kafka;
 
 namespace kafka_deep_dive.Enablers
@@ -16,7 +17,7 @@ namespace kafka_deep_dive.Enablers
         {
             var config = new ConsumerConfig(_configuration.GetConsumerConfiguration());
             var builder = new ConsumerBuilder<string, string>(config);
-            builder.SetErrorHandler(OnKafkaError);
+            builder.SetErrorHandler(OnKafkaError); 
             return builder.Build();
         }
         

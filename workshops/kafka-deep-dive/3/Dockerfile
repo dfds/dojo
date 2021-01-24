@@ -23,7 +23,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
 WORKDIR /app
 
 # SSL
-ENV KAFKADEEPDIVE_KAFKA_SSL_CA_LOCATION=/app/cert.pem
+ENV KAFKATHEBASICS_KAFKA_SSL_CA_LOCATION=/app/cert.pem
 
 RUN curl -sS -o /app/cert.pem https://curl.haxx.se/ca/cacert.pem
 
