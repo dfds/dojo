@@ -2,9 +2,9 @@
 
 All right, so now that we have verified that our local Kafka setup works, it is time to do somewhat the same, but in code instead. We'll be using C# with .NET Core, since that seems to be the predominant programming language used within DFDS.
 
-## .NET Core 3.1
+## .NET 5.X
 
-Go to https://dotnet.microsoft.com/download/dotnet-core/3.1, download the latest 3.1 SDK and install it.
+Go to https://dotnet.microsoft.com/download/dotnet/5.0, download the latest 5.X SDK and install it.
 
 ## Project base
 
@@ -12,7 +12,7 @@ Open the 'ded-dojo/workshops/kafka-deep-dive/2/project' directory found in the g
 
 In the terminal, run the following command
 
-`dotnet add package Confluent.Kafka --version 1.1.0`
+`dotnet add package Confluent.Kafka --version 1.5.3`
 
 In the root of the project directory, create another directory that we will call "Enablers". Within that directory, create a Class called "KafkaConsumer".
 
@@ -201,16 +201,15 @@ namespace kafka_deep_dive.Enablers
         
         public ConsumerConfig GetConsumerConfiguration()
         {
-            return new ConsumerConfig(AsEnumerable());
+            return new ConsumerConfig(AsDictionary());
         }
 
         public ProducerConfig GetProducerConfiguration()
         {
-            return new ProducerConfig(AsEnumerable());
+            return new ProducerConfig(AsDictionary());
         }
 
-
-        public IEnumerable<KeyValuePair<string, string>> AsEnumerable()
+        public IDictionary<string, string> AsDictionary()
         {
             var configurationKeys = new[]
             {
@@ -225,14 +224,14 @@ namespace kafka_deep_dive.Enablers
                 "sasl.mechanisms",
                 "security.protocol",
             };
-            
+
             var config = configurationKeys
                 .Select(key => GetConfiguration(key))
                 .Where(pair => pair != null)
                 .Select(pair => new KeyValuePair<string, string>(pair.Item1, pair.Item2))
-                .ToList();
+                .ToDictionary(x => x.Key, v => v.Value);
             
-            config.Add(new KeyValuePair<string, string>("request.timeout.ms", "3000"));
+            config.Add("request.timeout.ms", "3000");
 
             return config;
         }
@@ -247,7 +246,7 @@ That was quite the code dump. Let's delve a bit more into some key parts of it.
 The above code snippet allows us to use a prefix for all our configuration environment variables, thereby allowing for the potential of connecting to multiple different Kafka servers
 
 ```c#
-public IEnumerable<KeyValuePair<string, string>> AsEnumerable()
+public IDictionary<string, string> AsDictionary()
 {
     var configurationKeys = new[]
     {
@@ -262,14 +261,14 @@ public IEnumerable<KeyValuePair<string, string>> AsEnumerable()
         "sasl.mechanisms",
         "security.protocol",
     };
-    
+
     var config = configurationKeys
         .Select(key => GetConfiguration(key))
         .Where(pair => pair != null)
         .Select(pair => new KeyValuePair<string, string>(pair.Item1, pair.Item2))
-        .ToList();
+        .ToDictionary(x => x.Key, v => v.Value);
     
-    config.Add(new KeyValuePair<string, string>("request.timeout.ms", "3000"));
+    config.Add("request.timeout.ms", "3000");
 
     return config;
 }
@@ -282,12 +281,12 @@ So, "bootstrap.servers" would in a environment variable with the above code in m
 ```c#
 public ConsumerConfig GetConsumerConfiguration()
 {
-    return new ConsumerConfig(AsEnumerable());
+    return new ConsumerConfig(AsDictionary());
 }
 
 public ProducerConfig GetProducerConfiguration()
 {
-    return new ProducerConfig(AsEnumerable());
+    return new ProducerConfig(AsDictionary());
 }
 ```
 
@@ -360,6 +359,7 @@ namespace kafka_deep_dive.Enablers
         {
             _executingTask = Task.Factory.StartNew(async () =>
                     {
+                        Console.WriteLine("Launching KafkaConsumer");
                         using (var consumer = _consumerFactory.Create())
                         {
                             const string topic = "build.workshop.something";
@@ -519,7 +519,7 @@ Go to "ded-dojo/workshops/kafka-deep-dive/2" in a terminal emulator, and execute
 
 If the output of the above command didn't fail(if it did, ask for help), in a separate terminal emulator, execute the following:
 
-`docker run -it --rm --network=development edenhill/kafkacat:1.5.0 -P -b kafka:9092 -t build.workshop.something`
+`docker run -it --rm --network=development edenhill/kafkacat:1.6.0 -P -b kafka:9092 -t build.workshop.something`
 
 Now, ensure you can see both terminal emulators. In the terminal emulator you last opened up, do like the previous Kata. Type a message and press ENTER.
 
