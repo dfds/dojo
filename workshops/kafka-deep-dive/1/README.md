@@ -1,6 +1,6 @@
 ## Docker (optional if already installed)
 * Install Docker.
-  * Windows: Follow the Playbook located [here](https://playbooks.dfds.cloud/install/docker.html).
+  * Windows: Follow the Playbook located [here](https://wiki.dfds.cloud/en/playbooks/install/docker).
   * macOS: Follow the doc [here](https://docs.docker.com/docker-for-mac/install/)
   * Linux: Use your preferred package manager to install *docker*/*docker-engine* and *docker-compose*. If you're not on a supported platform, follow [this](https://docs.docker.com/install/linux/docker-ce/binaries/).
 
