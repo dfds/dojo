@@ -74,7 +74,7 @@ namespace kafka_deep_dive.Enablers
 
 ![](img/02.png)
 
-With our Message model and helper utiltiies in place, we can begin using it in our *KafkaProducer* already.
+With our Message model and helper utilities in place, we can begin using it in our *KafkaProducer* already.
 
 Let us create a test Event, that will function as our Payload in a Message.
 
@@ -226,7 +226,9 @@ namespace kafka_deep_dive.Enablers
 }
 ```
 
-With this registry, we will be able to map an *EventName* to a specific class. Now we will map our *WorkshopUpdated* Class to the EventName "workshop_created".
+Place it in the Enablers directory.
+
+With this registry, we will be able to map an *EventName* to a specific class. Now we will map our *WorkshopCreated* Class to the EventName "workshop_created".
 
 Open "Startup.cs" and find the *ConfigureServices* method.
 
@@ -286,6 +288,8 @@ namespace kafka_deep_dive.Enablers
     }
 }
 ```
+
+Place it in the Enablers directory.
 
 ![](img/07.png)
 
