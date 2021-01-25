@@ -8,4 +8,4 @@
 All these tools can be acquired by following the katas throughout the workshop.
 
 * Docker
-* .NET Core SDK 3.1
+* .NET Core SDK 5.0
