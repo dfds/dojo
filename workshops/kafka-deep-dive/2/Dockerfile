@@ -1,11 +1,15 @@
 #Setup build image
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 
+# Build args
+ARG SRC_DIR="./project/"
+
 #Set container filesystem to /build (and create folder if it doesnt exist)
 WORKDIR /build
 
 #Copy files to container file system.
-COPY ./project/ ./src
+ENV SRC_DIR=${SRC_DIR}
+COPY $SRC_DIR ./src
 
 #Set workdir to current project folder
 WORKDIR /build/src/

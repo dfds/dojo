@@ -11,7 +11,7 @@
 
   If it doesn't, ask for help.
 
-* Same deal with *docker-compose*, run `docker-compose` in a terminal emulator to make sure that it is installed and picked up by your PATH.
+* Same deal with *docker-compose*, run `docker-compose` in a terminal emulator to make sure that it is installed and picked up by your PATH. If that is not the case, go to https://docs.docker.com/compose/install/ and follow the instructions for your OS.
 
 
 ## Kafka test run
