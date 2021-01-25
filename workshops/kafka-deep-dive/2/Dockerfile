@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /build
 
 #Copy files to container file system.
-COPY ./final/ ./src
+COPY ./project/ ./src
 
 #Set workdir to current project folder
 WORKDIR /build/src/

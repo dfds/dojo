@@ -517,7 +517,9 @@ Go to "ded-dojo/workshops/kafka-deep-dive/2" in a terminal emulator, and execute
 
 `docker-compose up --build`
 
-If the output of the above command didn't fail(if it did, ask for help), in a separate terminal emulator, execute the following:
+It'll quite likely spit out an error saying something akin to `Consumption of message failed, reason: Confluent.Kafka.ConsumeException: Broker: Unknown topic or partition`. That is to be expected since the Kafka instance was just spun up and the topic wasn't created prior to running the application. It should've been automatically created after the error, and the application should've picked up on it as well.
+
+In a separate terminal emulator, execute the following:
 
 `docker run -it --rm --network=development edenhill/kafkacat:1.6.0 -P -b kafka:9092 -t build.workshop.something`
 
