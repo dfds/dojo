@@ -32,16 +32,15 @@ namespace kafka_deep_dive.Enablers
         
         public ConsumerConfig GetConsumerConfiguration()
         {
-            return new ConsumerConfig(AsEnumerable());
+            return new ConsumerConfig(AsDictionary());
         }
 
         public ProducerConfig GetProducerConfiguration()
         {
-            return new ProducerConfig(AsEnumerable());
+            return new ProducerConfig(AsDictionary());
         }
 
-
-        public IEnumerable<KeyValuePair<string, string>> AsEnumerable()
+        public IDictionary<string, string> AsDictionary()
         {
             var configurationKeys = new[]
             {
@@ -56,14 +55,14 @@ namespace kafka_deep_dive.Enablers
                 "sasl.mechanisms",
                 "security.protocol",
             };
-            
+
             var config = configurationKeys
                 .Select(key => GetConfiguration(key))
                 .Where(pair => pair != null)
                 .Select(pair => new KeyValuePair<string, string>(pair.Item1, pair.Item2))
-                .ToList();
+                .ToDictionary(x => x.Key, v => v.Value);
             
-            config.Add(new KeyValuePair<string, string>("request.timeout.ms", "3000"));
+            config.Add("request.timeout.ms", "3000");
 
             return config;
         }
