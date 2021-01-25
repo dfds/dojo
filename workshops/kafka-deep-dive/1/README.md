@@ -35,11 +35,11 @@ Open up a terminal emulator. Clone this Git repository to a place on your machin
 
 If you have SSH keys set up and attached to your(if you have one) GitHub account, do the following
 
-`git clone git@github.com:dfds/ded-dojo.git`
+`git clone git@github.com:dfds/dojo.git`
 
 If not, run this instead.
 
-`git clone https://github.com/dfds/ded-dojo.git` 
+`git clone https://github.com/dfds/dojo.git` 
 
 Navigate to kafka-deep-dive/1
 
