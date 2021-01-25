@@ -121,7 +121,7 @@ Go to "dojo/workshops/kafka-deep-dive/3" in a terminal emulator, and execute the
 
 If the output of the above command didn't fail(if it did, ask for help), in a separate terminal emulator, execute the following:
 
-`docker run -it --rm --network=development edenhill/kafkacat:1.5.0 -C -b kafka:9092 -t build.workshop.something`
+`docker run -it --rm --network=development edenhill/kafkacat:1.6.0 -C -b kafka:9092 -t build.workshop.something`
 
 Now, ensure you can see both terminal emulators. 
 

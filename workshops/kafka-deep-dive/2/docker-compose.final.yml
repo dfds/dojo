@@ -1,0 +1,7 @@
+services:
+  kafkadeepdive:
+    build:
+        context: .
+        dockerfile: Dockerfile    
+        args:
+          SRC_DIR: "./final/"

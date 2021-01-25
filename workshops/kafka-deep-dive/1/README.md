@@ -11,7 +11,7 @@
 
   If it doesn't, ask for help.
 
-* Same deal with *docker-compose*, run `docker-compose` in a terminal emulator to make sure that it is installed and picked up by your PATH.
+* Same deal with *docker-compose*, run `docker-compose` in a terminal emulator to make sure that it is installed and picked up by your PATH. If that is not the case, go to https://docs.docker.com/compose/install/ and follow the instructions for your OS.
 
 
 ## Kafka test run
@@ -35,11 +35,11 @@ Open up a terminal emulator. Clone this Git repository to a place on your machin
 
 If you have SSH keys set up and attached to your(if you have one) GitHub account, do the following
 
-`git clone git@github.com:dfds/ded-dojo.git`
+`git clone git@github.com:dfds/dojo.git`
 
 If not, run this instead.
 
-`git clone https://github.com/dfds/ded-dojo.git` 
+`git clone https://github.com/dfds/dojo.git` 
 
 Navigate to kafka-deep-dive/1
 

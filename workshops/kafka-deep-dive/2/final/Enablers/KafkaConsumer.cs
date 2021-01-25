@@ -21,6 +21,7 @@ namespace kafka_deep_dive.Enablers
         {
             _executingTask = Task.Factory.StartNew(async () =>
                     {
+                        Console.WriteLine("Launching KafkaConsumer");
                         using (var consumer = _consumerFactory.Create())
                         {
                             const string topic = "build.workshop.something";
