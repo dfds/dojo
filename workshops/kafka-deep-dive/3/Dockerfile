@@ -1,5 +1,5 @@
 #Setup build image
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 
 #Set container filesystem to /build (and create folder if it doesnt exist)
 WORKDIR /build
@@ -19,8 +19,10 @@ COPY ./waitForKafka.sh /build/out/
 
 
 #Setup final container images.
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 WORKDIR /app
+
+RUN apt update && apt install -y curl
 
 # SSL
 ENV KAFKATHEBASICS_KAFKA_SSL_CA_LOCATION=/app/cert.pem
