@@ -51,6 +51,8 @@ Now let us turn our attention to the "Startup.cs" file located in the root proje
 
 To do that, we gotta find the *ConfigureServices* method within the *Startup* Class. In that method, we gotta add the following line: `services.AddHostedService<KafkaConsumer>();`
 
+Also within the *Startup* Class you gotta import the namespace where *KafkaConsumer* resides. Put `using kafka_deep_dive.Enablers;` in the top of Startup.cs.
+
 ![](img/03.png)
 
 We should probably make sure that what we have just done in the past few steps actually works. Go back to the *KafkaConsumer* Class. Within the StartAsync, write some text to the Console, to verify that the ASP framework does indeed run our *KafkaConsumer* service.
@@ -331,7 +333,7 @@ namespace kafka_deep_dive.Enablers
 
 ![](img/08.png)
 
-Here we make sure of our newly created KafkaConfiguration class to create a *IConsumer* object. *IConsumer* stems from the *Confluent.Kafka* library and is what will allow us to Consume from a Topic.
+Here we make sure that our newly created KafkaConfiguration class creates a *IConsumer* object. *IConsumer* stems from the *Confluent.Kafka* library and is what will allow us to Consume from a Topic.
 
 We now have the necessary tools for us to begin taking a look at the code that will actually allow us to interact with Kafka. Time to return to the *KafkaConsumer* Class we created earlier on.
 
