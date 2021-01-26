@@ -333,7 +333,7 @@ namespace kafka_deep_dive.Enablers
 
 ![](img/08.png)
 
-Here we make sure of our newly created KafkaConfiguration class to create a *IConsumer* object. *IConsumer* stems from the *Confluent.Kafka* library and is what will allow us to Consume from a Topic.
+Here we make sure that our newly created KafkaConfiguration class creates a *IConsumer* object. *IConsumer* stems from the *Confluent.Kafka* library and is what will allow us to Consume from a Topic.
 
 We now have the necessary tools for us to begin taking a look at the code that will actually allow us to interact with Kafka. Time to return to the *KafkaConsumer* Class we created earlier on.
 
