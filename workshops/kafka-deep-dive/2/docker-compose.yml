@@ -37,4 +37,4 @@ services:
 
 networks:
   development:
-    name: development
+    name: kafka-workshop-development
