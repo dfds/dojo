@@ -342,6 +342,8 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
+In the top of Startup.cs, add the following line: `using kafka_deep_dive.Models;`
+
 ![](img/09.png)
 
 With this specific implementation that we will be using, we will have to give *WorkshopCreated* an additional constructor.
