@@ -26,7 +26,7 @@ COPY ./waitForKafka.sh /build/out/
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 WORKDIR /app
 
-RUN apt update && apt install -y curl
+RUN apt update && apt install -y curl dos2unix
 
 # SSL
 ENV KAFKATHEBASICS_KAFKA_SSL_CA_LOCATION=/app/cert.pem
@@ -38,4 +38,4 @@ COPY --from=build-env /build/out .
 
 #Run dotnet executable
 #ENTRYPOINT ["dotnet", "kafka-the-basics.dll"]
-ENTRYPOINT ["sh", "waitForKafka.sh"]
+ENTRYPOINT ["sh", "-c", "dos2unix waitForKafka.sh && chmod +x waitForKafka.sh && ./waitForKafka.sh"]
