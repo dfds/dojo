@@ -118,6 +118,8 @@ private async Task DoWork(CancellationToken stoppingToken)
 }
 ```
 
+In the top of the KafkaProducer.cs file, put `using kafka_deep_dive.Models;`.
+
 ![](img/04.png)
 
 The notable changes are that we using a predefined model for our *Payload*, as well as *Value*.
