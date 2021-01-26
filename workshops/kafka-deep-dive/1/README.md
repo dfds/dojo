@@ -43,7 +43,7 @@ If not, run this instead.
 
 Navigate to kafka-deep-dive/1
 
-`cd ded-dojo/workshops/kafka-deep-dive/1 `
+`cd dojo/workshops/kafka-deep-dive/1 `
 
 Start up Kafka
 
