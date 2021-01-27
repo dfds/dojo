@@ -127,6 +127,7 @@ Now, ensure you can see both terminal emulators.
 
 If everything is working as expected, you should after the first window is finished building the project, after a couple of seconds begin to messages being received in both the first window and in the second window where we have a separate Consumer.
 
+Make sure to run `docker-compose down` when you're done with this kata.
 
 ---
 Great! We now have a .NET Core project that can **Consume** from a **Topic** and **Produce** to a **Topic**.
