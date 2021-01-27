@@ -90,6 +90,8 @@ Run the project by executing the following command in your terminal emulator, at
 If everything is working as expected, the output should look a bit like how it is below:
 ![](img/05.png)
 
+If the application throws a *System.NotImplementedException* that is to be expected.
+
 If it doesn't, please do ask for help!
 
 If it does, great! Let us continue.
