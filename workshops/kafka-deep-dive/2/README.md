@@ -531,5 +531,7 @@ Now, ensure you can see both terminal emulators. In the terminal emulator you la
 
 If everything is working as expected, you should see the message in the other terminal emulator window.
 
+Make sure to run `docker-compose down` to clean up any residual resources.
+
 ---
 Great! We now have a .NET Core project that can **Consume** from a **Topic**. In the third kata, we will expand upon that code, and **Produce** to a **Topic**.
