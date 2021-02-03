@@ -8,6 +8,9 @@ Open a terminal emulator and navigate to the project folder (dojo/workshops/kafk
 
 `dotnet add package Newtonsoft.Json`
 
+*If adding the packages results in an error, see: https://github.com/dfds/dojo/issues/15 for a potential workaround*
+
+
 With the necessary dependency installed, let us go ahead and create "MessagingHelper.cs" in our "Enablers" directory.
 
 ```c#
