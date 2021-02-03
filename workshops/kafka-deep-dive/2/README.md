@@ -14,6 +14,8 @@ In the terminal, run the following command
 
 `dotnet add package Confluent.Kafka --version 1.5.3`
 
+*If adding the packages results in an error, see: https://github.com/dfds/dojo/issues/15 for a potential workaround*
+
 In the root of the project directory, create another directory that we will call "Enablers". Within that directory, create a Class called "KafkaConsumer".
 
 ![](img/01.png)
