@@ -2,7 +2,7 @@
 
 
 In this kata, we will be looking at integrating the following schema format:
-![](img/01.png)
+![TODO update schema image to newer version](img/01.png)
 
 Open a terminal emulator and navigate to the project folder (dojo/workshops/kafka-deep-dive/4/project). Then execute the following command:
 
