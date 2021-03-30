@@ -1,0 +1,11 @@
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\bin\Debug\net5.0\unit-test-demo-1.deps.json
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\bin\Debug\net5.0\unit-test-demo-1.dll
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\bin\Debug\net5.0\ref\unit-test-demo-1.dll
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\bin\Debug\net5.0\unit-test-demo-1.pdb
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\unit-test-demo-1.GeneratedMSBuildEditorConfig.editorconfig
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\unit-test-demo-1.AssemblyInfoInputs.cache
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\unit-test-demo-1.AssemblyInfo.cs
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\unit-test-demo-1.csproj.CoreCompileInputs.cache
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\unit-test-demo-1.dll
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\ref\unit-test-demo-1.dll
+C:\code\repos\dojo\workshops\unit-testing-deep-dive\demos\1\unit-test-demo-1\unit-test-demo-1\obj\Debug\net5.0\unit-test-demo-1.pdb
