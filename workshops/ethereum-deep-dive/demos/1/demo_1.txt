@@ -1,0 +1,112 @@
+Based on @ https://medium.com/compound-finance/setting-up-an-ethereum-development-environment-7c387664c5fe
+
+#1: Install metamask Chrome extension
+- Do it by hand
+
+#2: Update exisiting packages
+sudo apt update
+
+#3: Install SOLC compiler
+sudo add-apt-repository ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install solc
+
+#4: Install nodejs & npm
+curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+sudo apt-get install -y nodejs
+
+#4B: Workaround for NPM issues on WSL2
+1) cd ~
+2) Open .bashrc in your chosen editor (vi, nano, etc.)
+3) Append to the end of the file: export PATH=$(echo "$PATH" | sed -e 's/:\/mnt[^:]*//g') # strip out problematic Windows %PATH%
+4) Close and re-open all terminal windows
+
+#5: Create DApp project dir
+mkdir first-ethereum-dappcl
+
+#6: Install DApp dependencies
+npm install web3 ganache-cli http-server
+
+#7: Install npx
+npm install npx
+
+#8: Create smart contract 
+echo "//SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.4;
+
+contract FirstContract {
+  function getInteger() public pure returns (uint) {
+    return 123;
+  }
+}" > FirstContract.sol
+
+#9: Compile smart contract
+solc --bin --abi -o ./build FirstContract.sol --overwrite
+
+#10 Run test blockchain on local machine (in other terminal window)
+npx ganache-cli
+
+#11: Deploy smart contract to local ethereum blockchain
+echo "const fs = require('fs');
+const Web3 = require('web3');
+const web3 = new Web3('http://localhost:8545');
+const bytecode = fs.readFileSync('./build/FirstContract.bin');
+const abi = JSON.parse(fs.readFileSync('./build/FirstContract.abi'));
+
+(async function () {
+  const ganacheAccounts = await web3.eth.getAccounts();
+  const myWalletAddress = ganacheAccounts[0];
+
+  const myContract = new web3.eth.Contract(abi);
+
+  myContract.deploy({
+    data: bytecode.toString()
+  }).send({
+    from: myWalletAddress,
+    gas: 5000000
+  }).then((deployment) => {
+    console.log('FirstContract was successfully deployed!');
+    console.log('FirstContract can be interfaced with at this address:');
+    console.log(deployment.options.address);
+  }).catch((err) => {
+    console.error(err);
+  });
+})();" > deploy.js
+
+node deploy.js
+
+#12: Create simple frontend
+<!DOCTYPE html>
+<html>
+<head>
+  <title>First DApp</title>
+</head>
+<body>
+
+  <h1>First DApp</h1>
+  <label>FirstContract.getInteger</label>
+  <br />
+  <label id="myLabel"></label>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/web3@1.2.6/dist/web3.min.js"></script>
+<script>
+
+const web3 = new Web3('http://localhost:8545');
+
+const myContractAddress = ''; <!-- INSERT VALUE OF CONTRACT ADDRESS FROM SMART CONTRACT DEPLOYMENT #10 -->
+const myAbi = []; <!-- OVERWRITE WITH ABI PAYLOAD FROM SOLC COMPILATION #6 -->
+const myContract = new web3.eth.Contract(myAbi, myContractAddress);
+
+const htmlLabel = document.getElementById('myLabel');
+
+myContract.methods.getInteger().call().then((jsonRpcResult) => {
+  htmlLabel.innerHTML = jsonRpcResult;
+});
+
+</script>
+</html>
+
+#13 Launch web server to browse DApp
+npx http-server
