@@ -17,7 +17,7 @@ sudo apt-get install -y nodejs
 4) Close and re-open all terminal windows
 
 #4: Create DApp project dir
-mkdir first-ethereum-dappcl
+mkdir first-ethereum-dapp
 
 #5: Install DApp dependencies
 npm install web3 ganache-cli http-server
