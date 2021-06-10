@@ -1,36 +1,31 @@
-Based on @ https://medium.com/compound-finance/setting-up-an-ethereum-development-environment-7c387664c5fe
-
-#1: Install metamask Chrome extension
-- Do it by hand
-
-#2: Update exisiting packages
+#1: Update exisiting packages
 sudo apt update
 
-#3: Install SOLC compiler
+#2: Install SOLC compiler
 sudo add-apt-repository ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install solc
 
-#4: Install nodejs & npm
+#3: Install nodejs & npm
 curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
 sudo apt-get install -y nodejs
 
-#4B: Workaround for NPM issues on WSL2
+#3B: Workaround for NPM issues on WSL2
 1) cd ~
 2) Open .bashrc in your chosen editor (vi, nano, etc.)
 3) Append to the end of the file: export PATH=$(echo "$PATH" | sed -e 's/:\/mnt[^:]*//g') # strip out problematic Windows %PATH%
 4) Close and re-open all terminal windows
 
-#5: Create DApp project dir
+#4: Create DApp project dir
 mkdir first-ethereum-dappcl
 
-#6: Install DApp dependencies
+#5: Install DApp dependencies
 npm install web3 ganache-cli http-server
 
-#7: Install npx
+#6: Install npx
 npm install npx
 
-#8: Create smart contract 
+#7: Create smart contract 
 echo "//SPDX-License-Identifier: UNLICENSED
 
 pragma solidity ^0.8.4;
@@ -41,13 +36,13 @@ contract FirstContract {
   }
 }" > FirstContract.sol
 
-#9: Compile smart contract
+#8: Compile smart contract
 solc --bin --abi -o ./build FirstContract.sol --overwrite
 
-#10 Run test blockchain on local machine (in other terminal window)
+#9 Run test blockchain on local machine (in other terminal window)
 npx ganache-cli
 
-#11: Deploy smart contract to local ethereum blockchain
+#10: Deploy smart contract to local ethereum blockchain
 echo "const fs = require('fs');
 const Web3 = require('web3');
 const web3 = new Web3('http://localhost:8545');
@@ -76,7 +71,7 @@ const abi = JSON.parse(fs.readFileSync('./build/FirstContract.abi'));
 
 node deploy.js
 
-#12: Create simple frontend
+#11: Create simple frontend
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,5 +103,5 @@ myContract.methods.getInteger().call().then((jsonRpcResult) => {
 </script>
 </html>
 
-#13 Launch web server to browse DApp
+#12 Launch web server to browse DApp
 npx http-server
