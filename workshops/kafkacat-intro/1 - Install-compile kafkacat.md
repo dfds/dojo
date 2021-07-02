@@ -6,6 +6,8 @@
     - [Compiling](#compiling)
   - [macOS](#macos)
   - [Windows](#windows)
+    - [Precompiled binaries](#precompiled-binaries)
+    - [Compiling](#compiling-1)
   - [Docker](#docker)
 
 For more up-to-date instructions keep an eye on [github.com/edenhill/kafkacat](https://github.com/edenhill/kafkacat)
@@ -40,6 +42,19 @@ Run `brew install kafkacat`
 kafkacat should now be available for use.
 
 ## Windows
+
+### Precompiled binaries
+
+If you'd rather not compile it yourself, ask for a precompiled binary during the workshop.
+
+### Compiling
+
+This assumes that Visual Studio alongside development tools(libraries, msbuild) are installed
+
+- `git clone https://github.com/edenhill/kafkacat.git`
+- `cd win32`
+- `nuget restore`
+- `msbuild`
 
 ## Docker
 
