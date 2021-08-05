@@ -10,6 +10,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * Kubernetes Cluster
 * Kubectl
 * Helm
+* Docker hub account
 
 ## Exercise
 Your seventh assignment will see you create a configuration package
@@ -52,6 +53,11 @@ kubectl crossplane push configuration dfdsdk/my-configuration:v0.0.1-alpha.0
 kubectl crossplane install configuration dfdsdk/my-configuration:v0.0.1-alpha.0
 ```
 
+### 5. Verify installation
+
+```
+kubectl get configuration.pkg
+```
 
 
 ## Want to help make our training material better?

@@ -34,6 +34,7 @@ spec:
     engine: postgresql
     engineVersion: "13.3"
     skipFinalSnapshotBeforeDeletion: true
+    applyModificationsImmediately: true
   providerConfigRef:
     name: my-provider-config
   writeConnectionSecretToRef:
@@ -41,18 +42,29 @@ spec:
     name: my-database-creds
 ```
 
-### 2. Deploy the DB manifest
+### 2. View possible options for kind
+
+```
+kubectl explain rdsinstance --recursive | less
+```
+
+Or you can look at the Github source code - https://github.com/crossplane/provider-aws/blob/master/apis/database/v1beta1/rdsinstance_types.go
+
+### 3. Deploy the DB manifest
 
 ```
 kubectl apply -f db.yaml
 ```
 
-### 3. Observe creation
+### 4. Observe creation
 ```
 kubectl get rdsinstance
+kubectl describe secret my-database-creds -n my-namespace
 ```
 
-### 4. Create a secg.yaml file on your system
+Sign into AWS Console to see resource
+
+### 5. Create a secg.yaml file on your system
 
 ```
 ---
@@ -146,6 +158,23 @@ spec:
 ```
 
 ### 9. Observe changes
+
+### 10. Change allocated storage
+
+### 11. Try to change engine
+
+### 12. Observe sync status
+
+### 13. Cleanup resources
+
+RDSInstance
+SecurityGroup
+
+If you are not continuing to Kata 5, also clean up:
+
+ProviderConfig
+AWS Provider
+Crossplane Helm chart
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
