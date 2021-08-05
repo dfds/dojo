@@ -14,6 +14,8 @@ These instructions will help you prepare for the kata and ensure that your train
 ## Exercise
 Your fifth assignment will see you create a composite resource definition (XRD). 
 
+
+
 ### 1. Create a definition.yaml
 ```
 apiVersion: apiextensions.crossplane.io/v1
