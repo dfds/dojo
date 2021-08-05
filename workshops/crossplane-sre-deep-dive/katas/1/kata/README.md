@@ -16,38 +16,66 @@ Your first assignment will see you install Crossplane into your Kubernetes Clust
 
 ### 1. Create crossplane-system Namespace
 
+Create a crossplane-system in your Kubernetes cluster to hold Crossplane system components
+
 ```
 kubectl create namespace crossplane-system
 ```
 
+Verify the namespace exists
+
+```
+kubectl get namespaces
+```
+
 ### 2. Add Crossplane Stable Helm Repository
+
+We need to add the stable crossplane repository in order to install Crossplane into our namespace
 
 ```
 helm repo add crossplane-stable https://charts.crossplane.io/stable
 helm repo update
 ```
 
+Verify the repo has added successfully
+
+```
+helm repo list
+```
+
 ### 3. Install Crossplane Helm Chart
+
+We need to install crossplane to our namespace using the crossplane chart from the stable repository
 
 ```
 helm install crossplane --namespace crossplane-system crossplane-stable/crossplane --version 1.3.0
 ```
 
-### 4. Validate Installation
+Verify that the helm chart has successfully installed
 
 ```
 helm list -n crossplane-system
+```
+
+### 4. Validate Installation
+
+Verify that the installation has been successful and that the crossplane pods are running
+
+```
 kubectl get all -n crossplane-system
 ```
 
 ### 5. Install Crossplane CLI
 
+Install the Crossplane CLI so that we are ready to easily perform some crossplane tasks
+
 ```
 curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.sh | sh
+sudo mv kubectl-crossplane /usr/local/bin
 ```
-
-### 6. Verify Crossplane CLI
+Verify that the CLI is installed
 ```
+kubectl crossplane --version
 ```
 
 ## Want to help make our training material better?

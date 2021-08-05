@@ -18,21 +18,29 @@ You will also upgrade this package to the latest version and switch between prov
 
 ### 1. Install provider package
 
+We need to install the AWS provider for crossplane to be able to deploy AWS resources
+
 ```
 kubectl crossplane install provider crossplane/provider-aws:v0.18.1
 ```
 
 ### 2. Verify provider installation
 
+We should verify that the AWS provider and providerrevision have installed successfully and are in a healthy state
+
 ```
 kubectl get provider.pkg
 kubectl get providerrevision
 ```
 
+After a small period of time these should report as Healthy
+
 ### 3. Update provider to latest version
 
+We intentionally installed an older version of the AWS provider. We should update to the latest version. First retrieve the NAME of the deployed provider.pkg and run the update command using the Crossplane CLI
+
 ```
-kubectl crossplane update [provider-name] v0.19.0
+kubectl crossplane update provider [provider-name] v0.19.0
 ```
 
 ### 4. Verify provider update and revision history
@@ -41,6 +49,8 @@ kubectl crossplane update [provider-name] v0.19.0
 kubectl get provider.pkg
 kubectl get providerrevision
 ```
+
+Note that we now have 2 revisions of the same crossplane provider. Our new version should show in Active state
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

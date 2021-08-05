@@ -15,56 +15,11 @@ These instructions will help you prepare for the kata and ensure that your train
 ## Exercise
 Your third assignment will see you provision some database infrastructure into your cloud provider. 
 
+### 1. Create a secg.yaml file on your system
 
-### 1. Create a db.yaml file on your filesystem
+By default, unless we specify, our RDS instance will get created in the default VPC and attach the default security group. This means that traffic will unlikely be blocked on the port we require. Let's create a security group resource to use with our RDS Instance.
 
-```
----
-apiVersion: database.aws.crossplane.io/v1beta1
-kind: RDSInstance
-metadata:
-  name: my-database
-  namespace: my-namespace
-spec:
-  forProvider:
-    region: eu-west-1
-    dbInstanceClass: db.t3.small
-    masterUsername: masteruser
-    allocatedStorage: 20
-    engine: postgresql
-    engineVersion: "13.3"
-    skipFinalSnapshotBeforeDeletion: true
-    applyModificationsImmediately: true
-  providerConfigRef:
-    name: my-provider-config
-  writeConnectionSecretToRef:
-    namespace: my-namespace
-    name: my-database-creds
-```
-
-### 2. View possible options for kind
-
-```
-kubectl explain rdsinstance --recursive | less
-```
-
-Or you can look at the Github source code - https://github.com/crossplane/provider-aws/blob/master/apis/database/v1beta1/rdsinstance_types.go
-
-### 3. Deploy the DB manifest
-
-```
-kubectl apply -f db.yaml
-```
-
-### 4. Observe creation
-```
-kubectl get rdsinstance
-kubectl describe secret my-database-creds -n my-namespace
-```
-
-Sign into AWS Console to see resource
-
-### 5. Create a secg.yaml file on your system
+Create a secg.yaml file
 
 ```
 ---
@@ -92,19 +47,27 @@ spec:
     name: my-provider-config
 ```
 
-### 5. Deploy the security group manifest
+### 2. Deploy the security group manifest
+
+Deploy the manifest to create the security group in AWS
 
 ```
 kubectl apply -f secg.yaml
 ```
 
-### 6. Observe security group creation
+### 3. Observe security group creation
+
+Check that the security group is showing in a READY and SYNCED state.
 
 ```
 kubectl get securitygroup
 ```
 
-### 7. Update db.yaml manifest to use security group
+You may also view in the AWS console to confirm that the group now exists
+
+### 4. Create a db.yaml file on your filesystem
+
+First we will create a manifest to describe an RDS database instance we want to provision. Create a db.yaml file
 
 ```
 ---
@@ -119,9 +82,10 @@ spec:
     dbInstanceClass: db.t3.small
     masterUsername: masteruser
     allocatedStorage: 20
-    engine: postgresql
+    engine: postgres
     engineVersion: "13.3"
     skipFinalSnapshotBeforeDeletion: true
+    applyModificationsImmediately: true
     vpcSecurityGroupIDRefs:
     - name: my-security-group
   providerConfigRef:
@@ -131,50 +95,88 @@ spec:
     name: my-database-creds
 ```
 
-### 8. Redeploy db.yaml
+
+### 5. View possible options for kind
+
+If you are curious, you can use the following command to see the options you can specify
+
 ```
----
-apiVersion: database.aws.crossplane.io/v1beta1
-kind: RDSInstance
-metadata:
-  name: my-database
-  namespace: my-namespace
-spec:
-  forProvider:
-    region: eu-west-1
-    dbInstanceClass: db.t3.small
-    masterUsername: masteruser
-    allocatedStorage: 20
-    engine: postgresql
-    engineVersion: "13.3"
-    skipFinalSnapshotBeforeDeletion: true
-    vpcSecurityGroupIDRefs:
-    - name: my-security-group
-  providerConfigRef:
-    name: my-provider-config
-  writeConnectionSecretToRef:
-    namespace: my-namespace
-    name: my-database-creds
+kubectl explain rdsinstance --recursive | less
 ```
 
-### 9. Observe changes
+Note that this does not tell you any special value requirements other than string, int etc. You can look at the Github source code to find any input requirements for the fields- https://github.com/crossplane/provider-aws/blob/master/apis/database/v1beta1/rdsinstance_types.go
 
-### 10. Change allocated storage
+### 6. Deploy the DB manifest
 
-### 11. Try to change engine
+We will deploy manifest into our cluster
 
-### 12. Observe sync status
+```
+kubectl apply -f db.yaml
+```
 
-### 13. Cleanup resources
+### 7. Observe creation
+```
+kubectl get rdsinstance
+kubectl describe secret my-database-creds -n my-namespace
+```
 
-RDSInstance
-SecurityGroup
+Our database should enter a state of creating. You can sign into the AWS console and go to the RDS section to see this being created there.
+
+Note that if we describe the credentials, we can see a password and username field. If we do a describe once the database has been created, this secret should now contain the hostname and port
+
+
+### 8. Change allocated storage
+
+Next we will change the allocatedStorage value applied to our RDS Instance.
+
+Update the db.yaml file
+
+```
+allocatedStorage: 30
+```
+
+Apply this change
+
+```
+kubectl apply -f db.yaml
+```
+
+### 9. Observe sync status
+
+Describe the RDS instance to see that there has been a successful request to update the external resource
+
+```
+kubectl describe rdsinstance my-database
+```
+
+Get the RDS Instance to see the state change to modifying and ready to false (this can take a minute or two to start reconciling)
+
+```
+kubectl get rdsinstance
+```
+
+You should also see this updating in the AWS Web Console.
+
+Eventually the modification should complete
+
+
+### 10. Cleanup resources
+
+We should clean up resources so that we do not incur any unnecessary costs
+
+```
+kubectl delete -f db.yaml
+kubectl delete -f secg.yaml
+```
 
 If you are not continuing to Kata 5, also clean up:
 
-ProviderConfig
-AWS Provider
-Crossplane Helm chart
+```
+kubectl delete -f providerconfig.yaml
+kubectl delete provider.pkg provider-aws-name
+helm uninstall crossplane -n crossplane-system
+
+```
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
