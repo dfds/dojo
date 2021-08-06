@@ -120,9 +120,13 @@ kubectl get rdsinstance
 kubectl describe secret my-database-creds -n my-namespace
 ```
 
+Note that if we describe the credentials again, we can see a password and username field
+
 Our database should enter a state of creating. You can sign into the AWS console and go to the RDS section to see this being created there.
 
-Note that if we describe the credentials, we can see a password and username field. If we do a describe once the database has been created, this secret should now contain the hostname and port
+Wait until the RDS Instance has finished deploying and in a ready state (this should take 5 minutes, feel free to take a quick break)
+
+Note that if we describe the credentials again once the database is fully deployed, this secret should now contain the endpoint and port
 
 
 ### 8. Change allocated storage
