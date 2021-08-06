@@ -63,7 +63,7 @@ We must create a ProviderConfig which uses our secret so that we have permission
 apiVersion: aws.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
-  name: my-aws-providerconfig
+  name: my-aws-provider-config
 spec:
   credentials:
     source: Secret
