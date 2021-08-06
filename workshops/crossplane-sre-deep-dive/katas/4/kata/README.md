@@ -44,7 +44,7 @@ spec:
       - cidrIp: 0.0.0.0/0
         description: postgresql
   providerConfigRef:
-    name: my-provider-config
+    name: my-aws-provider-config
 ```
 
 ### 2. Deploy the security group manifest
@@ -89,7 +89,7 @@ spec:
     vpcSecurityGroupIDRefs:
     - name: my-security-group
   providerConfigRef:
-    name: my-provider-config
+    name: my-aws-provider-config
   writeConnectionSecretToRef:
     namespace: my-namespace
     name: my-database-creds
