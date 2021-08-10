@@ -12,71 +12,106 @@ These instructions will help you prepare for the kata and ensure that your train
 * Helm
 
 ## Exercise
-Your fifth assignment will see you deploy resources using custom compositions and claims
+Your sixth assignment will see you deploy resources using custom compositions and claims
 
 ### 1. Create an instance.yaml
+
+First we can deploy an instance of our new composite resource
+
+Create an instance.yaml with the following contents:
+
 ```
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: CompositeDatabaseInstance
 metadata:
   # Composite resources are cluster scoped, so there's no need for a namespace.
-  name: example-dfds-rds
+  name: my-composite-database-instance
 spec:
   parameters:
     region: eu-west-1
-    dbInstanceClass: db.t2.small
+    dbInstanceClass: db.t3.small
     masterUsername: masteruser
     allocatedStorage: 20
     engine: postgres
-    engineVersion: "9.6"
+    engineVersion: "13"
     skipFinalSnapshotBeforeDeletion: true
   compositionRef:
     name: compositedatabaseinstances.crossplane.dfds.cloud
   writeConnectionSecretToRef:
     namespace: default
-    name: example-databaseinstance
+    name: my-composite-database-credentials
 ```
 
 ### 2. Apply the instance manifest
+
+Next we will apply the manifest
+
 ```
 kubectl apply -f instance.yaml
 ```
 
-### 3. Create a static.yaml
+### 3. Verify deployment and identify a problem
+
+Verify the deployment by issuing a get and describe
 
 ```
-# The MySQLInstance always has the same API group and version as the
-# resource it requires. Its kind is always suffixed with .
+kubectl get compositedatabaseinstance
+kubectl describe compositeinstance
+```
+
+Notice that the resource is not yet ready. See if you can use your understanding to find a problem preventing the composed resources from 
+being created and fix the issue. Ask for hints if you get stuck
+
+It should take 5 minutes for the resource to provision. Take a small break
+
+### 4. Create a static.yaml
+
+Now let's make a static claim to the resource we just created. A static claim will take sole ownership of the resource
+
+```
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: DatabaseInstance
 metadata:
-  # Infrastructure claims are namespaced.
-  namespace: default
-  name: static-claim-example
+  namespace: my-namespace
+  name: my-static-claim
 spec:
   parameters:
     region: eu-west-1
-    dbInstanceClass: db.t2.small
+    dbInstanceClass: db.t3.small
     masterUsername: masteruser
-    allocatedStorage: 40
+    allocatedStorage: 20
     engine: postgres
-    engineVersion: "9.6"
+    engineVersion: "13"
     skipFinalSnapshotBeforeDeletion: true
   resourceRef:
     apiVersion: crossplane.dfds.cloud/v1alpha1
     kind: CompositeDatabaseInstance
-    name: example-dfds-rds
+    name: my-composite-database-instance
   writeConnectionSecretToRef:
-    name: example-dfds-rds-databaseinstance
+    name: my-static-database-creds
 ```
 
 ### 4. Apply the static manifest
+
+Now apply the manifest to deploy the claim
 
 ```
 kubectl apply -f static.yaml
 ```
 
+### 5. Verify there is now a static databaseinstance and secret in your namespace
+
+Observe the status of the database instance. Note how it is scoped to the namespace and that a secret also exists
+
+```
+kubectl get databaseinstance -n my-namespace
+kubectl get secret -n my-namespace
+```
+
 ### 5. Create a dynamic.yaml
+
+Next we will create a dynamic claim. This should provision an instance dynamically on request from the claim
+
 ```
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: DatabaseInstance
@@ -86,11 +121,11 @@ metadata:
 spec:
   parameters:
     region: eu-west-1
-    dbInstanceClass: db.t2.small
+    dbInstanceClass: db.t3.small
     masterUsername: masteruser
     allocatedStorage: 30
     engine: postgres
-    engineVersion: "11"
+    engineVersion: "13"
     skipFinalSnapshotBeforeDeletion: true
   compositionSelector:
     matchLabels:
@@ -103,11 +138,21 @@ spec:
 
 ### 6. Apply the dynamic manifest
 
+Now apply the dynamic claim
+
 ```
 kubectl apply -f dynamic.yaml
 ```
 
-### 7. Cleanup resources
+### 7. Verify dynamic databaseinstance, secret and resource creation
+```
+kubectl get databaseinstance -n my-namespace
+kubectl get secret -n my-namespace
+kubectl get securitygroup
+kubectl get rdsinstance
+```
+
+### 8. Cleanup resources
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

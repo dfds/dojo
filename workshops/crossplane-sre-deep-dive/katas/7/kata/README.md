@@ -44,13 +44,13 @@ spec:
 
 ```
 kubectl crossplane build configuration
-kubectl crossplane push configuration dfdsdk/my-configuration:v0.0.1-alpha.0
+kubectl crossplane push configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
 ### 4. Install the configuration
 
 ```
-kubectl crossplane install configuration dfdsdk/my-configuration:v0.0.1-alpha.0
+kubectl crossplane install configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
 ### 5. Verify installation

@@ -12,11 +12,15 @@ These instructions will help you prepare for the kata and ensure that your train
 * Helm
 
 ## Exercise
-Your fifth assignment will see you create a composite resource definition (XRD). 
+Your fifth assignment will see you create a composite resource by creating a definition and a composition.
 
 
+### 2. Create a definition.yaml
 
-### 1. Create a definition.yaml
+First we need to create a Composite Resource Definition (CRD) that describes the resource parameters we need to define in order to create the resource.
+
+Create a definition.yaml
+
 ```
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
@@ -39,8 +43,8 @@ spec:
     plural: databaseinstances
   versions:
   - name: v1alpha1
-    served: true
-    referenceable: true
+    served: true # ?
+    referenceable: true # ?
     schema:
       openAPIV3Schema:
         type: object
@@ -54,8 +58,7 @@ spec:
                   engineVersion:
                     description: Database engine version
                     type: string
-                    enum: ["10", "11", "12"]
-                    default: "12"
+                    enum: ["10", "11", "12", "13"]
                   allocatedStorage:
                     type: integer
                   region:
@@ -63,7 +66,7 @@ spec:
                     type: string
                   dbInstanceClass:
                     type: string
-                    enum: ["db.t2.small"]
+                    enum: ["db.t2.small", "db.t3.small"]
                   masterUsername:
                     type: string
                   engine:
@@ -72,7 +75,7 @@ spec:
                   skipFinalSnapshotBeforeDeletion:
                     type: boolean
                 required:
-                # - engineVersion
+                - engineVersion
                 - allocatedStorage
                 - region
                 - dbInstanceClass
@@ -83,31 +86,33 @@ spec:
             - parameters
           status:
             type: object
-            description: >
-              A status represents the observed state of a RDS instance.
             properties:
-              dbInstanceConditions:
-                description: >
-                  Freeform field containing information about the RDS instance condition, e.g. reconcile errors due to bad parameters
-                type: array
-                items:
-                  type: object
-                  x-kubernetes-preserve-unknown-fields: true
-    additionalPrinterColumns:
-    - name: Synced
-      type: string
-      jsonPath: ".status.dbInstanceConditions[0].status"
-    - name: Sync-Date
-      type: string
-      jsonPath: ".status.dbInstanceConditions[0].lastTransitionTime"
+              address:
+                description: Address of this Database server.
+                type: string
 ```
 
 ### 2. Apply the definition manifest
+
+Apply the manifest file to deploy the CRD into your cluster
+
 ```
 kubectl apply -f definition.yaml
 ```
 
+### 3. Verify the CRD
+
+Get the currently installed CRD's and verify that the new CRD you have deployed now exists
+
+```
+kubectl get crd
+```
+
 ### 3. Create a composition.yaml
+
+Now we will create a composition manifest which declares the resources that are to be created with base settings/defaults
+
+Create a composition.yaml and populate with the following contents
 
 ```
 apiVersion: apiextensions.crossplane.io/v1
@@ -122,21 +127,16 @@ spec:
     apiVersion: crossplane.dfds.cloud/v1alpha1
     kind: CompositeDatabaseInstance
   patchSets:
-  - name: configname
+  - name: metadata
     patches:
-    - fromFieldPath: spec.claimRef.namespace
-      toFieldPath: spec.providerConfigRef.name
+    - fromFieldPath: metadata.labels
+    - fromFieldPath: metadata.annotations[crossplane.dfds.cloud/app-name]
+  - name: external-name
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: metadata.annotations[crossplane.io/external-name]
       policy:
         fromFieldPath: Required
-
-  - name: DatabaseStatus
-    patches:
-      - type: ToCompositeFieldPath
-        fromFieldPath: status.conditions
-        toFieldPath: status.dbInstanceConditions
-        policy:
-          fromFieldPath: Optional
-
   resources:
   - name: securitygroup
     base:
@@ -145,6 +145,9 @@ spec:
       spec:
         forProvider:
           region: eu-west-1
+          # vpcIdSelector:
+          #   matchControllerRef: true
+          # groupName: rds-security-group
           description: Allow access to PostgreSQL
           ingress:
             - fromPort: 5432
@@ -154,50 +157,35 @@ spec:
                 - cidrIp: 0.0.0.0/0
                   description: postgresql
     patches:
-    - type: PatchSet
-      patchSetName: configname
     - fromFieldPath: "metadata.name"
-      toFieldPath: "spec.forProvider.groupName"     
-  - name: rdsinstance
+      toFieldPath: "spec.forProvider.groupName"
+      transforms:
+      - type: string
+        string:
+          fmt: "%s-rds-security-group"      
+  - name: rdinstance
     base:
       apiVersion: database.aws.crossplane.io/v1beta1
       kind: RDSInstance
       spec:
         forProvider:
-          dbInstanceClass: db.t2.small
+          dbInstanceClass: db.t3.small
           engine: postgres
           masterUsername: masteruser
           skipFinalSnapshotBeforeDeletion: true
-          allowMajorVersionUpgrade: true
-          # Match only managed resources that are part of the same composite, i.e.
-          # managed resources that have the same controller reference as the
-          # selecting resource.
           vpcSecurityGroupIDSelector:
             matchControllerRef: true
-            # Match only managed resources with the supplied labels (there might be multiple within the same composition).
-            # matchLabels:
-            # example: label
-
         writeConnectionSecretToRef:
           namespace: crossplane-system
     patches:
-    - type: PatchSet
-      patchSetName: DatabaseStatus    
-    - type: PatchSet
-      patchSetName: configname
-    - type: CombineFromComposite
-      combine:
-        variables: 
-          - fromFieldPath: spec.claimRef.namespace          
-          - fromFieldPath: spec.claimRef.name    
-        strategy: string        
+    # - type: PatchSet
+    #   patchSetName: metadata
+    - fromFieldPath: "metadata.uid"
+      toFieldPath: "spec.writeConnectionSecretToRef.name"
+      transforms:
+      - type: string
         string:
-          fmt: "%s-%s-databaseserver"
-      toFieldPath: spec.writeConnectionSecretToRef.name
-
-    - type: ToCompositeFieldPath
-      fromFieldPath: "status.atProvider.endpoint.address"
-      toFieldPath: "status.address"
+          fmt: "%s-databaseserver"
     - fromFieldPath: "spec.parameters.engineVersion"
       toFieldPath: "spec.forProvider.engineVersion"
     - fromFieldPath: "spec.parameters.region"
@@ -208,6 +196,8 @@ spec:
           eu-west-1: eu-west-1
     - fromFieldPath: "spec.parameters.allocatedStorage"
       toFieldPath: "spec.forProvider.allocatedStorage"
+    - fromFieldPath: "spec.parameters.dbInstanceClass"
+      toFieldPath: "spec.forProvider.dbInstanceClass"
     connectionDetails:
     - fromConnectionSecretKey: username
     - fromConnectionSecretKey: password
@@ -218,18 +208,31 @@ spec:
       value: "5432"
     readinessChecks:
     - type: MatchString
-      fieldPath: "status.atProvider.dbInstanceStatus"  # important to have CompositeDatabaseInstance be in ready state = True so claims can work properly
+      fieldPath: "status.atProvider.dbInstanceStatus" # important to have CompositeDatabaseInstance be in ready state = True so claims can work properly
       matchString: "available"
+  # Some composite resources may be "dynamically provisioned" - i.e. provisioned
+  # on-demand to satisfy an application's claim for infrastructure. The
+  # writeConnectionSecretsToNamespace field configures the default value used
+  # when dynamically provisioning a composite resource; it is explained in more
+  # detail below.
   writeConnectionSecretsToNamespace: crossplane-system
 ```
 
 ### 4. Apply the composition manifest
 
+Apply the manifest to deploy the composition to your cluster
+
 ```
 kubectl apply -f composition.yaml
 ```
 
+### 5. Verify that the composition exists
 
+Verify that the composition now exists in your cluster
+
+```
+kubectl get composition
+```
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
