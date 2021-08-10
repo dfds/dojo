@@ -17,7 +17,7 @@ Your fifth assignment will see you create a composite resource by creating a def
 
 ### 1. Create a definition.yaml
 
-First we need to create a Composite Resource Definition (CRD) that describes the resource parameters we need to define in order to create the resource.
+First we need to create a Composite Resource Definition (XRD) that describes the resource parameters we need to define in order to create the resource.
 
 Create a definition.yaml
 
@@ -100,13 +100,16 @@ Apply the manifest file to deploy the CRD into your cluster
 kubectl apply -f definition.yaml
 ```
 
-### 3. Verify the CRD
+### 3. Verify the XRD
 
-Get the currently installed CRD's and verify that the new CRD you have deployed now exists
+Get the currently installed XRD's and verify that 2 new CRD's have also been deployed
 
 ```
-kubectl get crd
+kubectl get xrd
+kubectl get crd | grep dfds
 ```
+
+These CRD's should correlate with the names and claim names from our XRD
 
 ### 3. Create a composition.yaml
 
