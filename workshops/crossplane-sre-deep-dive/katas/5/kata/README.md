@@ -94,7 +94,7 @@ spec:
 
 ### 2. Apply the definition manifest
 
-Apply the manifest file to deploy the CRD into your cluster
+Apply the manifest file to deploy the XRD into your cluster
 
 ```
 kubectl apply -f definition.yaml
