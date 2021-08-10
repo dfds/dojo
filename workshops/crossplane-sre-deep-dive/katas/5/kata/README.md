@@ -15,7 +15,7 @@ These instructions will help you prepare for the kata and ensure that your train
 Your fifth assignment will see you create a composite resource by creating a definition and a composition.
 
 
-### 2. Create a definition.yaml
+### 1. Create a definition.yaml
 
 First we need to create a Composite Resource Definition (CRD) that describes the resource parameters we need to define in order to create the resource.
 
@@ -43,8 +43,8 @@ spec:
     plural: databaseinstances
   versions:
   - name: v1alpha1
-    served: true # ?
-    referenceable: true # ?
+    served: true 
+    referenceable: true 
     schema:
       openAPIV3Schema:
         type: object
@@ -178,8 +178,6 @@ spec:
         writeConnectionSecretToRef:
           namespace: crossplane-system
     patches:
-    # - type: PatchSet
-    #   patchSetName: metadata
     - fromFieldPath: "metadata.uid"
       toFieldPath: "spec.writeConnectionSecretToRef.name"
       transforms:
@@ -208,7 +206,7 @@ spec:
       value: "5432"
     readinessChecks:
     - type: MatchString
-      fieldPath: "status.atProvider.dbInstanceStatus" # important to have CompositeDatabaseInstance be in ready state = True so claims can work properly
+      fieldPath: "status.atProvider.dbInstanceStatus"
       matchString: "available"
   # Some composite resources may be "dynamically provisioned" - i.e. provisioned
   # on-demand to satisfy an application's claim for infrastructure. The
