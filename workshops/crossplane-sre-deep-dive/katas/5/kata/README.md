@@ -145,9 +145,6 @@ spec:
       spec:
         forProvider:
           region: eu-west-1
-          # vpcIdSelector:
-          #   matchControllerRef: true
-          # groupName: rds-security-group
           description: Allow access to PostgreSQL
           ingress:
             - fromPort: 5432
@@ -208,11 +205,6 @@ spec:
     - type: MatchString
       fieldPath: "status.atProvider.dbInstanceStatus"
       matchString: "available"
-  # Some composite resources may be "dynamically provisioned" - i.e. provisioned
-  # on-demand to satisfy an application's claim for infrastructure. The
-  # writeConnectionSecretsToNamespace field configures the default value used
-  # when dynamically provisioning a composite resource; it is explained in more
-  # detail below.
   writeConnectionSecretsToNamespace: crossplane-system
 ```
 
