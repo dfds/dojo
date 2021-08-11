@@ -27,6 +27,8 @@ cp /path/to/composition.yaml .
 
 ### 2. Create a crossplane.yaml
 
+Next we need to add a crossplane.yaml file to our directory. This file describes our configuration and any dependencies
+
 ```
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Configuration
@@ -39,15 +41,28 @@ spec:
     - provider: crossplane/provider-aws
       version: "v0.19.0"
 ```
+### 3. Authenticate with Docker
+
+We need to authenticate with Dockerhub in order to be able to push our configuration package
+
+```
+docker login -u my-username -p
+```
+
 
 ### 3. Build and push the configuration
+
+Ensure you change the following commands to refer to your dockerhub account name instead of my-dockerhub.
+Build the configuration locally, notice how it creates a .xpkg file. Push it to your dockerhub repository with the push command below
 
 ```
 kubectl crossplane build configuration
 kubectl crossplane push configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
-### 4. Install the configuration
+### 4. Install the configuration package
+
+Next we will install our configuration package into our cluster so that people can consume resources
 
 ```
 kubectl crossplane install configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
@@ -57,6 +72,8 @@ kubectl crossplane install configuration my-dockerhub/my-configuration:v0.0.1-al
 
 ```
 kubectl get configuration.pkg
+kubectl get xrd
+kubectl get crd | grep dfds
 ```
 
 

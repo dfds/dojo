@@ -144,6 +144,8 @@ Now apply the dynamic claim
 kubectl apply -f dynamic.yaml
 ```
 
+This should take about 5 minutes
+
 ### 7. Verify dynamic databaseinstance, secret and resource creation
 ```
 kubectl get databaseinstance -n my-namespace
@@ -153,6 +155,21 @@ kubectl get rdsinstance
 ```
 
 ### 8. Cleanup resources
+
+We need to clean up our resources so that we do not incur unnecessary costs in our cloud account
+
+```
+kubectl delete -f dynamic.yaml
+kubectl delete -f static.yaml
+
+```
+
+We should also cleanup Kata 5 definitions if we are continuing to Kata 7
+
+```
+kubectl delete -f composition.yaml
+kubectl delete -f definition.yaml
+```
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
