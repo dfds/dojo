@@ -56,13 +56,13 @@ Verify the deployment by issuing a get and describe
 
 ```
 kubectl get compositedatabaseinstance
-kubectl describe compositeinstance
+kubectl describe compositedatabaseinstance
 ```
 
 Notice that the resource is not yet ready. See if you can use your understanding to find a problem preventing the composed resources from 
 being created and fix the issue. Ask for hints if you get stuck
 
-It should take 5 minutes for the resource to provision. Take a small break
+It could take 10 minutes for the resources to provision once they have reconciliated after fixing the problem.
 
 ### 4. Create a static.yaml
 
