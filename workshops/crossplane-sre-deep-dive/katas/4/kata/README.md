@@ -116,7 +116,7 @@ kubectl apply -f db.yaml
 
 ### 7. Observe creation
 ```
-kubectl get rdsinstance
+kubectl get rdsinstance -w
 kubectl describe secret my-database-creds -n my-namespace
 ```
 
@@ -156,7 +156,7 @@ kubectl describe rdsinstance my-database
 Get the RDS Instance to see the state change to modifying and ready to false (this can take a minute or two to start reconciling)
 
 ```
-kubectl get rdsinstance
+kubectl get rdsinstance -w
 ```
 
 You should also see this updating in the AWS Web Console.
