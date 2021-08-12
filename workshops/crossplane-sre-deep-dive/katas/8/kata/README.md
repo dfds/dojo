@@ -43,7 +43,7 @@ spec:
     name: my-package-resource-secret
 ```
 
-### 2. Deploy our package
+### 2. Deploy our resource
 
 Next we will deploy the manifest:
 
