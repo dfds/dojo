@@ -66,6 +66,12 @@ Once the RDS instance has finished creating and the database instances recognise
 kubectl get secret my-package-resource-secret -n my-namespace
 ```
 
+### 4. Cleanup resources
+
+```
+kubectl delete -f package-resource.yaml
+```
+
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
