@@ -17,7 +17,7 @@ Your seventh assignment will see you create a configuration package
 
 ### 1. Create a configuration directory
 
-First we need to create a configuration directory and copy in our definition and composition manifests from previous katas
+First we need to create a configuration directory and copy in our definition and composition manifests from kata 5
 ```
 mkdir my-configuration
 cd my-configuration
@@ -53,12 +53,20 @@ docker login -u my-username
 ### 4. Build and push the configuration
 
 Ensure you change the following commands to refer to your dockerhub account name instead of my-dockerhub.
-Build the configuration locally, notice how it creates a .xpkg file. Push it to your dockerhub repository with the push command below
+
+Build the configuration locally, notice how it creates a .xpkg file. 
 
 ```
 kubectl crossplane build configuration
+```
+
+Push it to your dockerhub repository with the push command below. The push command will automatically find the .xpkg file and push the image 
+
+```
 kubectl crossplane push configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
+
+You may observe on the dockerhub website that you have successfully pushed your package to your account
 
 ### 5. Install the configuration package
 

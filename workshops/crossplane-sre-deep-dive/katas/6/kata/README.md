@@ -16,7 +16,7 @@ Your sixth assignment will see you deploy resources using custom compositions an
 
 ### 1. Create an instance.yaml
 
-First we can deploy an instance of our new composite resource
+First we can deploy an instance of our new composite resource.
 
 Create an instance.yaml with the following contents:
 
@@ -149,9 +149,15 @@ This should take about 5 minutes
 ### 7. Verify dynamic databaseinstance, secret and resource creation
 ```
 kubectl get databaseinstance -n my-namespace
-kubectl get secret -n my-namespace
 kubectl get securitygroup
 kubectl get rdsinstance
+```
+
+Once the rds instance has finished creating, and the databaseinstance detects this and shows as Ready (this could take a few minutes), 
+we should see the secret appear in our namespace
+
+```
+kubectl get secret -n my-namespace
 ```
 
 ### 8. Cleanup resources
@@ -159,12 +165,12 @@ kubectl get rdsinstance
 We need to clean up our resources so that we do not incur unnecessary costs in our cloud account
 
 ```
-kubectl delete -f dynamic.yaml
 kubectl delete -f static.yaml
+kubectl delete -f dynamic.yaml
 
 ```
 
-We should also cleanup Kata 5 definitions if we are continuing to Kata 7
+We should also cleanup Kata 5 definitions if we are continuing to Kata 7 so that they do not conflict with the package we create
 
 ```
 kubectl delete -f composition.yaml

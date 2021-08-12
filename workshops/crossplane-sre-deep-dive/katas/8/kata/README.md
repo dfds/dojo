@@ -17,7 +17,7 @@ Your eigth assignment will see you deploy resources from your configuration pack
 
 ### 1. Create a package-resource.yaml
 
-First we will create a manifest to deploy a resource from our package. Create a package-resource.yaml with the below content:
+Outside of the 'my-configuration' directory you created in the last kata, we will create a manifest to deploy a resource from our package. Create a package-resource.yaml with the below content:
 
 ```
 apiVersion: crossplane.dfds.cloud/v1alpha1
@@ -57,8 +57,12 @@ Let's verify that our resources have been created:
 
 ```
 kubectl get databaseinstance -n my-namespace
-kubectl get rdsinstance
 kubectl get securitygroup
+kubectl get rdsinstance
+```
+
+Once the RDS instance has finished creating and the database instances recognises this and shows Ready, you should be able to see the secret in your namespace
+```
 kubectl get secret my-package-resource-secret -n my-namespace
 ```
 
