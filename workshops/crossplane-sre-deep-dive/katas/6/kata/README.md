@@ -117,7 +117,7 @@ apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: DatabaseInstance
 metadata:
   namespace: my-namespace
-  name: dynamic-claim-example
+  name: my-dynamic-claim
 spec:
   parameters:
     region: eu-west-1
@@ -133,7 +133,7 @@ spec:
       provider: aws
   
   writeConnectionSecretToRef:
-    name: dynamic-claim-example-secret
+    name: my-dynamic-claim-secret
 ```
 
 ### 6. Apply the dynamic manifest

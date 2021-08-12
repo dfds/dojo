@@ -46,11 +46,11 @@ spec:
 We need to authenticate with Dockerhub in order to be able to push our configuration package
 
 ```
-docker login -u my-username -p
+docker login -u my-username
 ```
 
 
-### 3. Build and push the configuration
+### 4. Build and push the configuration
 
 Ensure you change the following commands to refer to your dockerhub account name instead of my-dockerhub.
 Build the configuration locally, notice how it creates a .xpkg file. Push it to your dockerhub repository with the push command below
@@ -60,7 +60,7 @@ kubectl crossplane build configuration
 kubectl crossplane push configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
-### 4. Install the configuration package
+### 5. Install the configuration package
 
 Next we will install our configuration package into our cluster so that people can consume resources
 
@@ -68,7 +68,7 @@ Next we will install our configuration package into our cluster so that people c
 kubectl crossplane install configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
-### 5. Verify installation
+### 6. Verify installation
 
 ```
 kubectl get configuration.pkg
