@@ -116,15 +116,19 @@ kubectl apply -f db.yaml
 
 ### 7. Observe creation
 ```
-kubectl get rdsinstance -w
+kubectl get rdsinstance
 kubectl describe secret my-database-creds -n my-namespace
 ```
+
+
 
 Note that if we describe the credentials again, we can see a password and username field
 
 Our database should enter a state of creating. You can sign into the AWS console and go to the RDS section to see this being created there.
 
 Wait until the RDS Instance has finished deploying and in a ready state (this should take 5 minutes, feel free to take a quick break)
+
+> **Hint**: You can append -w to a get command to "watch" the status of the resource change. I.e `kubectl get rdsinstance -w`
 
 Note that if we describe the credentials again once the database is fully deployed, this secret should now contain the endpoint and port
 
@@ -156,7 +160,7 @@ kubectl describe rdsinstance my-database
 Get the RDS Instance to see the state change to modifying and ready to false (this can take a minute or two to start reconciling)
 
 ```
-kubectl get rdsinstance -w
+kubectl get rdsinstance
 ```
 
 You should also see this updating in the AWS Web Console.
