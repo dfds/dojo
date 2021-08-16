@@ -156,6 +156,8 @@ spec:
               ipRanges:
                 - cidrIp: 0.0.0.0/0
                   description: postgresql
+        providerConfigRef:
+          name: my-aws-provider-config                  
     patches:
     - fromFieldPath: "metadata.name"
       toFieldPath: "spec.forProvider.groupName"
@@ -175,6 +177,8 @@ spec:
           skipFinalSnapshotBeforeDeletion: true
           vpcSecurityGroupIDSelector:
             matchControllerRef: true
+        providerConfigRef:
+          name: my-aws-provider-config            
         writeConnectionSecretToRef:
           namespace: crossplane-system
     patches:
