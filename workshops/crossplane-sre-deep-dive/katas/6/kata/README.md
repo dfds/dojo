@@ -50,19 +50,18 @@ Next we will apply the manifest
 kubectl apply -f instance.yaml
 ```
 
-### 3. Verify deployment and identify a problem
+### 3. Verify deployment
 
 Verify the deployment by issuing a get and describe
 
 ```
 kubectl get compositedatabaseinstance
 kubectl describe compositedatabaseinstance
+kubectl get securitygroup
+kubectl get rdsinstance
 ```
 
-Notice that the resource is not yet ready. See if you can use your understanding to find a problem preventing the composed resources from 
-being created and fix the issue. Ask for hints if you get stuck
-
-It could take 10 minutes for the resources to provision once they have reconciliated after fixing the problem.
+It could take 5 minutes for the deployment to complete
 
 ### 4. Create a static.yaml
 
