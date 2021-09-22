@@ -1,7 +1,7 @@
 DFDS Kubernetes Training - Code kata #1
 ======================================
 
-This training exercise is a **beginner-level** course on Kubernetes that serves as a starting point for developers looking get started with container orchestration at DFDS.
+This training exercise is a **beginner-level** course on Kubernetes that serves as a starting point for developers looking to get started with container orchestration at DFDS.
 
 ## Getting started
 These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dojo/pulls).
@@ -22,8 +22,21 @@ mkdir kata1
 cd kata1
 ```
 
-### 2. Create deployment manifest
-Create a file named "solution_deployments.yml" and add two Deployment objects for our api + mvc containers:
+### 2. Create a Kubernetes namespace
+
+This Kata may be completed by a number of people and in some cases they could be doing the Kata at the same time.  For this reason we recommend defining your own namespace into which your resources will then be provisioned.  This first section covers the steps required to define the namespace.
+
+Start by creating a file named "k8s-namespace.yml" and add the code fragment below, making sure to change the value 'my-namespace' to something which is unique.
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+```
+
+### 3. Create deployment manifest
+Create a file named "solution_deployments.yml" and add two Deployment objects for our API + MVC containers:
 
 ```
 apiVersion: apps/v1
@@ -33,15 +46,18 @@ apiVersion: apps/v1
 kind: Deployment
 ```
 
-Just to explain: <br/>
-`.kind: Deployment` - Specifies a need for the k8s API controller to create an object of kind (type) Deployment. <br/>
+**A tabular explanation of the above Manifest**
+| Parameter | Value | Explanation |
+| --- | --- | --- |
+| .kind | Deployment | Instructs the K8s API controller to create an object of kind (type) Deployment |
 
-### 3. Configure api-backend Deployment
-Augment the first Deployment object configuration with the following markup to specify the setup for our api-backend deployment:
+### 4. Configure api-backend Deployment
+Augment the first Deployment object configuration with the following markup to specify the setup for our api-backend deployment.  Again, make sure that you modify the namespace to match up with what you defined in step 2 of the Kata:
 
 ```
 metadata:
   name: api-deployment
+  namespace: my-namespace
   labels:
     app: api
 spec:
@@ -68,18 +84,22 @@ spec:
       restartPolicy: Always
 ```
 
-Just to explain: <br/>
-`.metadata.name: api-backend` - Instructs k8s to name our deployment "api-backend" so we can reference it via kubectl, from other manifests, etc. <br/>
-`.spec: ` - Specifies the blueprint for our deployment. <br/>
-`.spec.replicas: ` - Indicates the number of replicas we want k8s to maintain. <br/>
-`.spec.template.spec.containers.ports: ` - Specifies the port that k8s uses to proxy container networking.<br/>
+**A tabular explanation of the above Manifest**
+| Parameter | Value | Explanation |
+| --- | --- | --- |
+| .metadata.name | api-backend | Instructs K8s to name our deployment "api-backend" so we can reference it via kubectl, from other manifest etc. |
+| .metadata.namespace | my-namespace | Targets the deployment to a specific namespace to maintain segregation with other deployments of K8s resources |
+| .spec | | Specifies the blueprint for the deployment. |
+| .spec.replicas | 2 | Incidcates the number of replicas we want K8s to maintain for scalability and redundancy purposes |
+| spec.template.spec.container.ports | 5000 | Specifies the port that K8s uses to proxy container networking |
 
-### 4. Configure MVC Deployment
-Augment the second Deployment object configuration with the following markup to specify the setup for our frontend ASP.NET MVC solution:
+### 5. Configure MVC Deployment
+Augment the second Deployment object configuration with the following markup to specify the setup for our frontend ASP.NET MVC solution.  Again, the namespace parameter should be updated so that the deployment is performed in the K8s namespace defined in step 2 of the Kata:
 
 ```
 metadata:
   name: mvc-deployment
+  namespace: my-namespace
   labels:
     app: mvc
 spec:
@@ -105,24 +125,41 @@ spec:
       restartPolicy: Always
 ```
 
-### 5. Use kubectl to create a two new Kubernetes Deployment from our manifest
-`kubectl create -f .\solution_deployments.yml`
+### 6. Use kubectl to create the namespace
+Execute the following command to apply the previously defined manifest file that contains the namespace resource.
+```
+kubectl create -f .\k8s-namespace.yml
+```
+Once the command has completed you can use the following command to verify that the namespace exists.
+```
+kubectl get namespace
+```
 
+### 7. Use kubectl to create a two new Kubernetes Deployment from our manifest
+Execute the following command to apply the previously defined manifest file that contains the definition of the two deployments.
+```
+kubectl create -f .\solution_deployments.yml
+```
+As the name suggests the create parameter of kubectl will cause it to create one or more resources, the details of which can either be provided from file or via standard input.  In this case we wish to apply our previously defined manifest, so we use the -f parameter along with the path to the file.
 
-Just to explain: <br/>
-`kubectl create` - Create a resource from a file or from stdin. <br/>
-`-f .\solution_deployments.yml` -f point to the filename, directory or URL containing our "resource manifest" files.
+### 8. Verify that Web API deployment is created
+Execute the following command to verify that the manifest has been applied and the expected resources created.  The -n parameter targets a specific namespace so the value following the option should be modified to match the namespace name that was selected in step 2 of the Kata.
+```
+kubectl describe deployment api-deployment -n my-namespace
+```
+Using the describe keyword with kubectl causes it to fetch metadata related to one or more resources via the API Server.  Following the describe keyword we then also provide the type of resource and the name of the resource.
 
+## 9. Verify that MVC deployment is created
+Similarly you can use the following command to view the MVC deployment.  Again, the -n parameter is used to target the namespace defined in step 2 of the Kata.
+```
+kubectl describe deployment mvc-deployment -n my-namespace
+```
 
-### 6. Verify that Web API deployment is created
-`kubectl describe deployment api-deployment`
-
-Just to explain: <br/>
-`kubectl describe` - Instructs the Kubernetes CLI to fetch metadata related to one or more resources via the API Server. <br/>
-`deployment api-backend` - Indicates that we want to work with the deployment objects named "api-backend"
-
-## 7. Verify that MVC deployment is created
-`kubectl describe deployment mvc-deployment`
-
+## 10. Cleaning up
+You can use the same manifests that were written to create the K8s resources to delete them as well.  If you wish to clean up after doing this Kata then you can do so by simply running the following commands.  Simply modify *namespace-file.yml* and *deployment-file.yml* to reflect the names of the files that you created.
+```
+kubectl delete -f ./deployment-file.yml
+kubectl delete -f ./namespace-file.yml
+```
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
