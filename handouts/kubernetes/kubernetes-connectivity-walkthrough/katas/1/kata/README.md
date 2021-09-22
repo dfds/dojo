@@ -137,7 +137,7 @@ FROM configure-stage as authentication-stage
 CMD saml2aws login && bash
 ```
 ### 12. Build & run container image
-Now that we have finalized our `Dockerfile` we can build it out via the `docker build` command and launch it using `docker run` as shown below.  Please remember to replace DFDS_USERNAME and DFDS_PASSWORD with your credentials.  The user name should be provided in UPN format, for example pwes@dfds.com.
+Now that we have finalized our `Dockerfile` we can build it out via the `docker build` command and launch it using `docker run` as shown below.  Please remember to replace DFDS_USERNAME and DFDS_PASSWORD with your credentials.  The user name should be provided in UPN format, for example abcd@dfds.com.
 
 ```
 docker build . -t kubectl-kata:latest
