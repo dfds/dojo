@@ -49,18 +49,28 @@ Just to explain: <br/>
 `spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
 `spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
 
-### 3. Add s3bucket.yaml with your S3 bucket configuration
+### 3. Deploy the ProviderConfig manifest
+
+Deploy this manifest to our cluster. ProviderConfigs exist at the cluster level and can not be namespaced
+
+```
+kubectl apply -f providerconfig.yaml
+```
+
+Verify that the providerconfig exists
+
+```
+kubectl get providerconfig.aws.crossplane.io
+```
+
+### 4. Create s3bucket.yaml that keeps your S3 bucket configuration on your filesystem
 Once Crossplane has gotten a valid ProviderConfig it is able to begin provisioning resources in your AWS account. To create a S3 bucket we need to add the following:
 
 ```
 apiVersion: s3.aws.crossplane.io/v1beta1
 kind: Bucket
 metadata:
-  name: dfds-crossplane-bucket
-  annotations:
-    # This will be the actual bucket name. It must be globally unique, so you
-    # probably want to change it before trying to apply this example.
-    # crossplane.io/external-name: crossplane-example-bucket
+  name: your-test-bucket
 spec:
   forProvider:
     acl: public-read
@@ -83,27 +93,72 @@ spec:
 
 Just to explain: <br/>
 `kind: Bucket` - is the type of resource we want to provision<br/>
+`metadata: name: your-test-bucket` - is the name of the resource your creating. Replace the value with a name that is globally unique. You might need to do a couple of attempts before you find a good name <br/>
 `spec: forProvider:` - contains the configuration to be passed by the provider in charge of provisioning the S3 Bucket<br/>
 `spec: providerConfigRef: name: aws-default` - points to the ProviderConfig used for provisioning the S3 Bucket<br/>
 
-### 4. Upload index.html to S3 bucket
-[Text]
+
+### 5. Deploy the S3 bucket manifest
+
+We will deploy manifest into our cluster
 
 ```
-aws s3 cp . s3://dfds-crossplane-bucket --recursive --acl public-read
+kubectl apply -f s3bucket.yaml
 ```
 
-### 5. Verify that index.html has been uploaded to S3 bucket
-[Text]
+### 6. Upload index.html to S3 bucket
+Upload content to S3 bucket using the AWS CLI:
 
 ```
-aws ls dfds-crossplane-bucket
+aws s3 cp index.html s3://your-test-bucket --acl public-read
 ```
 
-### 5. Change name of bucket
+**Note**: Replace your-test-bucket with the name of the bucket you created in step 4
 
-### 6. Delete bucket
+### 7. Verify that index.html has been uploaded to S3 bucket
+The following AWS command will list the content of the bucket
 
+```
+aws ls your-test-bucket
+```
+
+**Note**: Replace your-test-bucket with the name of the bucket you created in step 4
+### 8. Update S3 bucket configurations
+Update ACL configuration from public-read to private
+
+```
+apiVersion: s3.aws.crossplane.io/v1beta1
+kind: Bucket
+metadata:
+  name: your-test-bucket
+spec:
+  forProvider:
+    acl: private
+...
+```
+
+### 9. Observe sync status
+
+Describe the S3 bucket to see that there has been a successful request to update the external resource
+
+```
+kubectl describe bucket your-test-bucket
+```
+### 10. Cleanup resources
+
+We should clean up resources so that we do not incur any unnecessary costs
+
+```
+kubectl delete -f s3bucket.yaml
+```
+Check if S3 bucket has been deleted:
+```
+kubectl get bucket
+```
+If no results returned, then proceed with deleting the ProviderConfig resource:
+```
+kubectl delete -f provider-config.yaml
+```
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
