@@ -1,0 +1,30 @@
+apiVersion: tf.crossplane.io/v1alpha1
+kind: Workspace
+metadata:
+  name: example-inline
+  annotations:
+    # The terraform workspace will be named 'coolbucket'. If you omitted this
+    # annotation it would be derived from metadata.name - i.e. 'example-inline'.
+    # crossplane.io/external-name: coolbucket
+spec:
+  providerConfigRef:
+    name: tf-default
+  forProvider:    
+    # For simple cases you can use an inline source to specify the content of
+    # main.tf as opaque, inline HCL.
+    source: Inline
+    module: |
+      // Outputs are written to the connection secret.
+
+      resource "aws_s3_bucket" "b" {
+        bucket = "dfds-crossplane-tf-bucket"
+        acl    = "private"  
+      }
+
+      output "url" {
+        value       = aws_s3_bucket.b.id
+      }
+      
+  writeConnectionSecretToRef:
+    namespace: default
+    name: terraform-workspace-example-inline
