@@ -7,9 +7,9 @@ This training exercise is a **beginner-level** course on Crossplane that serves 
 These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-* [Docker](https://www.docker.com/get-started)
+* [Docker](https://www.docker.com/get-started) and kubernetes feature is activated
 * [AWS CLI](https://aws.amazon.com/cli/)
-* [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+* [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) ??
 * [Crossplane](https://github.com/dfds/dojo/blob/master/workshops/crossplane-sre-deep-dive/katas/1/kata/README.md)
 * [Crossplane/provider-aws](https://github.com/dfds/dojo/blob/master/workshops/crossplane-sre-deep-dive/katas/2/kata/README.md)
 
