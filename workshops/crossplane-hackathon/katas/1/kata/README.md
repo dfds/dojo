@@ -25,8 +25,8 @@ Create a file called `index.html` to act as the landing page for your personal w
 </html>
 ```
 
-### 2. Add ProviderConfig.yaml with your AWS credentials
-In order to enable Crossplane to provision a S3 bucket in your AWS account we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `provider-config.yaml` and add the following content:
+### 2. Add providerconfig.yaml with your AWS credentials
+In order to enable Crossplane to provision a S3 bucket in your AWS account we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `providerconfig.yaml` and add the following content:
 
 ```
 ---
@@ -119,7 +119,7 @@ aws s3 cp index.html s3://your-test-bucket --acl public-read
 The following AWS command will list the content of the bucket
 
 ```
-aws ls your-test-bucket
+aws s3 ls your-test-bucket
 ```
 
 **Note**: Replace your-test-bucket with the name of the bucket you created in step 4
@@ -157,7 +157,7 @@ kubectl get bucket
 ```
 If no results returned, then proceed with deleting the ProviderConfig resource:
 ```
-kubectl delete -f provider-config.yaml
+kubectl delete -f providerconfig.yaml
 ```
 
 ## Want to help make our training material better?

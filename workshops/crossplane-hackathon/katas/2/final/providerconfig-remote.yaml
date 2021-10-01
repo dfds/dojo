@@ -1,0 +1,30 @@
+apiVersion: tf.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: tf-default
+spec:
+  credentials:
+  - filename: aws-tf-creds
+    source: Secret
+    secretRef:
+      namespace: default
+      name: aws-creds
+      key: key        
+  configuration: |
+      terraform {
+        backend "s3" {
+          bucket                      = "crossplane-samdi-state"
+          key                         = "main/terraform.tfstate"
+          region                      = "eu-central-1"
+          force_path_style            = true
+          dynamodb_table              = "terraform-locks"
+          encrypt                     = true
+          shared_credentials_file     = "aws-tf-creds"
+        }
+      }
+
+      provider "aws" {
+        shared_credentials_file     = "aws-tf-creds"
+        region                      = "eu-central-1"   
+        s3_force_path_style         = true    
+      }

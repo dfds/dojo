@@ -21,7 +21,7 @@ spec:
           skip_metadata_api_check     = true
           force_path_style            = true
           dynamodb_table              = "terraform-locks"
-          dynamodb_endpoint           = "http://host.docker.internal:4566"
+          # dynamodb_endpoint           = "http://host.docker.internal:4566"
           encrypt                     = true
         }
       }
