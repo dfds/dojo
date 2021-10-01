@@ -37,10 +37,12 @@ After a small period of time these should report as Healthy
 
 ### 3. Update provider to latest version
 
-We intentionally installed an older version of the AWS provider. We should update to the latest version. First retrieve the NAME of the deployed provider.pkg and run the update command using the Crossplane CLI
+We intentionally installed an older version of the AWS provider. We should update to the latest version. First retrieve the NAME of the deployed provider.pkg and run the update command using the Crossplane CLI. 
+
+You can find the list of providers (and links to versions) in the Crossplane documentation at: <https://crossplane.io/docs/v1.4/concepts/providers.html>
 
 ```
-kubectl crossplane update provider crossplane-provider-aws v0.19.0
+kubectl crossplane update provider [provider-name] [new-version]
 ```
 
 ### 4. Verify provider update and revision history
