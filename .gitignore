@@ -19,3 +19,9 @@
 
 # Credential files
 creds.*
+
+# Localstack
+.localstack
+
+# Terraform
+.terraform

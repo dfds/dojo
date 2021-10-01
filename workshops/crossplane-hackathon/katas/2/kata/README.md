@@ -23,8 +23,6 @@ We need to install the Terraform provider for crossplane to be able to deploy AW
 kubectl crossplane install provider crossplane/provider-aws:v0.18.1
 ```
 
-
-
 ### 3. Create index.html page for website
 Create a file called `index.html` to act as the landing page for your personal website and add the following content:
 
@@ -97,13 +95,12 @@ spec:
     # main.tf as opaque, inline HCL.
     source: Inline
     module: |
-      // Outputs are written to the connection secret.
-
       resource "aws_s3_bucket" "b" {
         bucket = "your-test-bucket"
         acl    = "public-read"  
       }
 
+      // Outputs are written to the connection secret.
       output "url" {
         value       = aws_s3_bucket.b.id
       }
@@ -114,7 +111,10 @@ spec:
 ```
 
 Just to explain: <br/>
-`kind: Workspace` - is terraform workspace to keep the group of the resources you want to provision<br/>
+`kind: Workspace` - is Terraform workspace to keep the group of the resources you want to provision<br/>
+`spec: providerConfigRef: name: tf-default` - points to the ProviderConfig used for provisioning the S3 Bucket<br/>
+`spec: forProvider:` - contains the configuration to be passed by the provider in charge of provisioning the S3 Bucket<br/>
+`spec: writeConnectionSecretToRef:` - specifies the secret object that will keep the Output from Terraform module<br/>
 
 ### 7. Deploy the S3 bucket manifest
 We will deploy manifest into our cluster
