@@ -7,29 +7,28 @@ spec:
   - filename: aws-tf-creds.json
     source: Secret
     secretRef:
-      namespace: crossplane-system
+      namespace: default
       name: aws-tf-creds
-      key: key        
+      key: key
   configuration: |
       terraform {
         backend "s3" {
           bucket                      = "crossplane-samdi-tfstate"
           key                         = "main/terraform.tfstate"
-          region                      = "eu-west-1"
+          region                      = "us-east-1"
           endpoint                    = "http://host.docker.internal:4566"
           skip_credentials_validation = true
           skip_metadata_api_check     = true
           force_path_style            = true
           dynamodb_table              = "terraform-locks"
-          # dynamodb_endpoint           = "http://host.docker.internal:4566"
+          dynamodb_endpoint           = "http://host.docker.internal:4566"
           encrypt                     = true
         }
       }
 
       provider "aws" {
-        region                      = "eu-west-1"
-        access_key                  = "dummy"
-        secret_key                  = "dummy"
+        region                      = "us-east-1"
+
         skip_credentials_validation = true
         skip_requesting_account_id  = true
         skip_metadata_api_check     = true
