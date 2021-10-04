@@ -9,7 +9,6 @@ These instructions will help you prepare for the kata and ensure that your train
 ### Prerequisites
 * [Docker](https://www.docker.com/get-started) and kubernetes feature is activated
 * [AWS CLI](https://aws.amazon.com/cli/)
-* [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 
 ## Exercise
 In the first part of this assignment will see you setup the [LocalStack](https://github.com/localstack/localstack) enviornment on your machine. Localstack enables you to provision AWS resources on your machine without Internet connection.
@@ -45,98 +44,28 @@ docker-compose up
 ### 3. Create Terraform state configurations for your LocalStack environment ## Change to use plain AWS CLI commands:
 You will configure an S3 bucket to keep the Terraform state and a DynamoDB to keep the Terraform locks
 
-Create tf.yaml in your local filesystem:
+Run the following commands in the AWS CLI enabled terminal:
 ```
-provider "aws" {
-  region                      = "us-east-1"
-  access_key                  = "foo"
-  secret_key                  = "bar"
-  skip_credentials_validation = true
-  skip_requesting_account_id  = true
-  skip_metadata_api_check     = true
-  s3_force_path_style         = true
-  endpoints {
-    apigateway     = "http://host.docker.internal:4566"
-    cloudformation = "http://host.docker.internal:4566"
-    cloudwatch     = "http://host.docker.internal:4566"
-    dynamodb       = "http://host.docker.internal:4566"
-    es             = "http://host.docker.internal:4566"
-    firehose       = "http://host.docker.internal:4566"
-    iam            = "http://host.docker.internal:4566"
-    kinesis        = "http://host.docker.internal:4566"
-    lambda         = "http://host.docker.internal:4566"
-    route53        = "http://host.docker.internal:4566"
-    redshift       = "http://host.docker.internal:4566"
-    s3             = "http://host.docker.internal:4566"
-    secretsmanager = "http://host.docker.internal:4566"
-    ses            = "http://host.docker.internal:4566"
-    sns            = "http://host.docker.internal:4566"
-    sqs            = "http://host.docker.internal:4566"
-    ssm            = "http://host.docker.internal:4566"
-    stepfunctions  = "http://host.docker.internal:4566"
-    sts            = "http://host.docker.internal:4566"
-  }
-}
+aws --endpoint-url=http://host.docker.internal:4566 s3api create-bucket --bucket terraform-state --region us-east-1 --acl private
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "terraform-state"
-  acl    = "private"
+aws --endpoint-url=http://host.docker.internal:4566 s3api put-bucket-encryption \
+    --bucket terraform-state \
+    --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
 
-  versioning {
-    enabled = true
-  }
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
+aws --endpoint-url=http://host.docker.internal:4566 s3api put-bucket-versioning --bucket terraform-state --versioning-configuration Status=Enabled
 
-  lifecycle {
-    prevent_destroy = true
-  }
-}
 
-resource "aws_s3_bucket_public_access_block" "terraform_state_access" {
-  bucket = aws_s3_bucket.terraform_state.id
+# Dynamodb
+aws --endpoint-url=http://host.docker.internal:4566 dynamodb create-table \
+    --table-name terraformlock \
+    --attribute-definitions AttributeName=LockID,AttributeType=S \
+    --key-schema AttributeName=LockID,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
 
-  block_public_acls       = true
-  ignore_public_acls      = true
-  block_public_policy     = true
-  restrict_public_buckets = true
-}
-
-resource "aws_dynamodb_table" "terraform_state_lock" {
-  name           = "terraformlock"
-  read_capacity  = 5
-  write_capacity = 5
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
-```
-### 4. Create Terraform state resources for your Terraform setup in your LocalStack environment
-Apply Terraform resources in your LocalStack environment:
 
 ```
-terraform init
-```
-
-```
-terraform apply 
-```
-
-hit yes when prompted
-
-
-
-### 5. Check resources running in LocalStack
+### 4. Check resources running in LocalStack
 
 Configure you CLI environment as follows:
 ```

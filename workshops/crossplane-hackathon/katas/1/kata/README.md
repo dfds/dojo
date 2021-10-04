@@ -7,15 +7,16 @@ This training exercise is a **beginner-level** course on Crossplane that serves 
 These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
+* Kata 0
 * [Docker](https://www.docker.com/get-started) and kubernetes feature is activated
 * [AWS CLI](https://aws.amazon.com/cli/)
-* [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) ??
 * [Crossplane](https://github.com/dfds/dojo/blob/master/workshops/crossplane-sre-deep-dive/katas/1/kata/README.md)
 * [Crossplane/provider-aws](https://github.com/dfds/dojo/blob/master/workshops/crossplane-sre-deep-dive/katas/2/kata/README.md)
 
 ## Exercise
 Your first assignment will see you provision a S3 bucket via the Crossplane AWS provider to act as storage for your very own Hello website!. Sounds simple, no? Let's start then!
 
+**Important note:** In this guide, you can choose between running Crossplane Terraform against AWS Cloud setup or running against LocalStack setup.
 ### 1. Create index.html page for website
 Create a file called `index.html` to act as the landing page for your personal website and add the following content:
 
@@ -28,6 +29,7 @@ Create a file called `index.html` to act as the landing page for your personal w
 ### 2. Add providerconfig.yaml with your AWS credentials
 In order to enable Crossplane to provision a S3 bucket in your AWS account we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `providerconfig.yaml` and add the following content:
 
+Option 1: Run against AWS Cloud:
 ```
 ---
 apiVersion: aws.crossplane.io/v1beta1
@@ -49,6 +51,9 @@ Just to explain: <br/>
 `spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
 `spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
 
+Option 2: Run against LocalStack:
+**TODO:** Code example
+
 ### 3. Deploy the ProviderConfig manifest
 
 Deploy this manifest to our cluster. ProviderConfigs exist at the cluster level and can not be namespaced
@@ -65,6 +70,7 @@ kubectl get providerconfig.aws.crossplane.io
 
 ### 4. Create s3bucket.yaml that keeps your S3 bucket configuration on your filesystem
 Once Crossplane has gotten a valid ProviderConfig it is able to begin provisioning resources in your AWS account. To create a S3 bucket we need to add the following:
+
 
 ```
 apiVersion: s3.aws.crossplane.io/v1beta1

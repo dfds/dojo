@@ -7,11 +7,13 @@ This training exercise is a **intermediate-level** course on Crossplane that ser
 These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
+* Kata 0
 * Kata 1
-* [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+* An Amazon Account, when choosing to run against AWS Cloud
+* [Crossplane/provider-terraform](https://github.com/crossplane-contrib/provider-terraform)
 
 ## Exercise
-This assignment will see you provision a S3 bucket via the Crossplane Terraform provider to act as storage for your very own Hello website. This will showcase how The Terraform provider for Crossplane can be used to consuming terraform modules and configurations from Crossplane setup in Kubernetes.
+This assignment will see you provision a S3 bucket via the Crossplane Terraform provider to act as storage for your very own Hello website. This will showcase how The Terraform provider for Crossplane can be used to consuming terraform modules and configurations from Crossplane setup in Kubernetes. In this guide, you can choose between running Crossplane Terraform against AWS Cloud setup or running against LocalStack setup.
 
 ### 1. Prepare the Terraform environment
 The Terraform provider require remote state, so will be creating 
@@ -33,6 +35,8 @@ Create a file called `index.html` to act as the landing page for your personal w
 ```
 
 ### 4. Add providerconfig.yaml
+
+Option 1: Run against AWS Cloud:
 ```
 apiVersion: tf.crossplane.io/v1alpha1
 kind: ProviderConfig
@@ -66,7 +70,68 @@ spec:
       }
 ```      
 
+Option 2: Run against LocalStack:
+```
+apiVersion: tf.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: tf-default
+spec:
+  credentials:
+  - filename: aws-tf-creds.json
+    source: Secret
+    secretRef:
+      namespace: default
+      name: aws-tf-creds
+      key: key
+  configuration: |
+      terraform {
+        backend "s3" {
+          bucket                      = "crossplane-samdi-tfstate"
+          key                         = "main/terraform.tfstate"
+          region                      = "us-east-1"
+          endpoint                    = "http://host.docker.internal:4566"
+          skip_credentials_validation = true
+          skip_metadata_api_check     = true
+          force_path_style            = true
+          dynamodb_table              = "terraform-locks"
+          dynamodb_endpoint           = "http://host.docker.internal:4566"
+          encrypt                     = true
+        }
+      }
 
+      provider "aws" {
+        region                      = "us-east-1"
+
+        skip_credentials_validation = true
+        skip_requesting_account_id  = true
+        skip_metadata_api_check     = true
+        s3_force_path_style         = true
+        endpoints {
+          apigateway     = "http://host.docker.internal:4566"
+          cloudformation = "http://host.docker.internal:4566"
+          cloudwatch     = "http://host.docker.internal:4566"
+          dynamodb       = "http://host.docker.internal:4566"
+          es             = "http://host.docker.internal:4566"
+          ec2            = "http://host.docker.internal:4566"
+          firehose       = "http://host.docker.internal:4566"
+          iam            = "http://host.docker.internal:4566"
+          kinesis        = "http://host.docker.internal:4566"
+          lambda         = "http://host.docker.internal:4566"
+          route53        = "http://host.docker.internal:4566"
+          redshift       = "http://host.docker.internal:4566"
+          s3             = "http://host.docker.internal:4566"
+          secretsmanager = "http://host.docker.internal:4566"
+          ses            = "http://host.docker.internal:4566"
+          sns            = "http://host.docker.internal:4566"
+          sqs            = "http://host.docker.internal:4566"
+          ssm            = "http://host.docker.internal:4566"
+          stepfunctions  = "http://host.docker.internal:4566"
+          sts            = "http://host.docker.internal:4566"
+        }
+      }
+
+```
 ### 5. Deploy the ProviderConfig manifest
 Deploy this manifest to our cluster. ProviderConfigs exist at the cluster level and can not be namespaced
 
