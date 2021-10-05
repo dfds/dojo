@@ -111,7 +111,7 @@ kubectl get crd | grep dfds
 
 These CRD's should correlate with the names and claim names from our XRD
 
-### 3. Create a composition.yaml
+### 4. Create a composition.yaml
 
 Now we will create a composition manifest which declares the resources that are to be created with base settings/defaults
 
@@ -215,7 +215,7 @@ spec:
   writeConnectionSecretsToNamespace: crossplane-system
 ```
 
-### 4. Apply the composition manifest
+### 5. Apply the composition manifest
 
 Apply the manifest to deploy the composition to your cluster
 
@@ -223,7 +223,7 @@ Apply the manifest to deploy the composition to your cluster
 kubectl apply -f composition.yaml
 ```
 
-### 5. Verify that the composition exists
+### 6. Verify that the composition exists
 
 Verify that the composition now exists in your cluster
 
