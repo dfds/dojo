@@ -52,7 +52,30 @@ Just to explain: <br/>
 `spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
 
 Option 2: Run against LocalStack:
-**TODO:** Code example
+
+Run the following to obtain the correct URL to place in the `static` attribute in the yaml below:
+```
+export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services localstack)
+export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+echo http://$NODE_IP:$NODE_PORT
+```
+---
+apiVersion: aws.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default-aws
+spec:
+  endpoint:
+    hostnameImmutable: true
+    url:
+      type: Static
+      static: http://1.2.3.4:56789
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: default
+      name: aws-creds
+      key: creds
 
 ### 3. Deploy the ProviderConfig manifest
 
@@ -82,7 +105,8 @@ spec:
     acl: public-read
     locationConstraint: us-east-1
     publicAccessBlockConfiguration:
-      blockPublicPolicy: false    
+      blockPublicPolicy: false
+      blockPublicAcls: true
     corsConfiguration:
       corsRules:
         - allowedMethods:
@@ -94,7 +118,7 @@ spec:
           exposeHeaders:
             - "x-amz-server-side-encryption"
   providerConfigRef:
-    name: aws-default
+    name: default-aws
 ```
 
 Just to explain: <br/>
@@ -116,7 +140,7 @@ kubectl apply -f s3bucket.yaml
 Upload content to S3 bucket using the AWS CLI:
 
 ```
-aws s3 cp index.html s3://your-test-bucket --acl public-read
+aws s3 --endpoint-url=$LOCALSTACK_URL cp index.html s3://your-test-bucket --acl public-read
 ```
 
 **Note**: Replace your-test-bucket with the name of the bucket you created in step 4
@@ -125,7 +149,7 @@ aws s3 cp index.html s3://your-test-bucket --acl public-read
 The following AWS command will list the content of the bucket
 
 ```
-aws s3 ls your-test-bucket
+aws s3 --endpoint-url=$LOCALSTACK_URL ls your-test-bucket
 ```
 
 **Note**: Replace your-test-bucket with the name of the bucket you created in step 4
@@ -154,13 +178,26 @@ kubectl describe bucket your-test-bucket
 
 We should clean up resources so that we do not incur any unnecessary costs
 
+Delete all objects from inside the bucket
+```
+aws s3 rm --endpoint-url=$LOCALSTACK_URL s3://your-test-bucket --recursive
+```
+
+Delete the bucket using the manifest
 ```
 kubectl delete -f s3bucket.yaml
 ```
-Check if S3 bucket has been deleted:
+
+Check if S3 bucket has been deleted from the cluster:
 ```
 kubectl get bucket
 ```
+
+Check if it has also been deleted from localstack:
+```
+aws s3 --endpoint-url=$LOCALSTACK_URL ls
+```
+
 If no results returned, then proceed with deleting the ProviderConfig resource:
 ```
 kubectl delete -f providerconfig.yaml
