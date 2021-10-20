@@ -12,7 +12,7 @@ namespace app.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("http://server:5000/api/HelloWorld"))
+                using (var response = await httpClient.GetAsync("http://kata2:5000/api/HelloWorld"))
                 {
                     ViewData["HelloMessage"] = await response.Content.ReadAsStringAsync();
                 }

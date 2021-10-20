@@ -1,1 +1,1 @@
-docker build -t docker-training-api:latest . 
+docker build -t docker-training-webapi:latest . 

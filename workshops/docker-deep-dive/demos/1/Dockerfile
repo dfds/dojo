@@ -8,8 +8,8 @@ FROM ubuntu:${UBUNTU_VERSION}
 ENV DEBIAN_FRONTEND=noninteractive
 
 #Change source protocol from http(s) to ftp to avoid problems with certain internal firewall and cloud vendors
-RUN sed -i s/http/ftp/ /etc/apt/sources.list
-RUN sed -i s/https/ftp/ /etc/apt/sources.list
+#RUN sed -i s/http/ftp/ /etc/apt/sources.list
+#RUN sed -i s/https/ftp/ /etc/apt/sources.list
 
 # Add support for en_US UTF8
 RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
@@ -47,12 +47,12 @@ RUN sudo apt-get update && sudo apt-get install -y lsb-release
 RUN sudo apt-get update && sudo apt-get install -y dirmngr
 
 #Install dotnet core SDK
-RUN sudo apt-get update && sudo apt-get install -y dotnet-sdk-2.2
+RUN sudo apt-get update && sudo apt-get install -y dotnet-sdk-3.1
 
 # Install PowerShell
 RUN sudo apt-get update && sudo apt-get install -y powershell
 
 #Install Azure CLI
-RUN AZ_REPO=$(lsb_release -cs) 
-RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ jessie main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
-RUN sudo apt-get update && sudo apt-get install azure-cli
+#RUN AZ_REPO=$(lsb_release -cs) 
+#RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ jessie main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+#RUN sudo apt-get update && sudo apt-get install azure-cli

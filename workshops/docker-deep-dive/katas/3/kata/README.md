@@ -42,7 +42,7 @@ namespace app.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("http://server:5000/api/HelloWorld"))
+                using (var response = await httpClient.GetAsync("http://kata2:5000/api/HelloWorld"))
                 {
                     ViewData["HelloMessage"] = await response.Content.ReadAsStringAsync();
                 }
@@ -123,8 +123,12 @@ ENTRYPOINT ["dotnet", "run"]
 ## 4. Build the image
 `docker build -t docker-training-mvc .`
 
-## 5. Run your container
-`docker run -d --name kata3 docker-training-mvc`
+## 5. Create a custom network
+`docker network create my-network`
+
+## 5. Run your containers
+`docker run -d --network my-network --name kata2 docker-training-webapi`
+`docker run -d -p 5000 --network my-network --name kata3 docker-training-mvc`
 
 Just to explain: <br/>
 `docker run` - starts an image <br/>
@@ -151,8 +155,9 @@ If you want to follow the logs: <br/>
 To restart it: <br/>
 `docker start kata3`
 
-## 10. Remove the container
-`docker rm kata3`
+## 10. Remove the containers
+`docker rm kata2 -f`
+`docker rm kata3 -f`
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

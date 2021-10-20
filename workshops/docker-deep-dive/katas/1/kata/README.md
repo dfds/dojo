@@ -28,11 +28,13 @@ You can use `vi` to edit the file: <br/>
 `vi hello.ps1` will create the file and open the editor.
 
 ```
-while($True)
-{	
-    Write-Host "Hello"
+$val = 1
 
-    Start-Sleep -s 10
+while($val -ne 10)
+{	
+	Write-Host "Hello"
+        
+    $val++
 }
 ```
 
@@ -44,7 +46,7 @@ FROM toban/docker-training-base:latest
 
 COPY hello.ps1 .
 
-CMD ["pwsh", "hello.ps1"]
+ENTRYPOINT ["pwsh", "./hello.ps1"]
 ```
 
 ## 4. Build the image

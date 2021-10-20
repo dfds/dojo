@@ -1,1 +1,1 @@
-docker build -t docker-training-frontend:latest . 
+docker build -t docker-training-mvc:latest . 

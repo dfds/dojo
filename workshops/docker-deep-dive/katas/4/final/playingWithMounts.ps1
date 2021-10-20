@@ -1,1 +1,1 @@
-docker run -d --name docker-training-webapi -v /path/to/app/directory:/app docker-training-webapi:latest
+docker run -d --name docker-training-bind-mount -v /c/temp:/my-mounted-temp-dir docker-training-webapi:latest

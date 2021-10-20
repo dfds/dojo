@@ -2,6 +2,7 @@ FROM toban/docker-training-base:latest
 
 # Set environment variables
 ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_ENVIRONMENT=Development
 
 #Expose required ports
 EXPOSE 5000
