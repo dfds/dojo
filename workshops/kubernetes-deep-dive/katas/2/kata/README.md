@@ -49,19 +49,20 @@ Just to explain: <br/>
 `kubectl create -f my-pod.yml`
 
 ### 4. Inspect the pod configuration. Notice how k8s has added ALOT of meta data to ensure it can maintain our desired state
-`kubectl inspect pod my-pod`
+`kubectl describe pod my-pod`
 
 ### 5. Edit the pod by updating the yaml file with a custom annotation (be mindful of the indendation when you add this)
 ```
 metadata:
-  annotation: my-annotation
+  annotations: 
+    mykey: "my-annotation"
 ```
 
 ### 6. Re-applying manifest to update existing pod
 `kubectl apply -f my-pod.yml`
 
 ### 7. Inspect the pod configuration to verify that the new annotation has been applied
-`kubectl inspect pod my-pod`
+`kubectl describe pod my-pod`
 
 
 ### 8. Delete the pod once your done

@@ -121,7 +121,8 @@ spec:
         image: toban/k8s-training-frontend:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 5000
+          - name: http
+            containerPort: 5000
       restartPolicy: Always
 ```
 
@@ -158,8 +159,8 @@ kubectl describe deployment mvc-deployment -n my-namespace
 ## 10. Cleaning up
 You can use the same manifests that were written to create the K8s resources to delete them as well.  If you wish to clean up after doing this Kata then you can do so by simply running the following commands.  Simply modify *namespace-file.yml* and *deployment-file.yml* to reflect the names of the files that you created.
 ```
-kubectl delete -f ./deployment-file.yml
-kubectl delete -f ./namespace-file.yml
+kubectl delete -f ./solution_deployments.yml
+kubectl delete -f ./k8s-namespace.yml
 ```
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

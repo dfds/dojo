@@ -30,6 +30,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mvc-svc
+  namespace: my-namespace
 spec:
   type: NodePort
   selector:
@@ -37,7 +38,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 80
+    targetPort: 5000
 ```
 
 Just to explain: <br/>
@@ -61,6 +62,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: api-svc
+  namespace: my-namespace
 spec:
   type: ClusterIP
   selector:
@@ -68,7 +70,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 80
+    targetPort: ¨5000
 ```
 
 Just to explain: <br/>
@@ -90,7 +92,8 @@ Just to explain: <br/>
 `kubectl get ep api-svc`
 
 ### 9. Verify that api-svc and mvc-svc has pods to route traffic too
-`kubectl get pods -l app=api, app=mvc`
+`kubectl get pods -l app=api`
+`kubectl get pods -l app=mvc`
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

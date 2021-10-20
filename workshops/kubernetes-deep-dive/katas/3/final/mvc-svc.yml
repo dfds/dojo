@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mvc-svc
+  namespace: my-namespace
 spec:
   type: NodePort
   selector:
@@ -9,4 +10,4 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 80
+    targetPort: 5000
