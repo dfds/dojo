@@ -25,7 +25,7 @@ Create a file called `index.html` to act as the landing page for your personal w
 </html>
 ```
 
-### 2. Install the Terraform provider
+### 2. Install the AWS provider
 We need to install the Terraform provider for crossplane to be able to deploy AWS resources
 **Note:** We are using a custom build for compatibility with Localstack
 
@@ -33,7 +33,25 @@ We need to install the Terraform provider for crossplane to be able to deploy AW
 kubectl crossplane install provider muvaf/provider-aws:v0.19.1-dfds.1
 ```
 
-### 3. Add providerconfig.yaml with your AWS credentials
+### 3. Create a secret containing AWS credentials
+
+Create a creds.conf file with the following content:
+
+```
+[default]
+aws_access_key_id = test
+aws_secret_access_key = test
+
+```
+
+Run the following command to populate a Kubernetes secret using the above file:
+
+```
+kubectl create secret generic aws-creds --from-file=creds=./creds.conf
+
+```
+
+### 4. Add providerconfig.yaml with your AWS credentials
 In order to enable Crossplane to provision a S3 bucket in your AWS account we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `providerconfig.yaml` and add the following content:
 
 Run the following to obtain the correct URL to place in the `static` attribute in the yaml below:
@@ -69,7 +87,7 @@ Just to explain: <br/>
 `spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
 `spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
 
-### 3. Deploy the ProviderConfig manifest
+### 5. Deploy the ProviderConfig manifest
 
 Deploy this manifest to our cluster. ProviderConfigs exist at the cluster level and can not be namespaced
 
@@ -83,7 +101,7 @@ Verify that the providerconfig exists
 kubectl get providerconfig.aws.crossplane.io
 ```
 
-### 4. Create s3bucket.yaml that keeps your S3 bucket configuration on your filesystem
+### 6. Create s3bucket.yaml that keeps your S3 bucket configuration on your filesystem
 Once Crossplane has gotten a valid ProviderConfig it is able to begin provisioning resources in your AWS account. To create a S3 bucket we need to add the following:
 
 
@@ -120,7 +138,7 @@ Just to explain: <br/>
 `spec: providerConfigRef: name: aws-default` - points to the ProviderConfig used for provisioning the S3 Bucket<br/>
 
 
-### 5. Deploy the S3 bucket manifest
+### 7. Deploy the S3 bucket manifest
 
 We will deploy manifest into our cluster
 
@@ -128,7 +146,7 @@ We will deploy manifest into our cluster
 kubectl apply -f s3bucket.yaml
 ```
 
-### 6. Upload index.html to S3 bucket
+### 8. Upload index.html to S3 bucket
 Upload content to S3 bucket using the AWS CLI:
 
 ```
@@ -137,7 +155,7 @@ aws s3 --endpoint-url=$LOCALSTACK_URL cp index.html s3://your-test-bucket --acl 
 
 **Note**: Replace your-test-bucket with the name of the bucket you created in step 4
 
-### 7. Verify that index.html has been uploaded to S3 bucket
+### 9. Verify that index.html has been uploaded to S3 bucket
 The following AWS command will list the content of the bucket
 
 ```
@@ -145,7 +163,7 @@ aws s3 --endpoint-url=$LOCALSTACK_URL ls your-test-bucket
 ```
 
 **Note**: Replace your-test-bucket with the name of the bucket you created in step 4
-### 8. Update S3 bucket configurations
+### 10. Update S3 bucket configurations
 Update ACL configuration from public-read to private
 
 ```
@@ -159,14 +177,14 @@ spec:
 ...
 ```
 
-### 9. Observe sync status
+### 11. Observe sync status
 
 Describe the S3 bucket to see that there has been a successful request to update the external resource
 
 ```
 kubectl describe bucket your-test-bucket
 ```
-### 10. Cleanup resources
+### 12. Cleanup resources
 
 We should clean up resources so that we do not incur any unnecessary costs
 
