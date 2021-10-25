@@ -42,6 +42,8 @@ export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].
 export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
 echo http://$NODE_IP:$NODE_PORT
 ```
+
+```
 ---
 apiVersion: aws.crossplane.io/v1beta1
 kind: ProviderConfig
@@ -59,6 +61,7 @@ spec:
       namespace: default
       name: aws-creds
       key: creds
+```
 
 Just to explain: <br/>
 `metadata: name: default-aws` - is the name of the resource your creating<br/>
