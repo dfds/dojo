@@ -16,7 +16,6 @@ These instructions will help you prepare for the kata and ensure that your train
 ## Exercise
 Your first assignment will see you provision a S3 bucket via the Crossplane AWS provider to act as storage for your very own Hello website!. Sounds simple, no? Let's start then!
 
-**Important note:** In this guide, you can choose between running Crossplane Terraform against AWS Cloud setup or running against LocalStack setup.
 ### 1. Create index.html page for website
 Create a file called `index.html` to act as the landing page for your personal website and add the following content:
 
@@ -26,32 +25,16 @@ Create a file called `index.html` to act as the landing page for your personal w
 </html>
 ```
 
-### 2. Add providerconfig.yaml with your AWS credentials
+### 2. Install the Terraform provider
+We need to install the Terraform provider for crossplane to be able to deploy AWS resources
+**Note:** We are using a custom build for compatibility with Localstack
+
+```
+kubectl crossplane install provider muvaf/provider-aws:v0.19.1-dfds.1
+```
+
+### 3. Add providerconfig.yaml with your AWS credentials
 In order to enable Crossplane to provision a S3 bucket in your AWS account we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `providerconfig.yaml` and add the following content:
-
-Option 1: Run against AWS Cloud:
-```
----
-apiVersion: aws.crossplane.io/v1beta1
-kind: ProviderConfig
-metadata:
-  name: aws-default
-spec:
-  credentials:
-    source: Secret
-    secretRef:
-      namespace: default
-      name: aws-creds
-      key: key
-```
-
-Just to explain: <br/>
-`metadata: name: aws-default` - is the name of the resource your creating<br/>
-`spec: credentials: source: Secret` - instructs Crossplane that the credentials will be sourced from a secret<br/>
-`spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
-`spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
-
-Option 2: Run against LocalStack:
 
 Run the following to obtain the correct URL to place in the `static` attribute in the yaml below:
 ```
@@ -76,6 +59,12 @@ spec:
       namespace: default
       name: aws-creds
       key: creds
+
+Just to explain: <br/>
+`metadata: name: default-aws` - is the name of the resource your creating<br/>
+`spec: credentials: source: Secret` - instructs Crossplane that the credentials will be sourced from a secret<br/>
+`spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
+`spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
 
 ### 3. Deploy the ProviderConfig manifest
 
