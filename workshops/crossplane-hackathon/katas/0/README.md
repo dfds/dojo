@@ -11,77 +11,27 @@ These instructions will help you prepare for the kata and ensure that your train
 * [AWS CLI](https://aws.amazon.com/cli/)
 
 ## Exercise
-In the first part of this assignment will see you setup the [LocalStack](https://github.com/localstack/localstack) enviornment on your machine. Localstack enables you to provision AWS resources on your machine without Internet connection.
+In the first part of this assignment will see you setup the [LocalStack](https://github.com/localstack/localstack) environment in your machine's Kubernetes cluster. Localstack enables you to provision AWS resources on your machine without Internet connection.
 In the second part you will provision the AWS resources needed in Kata 2 which basically allow Terraform provider for Crossplane to keep state configurations on your local machine
 
-### 1. Create docker-compose.yml for running localstack in docker container
+
+### 1. Create a values.yaml to enable persistence in Localstack helm chart
+Create and save the following file as values.yaml
 ```
-version: "3.2"
-services:
-  localstack:
-    image: localstack/localstack:latest
-    container_name: localstack
-    ports:
-      - "4563-4599:4563-4599"
-      - "8080:8080"
-    environment:
-      - DATA_DIR=/tmp/localstack/data
-      - DEBUG=1
-      - SERVICES=${SERVICES- }
-      - DISABLE_CORS_CHECKS=1
-    volumes:
-      - "./.localstack:/tmp/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+persistence:
+  enabled: true
 ```
 
-### 2. Start docker container and LocalStack
-Make sure you are in the same directory as docker-compose.yml
-Run the following command:
+### 2. Install Localstack Helm Chart
 ```
-docker-compose up
+helm repo add localstack-repo https://helm.localstack.cloud
+helm upgrade --install localstack localstack-repo/localstack -f values.yaml
 ```
+`TODO: Add a local copy of the helm chart to machines so there is no reliance on Internet connection`
 
-### 3. Create Terraform state configurations for your LocalStack environment ## Change to use plain AWS CLI commands:
-You will configure an S3 bucket to keep the Terraform state and a DynamoDB to keep the Terraform locks
-
-Run the following commands in the AWS CLI enabled terminal:
-```
-aws --endpoint-url=http://host.docker.internal:4566 s3api create-bucket --bucket terraform-state --region us-east-1 --acl private
-
-aws --endpoint-url=http://host.docker.internal:4566 s3api put-bucket-encryption \
-    --bucket terraform-state \
-    --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
-
-
-aws --endpoint-url=http://host.docker.internal:4566 s3api put-bucket-versioning --bucket terraform-state --versioning-configuration Status=Enabled
-
-
-# Dynamodb
-aws --endpoint-url=http://host.docker.internal:4566 dynamodb create-table \
-    --table-name terraformlock \
-    --attribute-definitions AttributeName=LockID,AttributeType=S \
-    --key-schema AttributeName=LockID,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
-
+### 3. Obtain the Localstack Endpoint Port from your Installation
 
 ```
-### 4. Check resources running in LocalStack
-
-Configure you CLI environment as follows:
-```
-aws configure
-
-AWS Access Key ID: dummy 
-AWS Secret Access Key: dummy
-Default region name: us-east-1
-Default output format: <Enter>
-
-```
-Then run AWS command to check terraform-state bucket
-```
-aws --endpoint-url=http://host.docker.internal:4566 s3 ls
-```
-Then run AWS command to check terraformlock bucket
-```
-aws --endpoint-url=http://host.docker.internal:4566 dynamodb list-tables
+export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services localstack)
+export LOCALSTACK_URL=http://localhost:$NODE_PORT
 ```
