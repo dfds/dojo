@@ -107,7 +107,7 @@ kubectl get databaseinstance -n my-namespace
 kubectl get secret -n my-namespace
 ```
 
-### 5. Create a dynamic.yaml
+### 6. Create a dynamic.yaml
 
 Next we will create a dynamic claim. This should provision an instance dynamically on request from the claim
 
@@ -135,7 +135,7 @@ spec:
     name: my-dynamic-claim-secret
 ```
 
-### 6. Apply the dynamic manifest
+### 7. Apply the dynamic manifest
 
 Now apply the dynamic claim
 
@@ -145,7 +145,7 @@ kubectl apply -f dynamic.yaml
 
 This should take about 5 minutes
 
-### 7. Verify dynamic databaseinstance, secret and resource creation
+### 8. Verify dynamic databaseinstance, secret and resource creation
 ```
 kubectl get databaseinstance -n my-namespace
 kubectl get securitygroup
@@ -159,7 +159,7 @@ we should see the secret appear in our namespace
 kubectl get secret -n my-namespace
 ```
 
-### 8. Cleanup resources
+### 9. Cleanup resources
 
 We need to clean up our resources so that we do not incur unnecessary costs in our cloud account
 
