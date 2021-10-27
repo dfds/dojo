@@ -11,6 +11,8 @@ These instructions will help you prepare for the kata and ensure that your train
 * Kubectl
 * Helm
 
+> We strongly recommend the use of WSL due to limitations of the Crossplane CLI on native Windows
+
 ## Exercise
 Your first assignment will see you install Crossplane into your Kubernetes Cluster and the Crossplane CLI onto your development machine
 
@@ -73,6 +75,9 @@ Install the Crossplane CLI so that we are ready to easily perform some crossplan
 curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.sh | sh
 sudo mv kubectl-crossplane /usr/local/bin
 ```
+
+> **Windows Powershell Users**: You need to download [Crank.exe](https://releases.crossplane.io/stable/current/bin/windows_amd64/crank.exe), rename it to kubectl-crossplane.exe and save it to a directory in your user PATH
+
 Verify that the CLI is installed
 ```
 kubectl crossplane --version

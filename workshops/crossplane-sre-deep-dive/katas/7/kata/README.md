@@ -12,6 +12,8 @@ These instructions will help you prepare for the kata and ensure that your train
 * Helm
 * Docker hub account
 
+> Windows Powershell users will not be able to complete this exercise due to limitations with the Crossplane CLI on this platform
+
 ## Exercise
 Your seventh assignment will see you create a configuration package
 
