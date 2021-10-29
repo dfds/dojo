@@ -18,8 +18,8 @@ First we need to create a directory to contain the files necessary for our packa
 ```
 mkdir my-configuration
 cd my-configuration
-cp ../definition.yaml .
-cp ../composition.yaml .
+cp /path/to/definition.yaml .
+cp /path/to/composition.yaml .
 ```
 
 ### 2. Create a crossplane.yaml file
@@ -53,20 +53,40 @@ Verify that it creates a `.xpkg` file on your local filesystem
 ls | grep xpkg
 ```
 
-Push it to the container registy with the following command:
+Push it to the container registy with the following set of commands:
 
 ```
 docker load -i my-configuration.xpkg
+```
+
+This should give you an image ID to use in the next command:
+
 docker tag <image-id-from-previous-command> myorg/my-configuration:v0.0.1
 kubectl k8scr push myorg/my-configuration:v0.0.1
 ```
 
 ### 5. Install the configuration package into our cluster
 
-Next we will install our configuration package into our cluster so that we can consume the resource. Run the following command:
+Next we will install our configuration package into our cluster so that we can consume the resource. 
+
+First, create a configuration.yaml
 
 ```
-kubectl crossplane install configuration my-org/my-configuration:v0.0.1
+apiVersion: pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: myorg-my-configuration
+spec:
+  package: myorg/my-configuration:v0.0.1
+  packagePullPolicy: IfNotPresent
+  revisionActivationPolicy: Automatic
+  revisionHistoryLimit: 1
+```
+
+Then run the following command:
+
+```
+kubectl apply -f configuration.yaml
 ```
 
 ### 6. Verify installation

@@ -68,7 +68,7 @@ kubectl get xrd
 Verify that it has created the custom resource definitions (claims) by running the following command:
 
 ```
-kubectl get crd | grep xmybuckets
+kubectl get crd | grep example.org
 ```
 
 
@@ -139,7 +139,6 @@ Verify that the composition exists by running the following command:
 
 ```
 kubectl get composition
-
 ```
 
 ### 6. Make a claim.yaml manifest
@@ -147,7 +146,7 @@ kubectl get composition
 Here we create a manifest file which defines the creation of an instance of our composite resource
 
 ```
-apiVersion: database.example.org/v1alpha1
+apiVersion: storage.example.org/v1alpha1
 kind: MyBucket
 metadata:
   name: my-bucket
@@ -176,6 +175,12 @@ And we should also verify that the 2 s3 buckets have been created by the composi
 
 ```
 kubectl get Bucket
+```
+
+And verify that the s3 buckets are visible using the AWS CLI:
+
+```
+kubectl exec --stdin --tty aws-cli-runtime -- aws s3 --endpoint-url=http://localstack.default.svc.cluster.local:4566 ls
 ```
 
 ### 7. Cleanup Resources
