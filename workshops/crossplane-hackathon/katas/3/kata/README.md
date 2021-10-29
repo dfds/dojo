@@ -10,8 +10,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * Kata 2
 
 ## Exercise
-This assignment will see you package up the composition you made in the last exercise and publish it to a container registry. You will then consume this package and deploy it into 
-your cluster. Finally, you will deploy a resource using the package.
+This assignment will see you package up the composition you made in the last exercise and publish it to a container registry. You will then consume this package and deploy it into  your cluster. Finally, you will deploy a resource using the package.
 
 ### 1. Create a configuration directory
 First we need to create a directory to contain the files necessary for our package. We will copy in the definition and composition we created in the last exercise.
@@ -19,8 +18,8 @@ First we need to create a directory to contain the files necessary for our packa
 ```
 mkdir my-configuration
 cd my-configuration
-cp /path/to/definition.yaml .
-cp /path/to/composition.yaml .
+cp ../definition.yaml .
+cp ../composition.yaml .
 ```
 
 ### 2. Create a crossplane.yaml file
@@ -40,18 +39,12 @@ spec:
 
 ```
 
-### 3. Something something registry
-
-```
-```
-
-
-### 4. Build and push the configuration
+### 3. Build and push the configuration
 
 Build the configuration locally by running the following command from your configuration directory
 
 ```
-kubectl crossplane build configuration
+kubectl crossplane build configuration --name my-configuration
 ```
 
 Verify that it creates a `.xpkg` file on your local filesystem
@@ -63,13 +56,9 @@ ls | grep xpkg
 Push it to the container registy with the following command:
 
 ```
-kubectl crossplane push configuration my-registry/my-configuration:v0.0.1-alpha.0
-```
-
-Verify that it has pushed an OCI image to the registry with the following command:
-
-```
-something something verify
+docker load -i my-configuration.xpkg
+docker tag <image-id-from-previous-command> myorg/my-configuration:v0.0.1
+kubectl k8scr push myorg/my-configuration:v0.0.1
 ```
 
 ### 5. Install the configuration package into our cluster
@@ -77,7 +66,7 @@ something something verify
 Next we will install our configuration package into our cluster so that we can consume the resource. Run the following command:
 
 ```
-kubectl crossplane install configuration my-registry/my-configuration:v0.0.1-alpha.0
+kubectl crossplane install configuration my-org/my-configuration:v0.0.1
 ```
 
 ### 6. Verify installation
@@ -92,7 +81,52 @@ Run the following commands to verify that the XRD and CRD's have been installed 
 
 ```
 kubectl get xrd
-kubectl get crd | grep dfds
+kubectl get crd | grep example.org
+```
+
+### 6. Make a claim.yaml manifest
+
+Here we create a manifest file which defines the creation of an instance of our composite resource
+
+```
+apiVersion: database.example.org/v1alpha1
+kind: MyBucket
+metadata:
+  name: my-bucket-from-package
+  namespace: default
+spec:
+  compositionSelector:
+    matchLabels:
+      provider: aws
+  parameters:
+    bucketName: test-bucket-from-package
+```
+
+Next we will deploy our manifest into our cluster:
+
+```
+kubectl apply -f claim.yaml
+```
+
+We can then verify the creation of our composite resource:
+
+```
+kubectl get MyBucket
+```
+
+And we should also verify that the 2 s3 buckets have been created by the composite:
+
+```
+kubectl get Bucket
+```
+
+### 7. Cleanup Resources
+
+We need to clean up our resources so that they are not left behind for the next Kata
+
+```
+kubectl delete -f claim.yaml
+kubectl delete configuration.pkg my-org-my-configuration
 ```
 
 ## Want to help make our training material better?
