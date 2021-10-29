@@ -8,32 +8,15 @@ These instructions will help you prepare for the kata and ensure that your train
 
 ### Prerequisites
 * Kata 0
-* [Docker](https://www.docker.com/get-started) and kubernetes feature is activated
-* [AWS CLI](https://aws.amazon.com/cli/)
-* [Crossplane](https://github.com/dfds/dojo/blob/master/workshops/crossplane-sre-deep-dive/katas/1/kata/README.md)
-* [Crossplane/provider-aws](https://github.com/dfds/dojo/blob/master/workshops/crossplane-sre-deep-dive/katas/2/kata/README.md)
 
 ## Exercise
-Your first assignment will see you provision a S3 bucket via the Crossplane AWS provider to act as storage for your very own Hello website!. Sounds simple, no? Let's start then!
+Your first assignment will see you provision an S3 bucket using a local Kubernetes cluster and the Crossplane AWS provider to act as storage for your files. Sounds simple, no? Let's start then!
 
-### 1. Create index.html page for website
-Create a file called `index.html` to act as the landing page for your personal website and add the following content:
+The S3 bucket that you are going to provision will be running in a 
+[LocalStack](https://github.com/localstack/localstack) environment running in your local Kubernetes cluster. Localstack enables you to provision AWS resources locally on your machine in an offline setup without the need to spin up actual resource on Amazon Cloud and paying additional costs.
 
-```
-<html>
-    <h1>Hello from crossplane</h1>
-</html>
-```
 
-### 2. Install the AWS provider
-We need to install the Terraform provider for crossplane to be able to deploy AWS resources
-**Note:** We are using a custom build for compatibility with Localstack
-
-```
-kubectl crossplane install provider muvaf/provider-aws:v0.19.1-dfds.1
-```
-
-### 3. Create a secret containing AWS credentials
+### 1. Create a secret containing AWS credentials
 
 Create a creds.conf file with the following content:
 
@@ -47,47 +30,41 @@ aws_secret_access_key = test
 Run the following command to populate a Kubernetes secret using the above file:
 
 ```
-kubectl create secret generic aws-creds --from-file=creds=./creds.conf
+kubectl create secret generic localstack-creds --from-file=creds=./creds.conf
 
 ```
 
-### 4. Add providerconfig.yaml with your AWS credentials
-In order to enable Crossplane to provision a S3 bucket in your AWS account we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `providerconfig.yaml` and add the following content:
-
-Run the following to obtain the correct URL to place in the `static` attribute in the yaml below:
-```
-export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services localstack)
-export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
-echo http://$NODE_IP:$NODE_PORT
-```
+### 2. Add providerconfig.yaml with your AWS credentials
+In order to enable Crossplane to provision a S3 bucket in a AWS account or in LocalStack setup we need to add a ProviderConfig containing a set of valid account credentials. In order to accomplish this we will create a file called `providerconfig.yaml` and add the following content:
 
 ```
----
+# AWS ProviderConfig that references the secret credentials
 apiVersion: aws.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
-  name: default-aws
+  name: localstack-aws
 spec:
   endpoint:
     hostnameImmutable: true
     url:
       type: Static
-      static: http://1.2.3.4:56789
+      static: http://localstack.default.svc.cluster.local:4566
   credentials:
     source: Secret
     secretRef:
       namespace: default
-      name: aws-creds
-      key: creds
+      name: localstack-creds
+      key: credentials
 ```
 
-Just to explain: <br/>
-`metadata: name: default-aws` - is the name of the resource your creating<br/>
+Description of the content of the providerconfig: <br/>
+`metadata: name: localstack-aws` - is the name of the resource you arr creating<br/>
+`spec: secretRef: endpoint` - enables the AWS provider with connection info so you can provision AWS resources in your localstack setup. This is usually not needed when connecting to the actual AWS cloud<br/>
 `spec: credentials: source: Secret` - instructs Crossplane that the credentials will be sourced from a secret<br/>
 `spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
-`spec: secretRef: name: aws-creds` - providers the name of the secret that should be referenced<br/>
+`spec: secretRef: name: localstack-creds` - providers the name of the secret that should be referenced<br/>
 
-### 5. Deploy the ProviderConfig manifest
+### 3. Deploy the ProviderConfig manifest
 
 Deploy this manifest to our cluster. ProviderConfigs exist at the cluster level and can not be namespaced
 
@@ -101,41 +78,28 @@ Verify that the providerconfig exists
 kubectl get providerconfig.aws.crossplane.io
 ```
 
-### 6. Create s3bucket.yaml that keeps your S3 bucket configuration on your filesystem
-Once Crossplane has gotten a valid ProviderConfig it is able to begin provisioning resources in your AWS account. To create a S3 bucket we need to add the following:
+### 4. Create s3bucket.yaml that keeps your S3 bucket configuration on your filesystem
+Once Crossplane has gotten a valid ProviderConfig it is able to begin provisioning resources in your LocalStack environment. To create a S3 bucket we need to add the following:
 
 
 ```
 apiVersion: s3.aws.crossplane.io/v1beta1
 kind: Bucket
 metadata:
-  name: your-test-bucket
+    name: your-test-bucket
 spec:
-  forProvider:
-    acl: public-read
-    locationConstraint: us-east-1
-    publicAccessBlockConfiguration:
-      blockPublicPolicy: false
-      blockPublicAcls: true
-    corsConfiguration:
-      corsRules:
-        - allowedMethods:
-            - "GET"
-          allowedOrigins:
-            - "*"
-          allowedHeaders:
-            - "*"
-          exposeHeaders:
-            - "x-amz-server-side-encryption"
-  providerConfigRef:
-    name: default-aws
+    forProvider:
+        acl: public-read-write
+        locationConstraint: us-east-1
+    providerConfigRef:
+        name: localstack-aws
 ```
 
-Just to explain: <br/>
+The content of the manifest is explained as follows: <br/>
 `kind: Bucket` - is the type of resource we want to provision<br/>
-`metadata: name: your-test-bucket` - is the name of the resource your creating. Replace the value with a name that is globally unique. You might need to do a couple of attempts before you find a good name <br/>
+`metadata: name: your-test-bucket` - is the name of the resource your creating<br/>
 `spec: forProvider:` - contains the configuration to be passed by the provider in charge of provisioning the S3 Bucket<br/>
-`spec: providerConfigRef: name: aws-default` - points to the ProviderConfig used for provisioning the S3 Bucket<br/>
+`spec: providerConfigRef: name: localstack-creds` - points to the ProviderConfig used for provisioning the S3 Bucket<br/>
 
 
 ### 7. Deploy the S3 bucket manifest
@@ -146,56 +110,84 @@ We will deploy manifest into our cluster
 kubectl apply -f s3bucket.yaml
 ```
 
-### 8. Upload index.html to S3 bucket
-Upload content to S3 bucket using the AWS CLI:
+### 8. Check whether the bucket was created
 
+Check the kubernetes deployment
 ```
-aws s3 --endpoint-url=$LOCALSTACK_URL cp index.html s3://your-test-bucket --acl public-read
-```
-
-**Note**: Replace your-test-bucket with the name of the bucket you created in step 4
-
-### 9. Verify that index.html has been uploaded to S3 bucket
-The following AWS command will list the content of the bucket
-
-```
-aws s3 --endpoint-url=$LOCALSTACK_URL ls your-test-bucket
+kubectl get bucket
+NAME               READY   SYNCED   AGE
+your-test-bucket   True    True     8s
 ```
 
-**Note**: Replace your-test-bucket with the name of the bucket you created in step 4
-### 10. Update S3 bucket configurations
-Update ACL configuration from public-read to private
-
+### 9. Verify that the bucket was created in the localstack backend: 
+Start a new Terminal window and run the following command.
 ```
-apiVersion: s3.aws.crossplane.io/v1beta1
-kind: Bucket
-metadata:
-  name: your-test-bucket
-spec:
-  forProvider:
-    acl: private
+kubectl run aws-cli-runtime --image=luebken/aws-cli-runtime:latest --image-pull-policy='Never'
+kubectl exec --stdin --tty aws-cli-runtime -- /bin/bash
+```
+This will start a AWS CLI terminal that runs inside a pod in Kubernetes 
+
+
+Configure the AWS CLI using this command
+```
+# configure the aws cli for localstack setup
+# use test/test for key and secret and default for the rest
+aws configure
 ...
 ```
 
-### 11. Observe sync status
-
-Describe the S3 bucket to see that there has been a successful request to update the external resource
+Ensure the following the values are entered
 
 ```
-kubectl describe bucket your-test-bucket
+AWS Access Key ID [None]: test
+AWS Secret Access Key [None]: test
+Default region name [None]: us-east-1
+Default output format [None]: json
 ```
+Then execute the following command to list provisiod:
+
+```
+aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3 ls
+2021-10-25 20:44:28 test-bucket
+```
+
+
+### 8. Upload and test a website
+
+Create html and upload it to the bucket:
+```
+echo "<html>hello from crossplane</html>" > index.html
+aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3 cp index.html s3://your-test-bucket --acl public-read
+upload: ./index.html to s3://test-bucket/index.html
+```
+
+Verify the bucket has the html file:
+```
+aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3api head-object --bucket your-test-bucket --key index.html
+{
+"LastModified": "2021-10-21T11:52:01+00:00",
+"ContentLength": 35,
+"ETag": "\"b785e6dedf26b0acefc463b9f12a74df\"",
+"ContentType": "text/html",
+"Metadata": {}
+}
+
+curl localstack.default.svc.cluster.local:4566/test-bucket/index.html
+<html>hello from crossplane</html>
+```
+
 ### 12. Cleanup resources
 
 We should clean up resources so that we do not incur any unnecessary costs
 
-Delete all objects from inside the bucket
+Use the AWS CLI window that you started in step 8 to delete all objects from inside the bucket
 ```
-aws s3 rm --endpoint-url=$LOCALSTACK_URL s3://your-test-bucket --recursive
+aws s3 rm --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3://your-test-bucket --recursive
 ```
 
 Delete the bucket using the manifest
 ```
-kubectl delete -f s3bucket.yaml
+kubectl delete bucket your-test-bucket
 ```
 
 Check if S3 bucket has been deleted from the cluster:
@@ -203,9 +195,9 @@ Check if S3 bucket has been deleted from the cluster:
 kubectl get bucket
 ```
 
-Check if it has also been deleted from localstack:
+Check if it has also been deleted from localstack
 ```
-aws s3 --endpoint-url=$LOCALSTACK_URL ls
+aws s3 --endpoint-url=http://localstack.default.svc.cluster.local:4566 ls
 ```
 
 If no results returned, then proceed with deleting the ProviderConfig resource:
