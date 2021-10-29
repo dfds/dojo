@@ -115,28 +115,21 @@ kubectl apply -f s3bucket.yaml
 Check the kubernetes deployment
 ```
 kubectl get bucket
-NAME               READY   SYNCED   AGE
-your-test-bucket   True    True     8s
 ```
 
 ### 9. Verify that the bucket was created in the localstack backend: 
-Start a new Terminal window and run the following command.
+First we need to start a new Terminal window and run the following command to start and connect to an AWS CLI pod inside Kubernetes:
 ```
 kubectl run aws-cli-runtime --image=luebken/aws-cli-runtime:latest --image-pull-policy='Never'
 kubectl exec --stdin --tty aws-cli-runtime -- /bin/bash
 ```
-This will start a AWS CLI terminal that runs inside a pod in Kubernetes 
 
-
-Configure the AWS CLI using this command
+Next we will configure the AWS CLI using this command:
 ```
-# configure the aws cli for localstack setup
-# use test/test for key and secret and default for the rest
 aws configure
-...
 ```
 
-Ensure the following the values are entered
+Ensure the following the values are entered:
 
 ```
 AWS Access Key ID [None]: test
@@ -144,48 +137,37 @@ AWS Secret Access Key [None]: test
 Default region name [None]: us-east-1
 Default output format [None]: json
 ```
-Then execute the following command to list provisiod:
+
+Then execute the following command to list provisioned buckets in s3:
 
 ```
 aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3 ls
-2021-10-25 20:44:28 test-bucket
 ```
-
 
 ### 8. Upload and test a website
 
-Create html and upload it to the bucket:
+Still working inside the AWS CLI, create html and upload it to the bucket:
 ```
 echo "<html>hello from crossplane</html>" > index.html
 aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3 cp index.html s3://your-test-bucket --acl public-read
-upload: ./index.html to s3://test-bucket/index.html
 ```
 
 Verify the bucket has the html file:
 ```
 aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3api head-object --bucket your-test-bucket --key index.html
-{
-"LastModified": "2021-10-21T11:52:01+00:00",
-"ContentLength": 35,
-"ETag": "\"b785e6dedf26b0acefc463b9f12a74df\"",
-"ContentType": "text/html",
-"Metadata": {}
-}
-
-curl localstack.default.svc.cluster.local:4566/test-bucket/index.html
-<html>hello from crossplane</html>
+curl localstack.default.svc.cluster.local:4566/your-test-bucket/index.html
 ```
 
 ### 12. Cleanup resources
 
 We should clean up resources so that we do not incur any unnecessary costs
 
-Use the AWS CLI window that you started in step 8 to delete all objects from inside the bucket
+Using the AWS CLI window that you started in step 8 to delete all objects from inside the bucket
 ```
 aws s3 rm --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3://your-test-bucket --recursive
 ```
 
-Delete the bucket using the manifest
+Now outside of the AWS CLI and back in our desktop prompt, delete the bucket using the manifest
 ```
 kubectl delete bucket your-test-bucket
 ```
@@ -195,14 +177,9 @@ Check if S3 bucket has been deleted from the cluster:
 kubectl get bucket
 ```
 
-Check if it has also been deleted from localstack
+Back in the AWS CLI, check if it has also been deleted from localstack
 ```
 aws s3 --endpoint-url=http://localstack.default.svc.cluster.local:4566 ls
-```
-
-If no results returned, then proceed with deleting the ProviderConfig resource:
-```
-kubectl delete -f providerconfig.yaml
 ```
 
 ## Want to help make our training material better?
