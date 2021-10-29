@@ -32,7 +32,7 @@ metadata:
   name: my-configuration
 spec:
   crossplane:
-    version: ">=v1.3.0"
+    version: ">=v1.0.0-0"
   dependsOn:
     - provider: crossplane/provider-aws
       version: "v0.20.0"
@@ -109,7 +109,7 @@ kubectl get crd | grep example.org
 Here we create a manifest file which defines the creation of an instance of our composite resource
 
 ```
-apiVersion: database.example.org/v1alpha1
+apiVersion: storage.example.org/v1alpha1
 kind: MyBucket
 metadata:
   name: my-bucket-from-package
@@ -140,13 +140,19 @@ And we should also verify that the 2 s3 buckets have been created by the composi
 kubectl get Bucket
 ```
 
+And verify that the s3 buckets are visible using the AWS CLI:
+
+```
+kubectl exec --stdin --tty aws-cli-runtime -- aws s3 --endpoint-url=http://localstack.default.svc.cluster.local:4566 ls
+```
+
 ### 7. Cleanup Resources
 
 We need to clean up our resources so that they are not left behind for the next Kata
 
 ```
 kubectl delete -f claim.yaml
-kubectl delete configuration.pkg my-org-my-configuration
+kubectl delete configuration.pkg myorg-my-configuration
 ```
 
 ## Want to help make our training material better?
