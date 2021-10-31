@@ -58,11 +58,11 @@ spec:
 ```
 
 Description of the content of the providerconfig: <br/>
-`metadata: name: localstack-aws` - is the name of the resource you arr creating<br/>
+`metadata: name: localstack-aws` - is the name of the resource you are creating<br/>
 `spec: secretRef: endpoint` - enables the AWS provider with connection info so you can provision AWS resources in your localstack setup. This is usually not needed when connecting to the actual AWS cloud<br/>
 `spec: credentials: source: Secret` - instructs Crossplane that the credentials will be sourced from a secret<br/>
 `spec: secretRef: namespace: default` - tells Crossplane that the secret in question is in the default namespace<br/>
-`spec: secretRef: name: localstack-creds` - providers the name of the secret that should be referenced<br/>
+`spec: secretRef: name: localstack-creds` - provides the name of the secret that should be referenced<br/>
 
 ### 3. Deploy the ProviderConfig manifest
 
@@ -102,7 +102,7 @@ The content of the manifest is explained as follows: <br/>
 `spec: providerConfigRef: name: localstack-creds` - points to the ProviderConfig used for provisioning the S3 Bucket<br/>
 
 
-### 7. Deploy the S3 bucket manifest
+### 5. Deploy the S3 bucket manifest
 
 We will deploy manifest into our cluster
 
@@ -110,14 +110,14 @@ We will deploy manifest into our cluster
 kubectl apply -f s3bucket.yaml
 ```
 
-### 8. Check whether the bucket was created
+### 6. Check whether the bucket was created
 
 Check the kubernetes deployment
 ```
 kubectl get bucket
 ```
 
-### 9. Verify that the bucket was created in the localstack backend: 
+### 7. Verify that the bucket was created in the localstack backend: 
 First we need to start a new Terminal window and run the following command to start and connect to an AWS CLI pod inside Kubernetes:
 ```
 kubectl run aws-cli-runtime --image=luebken/aws-cli-runtime:latest --image-pull-policy='Never'
@@ -158,11 +158,11 @@ aws --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3api head-o
 curl localstack.default.svc.cluster.local:4566/your-test-bucket/index.html
 ```
 
-### 12. Cleanup resources
+### 9. Cleanup resources
 
 We should clean up resources so that we do not incur any unnecessary costs
 
-Using the AWS CLI window that you started in step 8 to delete all objects from inside the bucket
+Using the AWS CLI window that you started in step 7 to delete all objects from inside the bucket
 ```
 aws s3 rm --endpoint-url=http://localstack.default.svc.cluster.local:4566 s3://your-test-bucket --recursive
 ```

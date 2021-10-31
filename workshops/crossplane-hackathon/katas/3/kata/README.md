@@ -60,7 +60,7 @@ docker load -i my-configuration.xpkg
 ```
 
 This should give you an image ID to use in the next command:
-
+```
 docker tag <image-id-from-previous-command> myorg/my-configuration:v0.0.1
 kubectl k8scr push myorg/my-configuration:v0.0.1
 ```

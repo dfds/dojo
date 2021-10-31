@@ -65,7 +65,7 @@ Verify its existence by running the following command:
 kubectl get xrd
 ```
 
-Verify that it has created the custom resource definitions (claims) by running the following command:
+Verify that it has created the custom resource definitions for the composite and the claims by running the following command:
 
 ```
 kubectl get crd | grep example.org
