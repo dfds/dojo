@@ -155,5 +155,14 @@ kubectl delete -f claim.yaml
 kubectl delete configuration.pkg myorg-my-configuration
 ```
 
+Remove the files that you created as well:
+```
+cd /mnt/c/dojo/workshops/crossplane-hackathon
+find . -name \*.conf -type f -delete
+find . -name \*.yaml -type f -delete
+find . -name \*.xpkg -type f -delete
+find . -name my-configuration -type d -delete
+```
+
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
