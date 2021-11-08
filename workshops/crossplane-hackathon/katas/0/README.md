@@ -42,10 +42,13 @@ Verify kind cluster is running by running kind command
 ```
 kind get clusters 
 ```
+Make sure you are using the correct kubectl context:
+```
+kubectl config use-context kind-kind
+```
 
 Validate that you can access the Kind cluster's API
 ```
-kubectl config use-context kind-kind
 kubectl get nodes
 ```
 
