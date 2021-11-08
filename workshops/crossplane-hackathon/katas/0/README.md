@@ -7,8 +7,8 @@ This training exercise is a **beginner-level** course on Crossplane that serves 
 These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
-* Linux/Unix development enviornment
-* [This repo](https://github.com/dfds/crossplane-offline) is cloned locally in directory on your machine (TODO: missing forked repo link)
+* Linux/Unix development enviornment. For Windows users: Windows Subsystem for Linux (WSL) v2, installed and configured in your machine (https://docs.microsoft.com/en-us/windows/wsl/install) and install Ubuntu distribution
+* [This repo](https://github.com/dfds/crossplane-offline) is cloned locally in directory on your machine
 * [Docker](https://www.docker.com/get-started) and kubernetes feature is activated
 * [Golang](https://golang.org/doc/install) version 1.6+ is recommended. You can find instructions on configuring Golang in the steps down below in the excercise
 * [Kind](https://kind.sigs.k8s.io/)
@@ -16,7 +16,7 @@ These instructions will help you prepare for the kata and ensure that your train
 ## Exercise
 In the first part of this assignment will see you configuring your localstack enabled cluster on your local machine. You will be making use of Kind cluster using images and scripts provided by Upbound for the purpose of running a cluster and provisioning amazon resources on localstack without an internet connection. Once you have completed this kata you will have an environment ready for the local development environment to run the following katas.
 
-  ### 1. Prepare Kind cluster images and binaries
+### 1. Prepare Kind cluster images and binaries
 This step must be done while you are connected to the internet.
 
 Execute this shell script file from within the cloned crossplane-offline repo folder
@@ -45,7 +45,8 @@ kind get clusters
 
 Validate that you can access the Kind cluster's API
 ```
-kubectl get nodes --context kind-kind
+kubectl config use-context kind-kind
+kubectl get nodes
 ```
 
 Verify crossplane helm is installed
