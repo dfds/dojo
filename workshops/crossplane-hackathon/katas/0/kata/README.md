@@ -8,9 +8,9 @@ These instructions will help you prepare for the kata and ensure that your train
 
 ### Prerequisites
 * Linux/Unix development enviornment. For Windows users: Windows Subsystem for Linux (WSL) v2, installed and configured in your machine (https://docs.microsoft.com/en-us/windows/wsl/install) and install Ubuntu distribution
-* [This repo](https://github.com/dfds/crossplane-offline) is cloned locally in directory on your machine
+* [This repo](https://github.com/dfds/crossplane-offline) is cloned locally in a directory on your machine
 * [Docker](https://www.docker.com/get-started)
-* [Golang](https://golang.org/doc/install) version 1.6+ is recommended. You can find instructions on configuring Golang in the steps down below in the excercise
+* [Golang](https://golang.org/doc/install) version 1.6+ is recommended.
 * [Kind](https://kind.sigs.k8s.io/)
 
 ## Exercise
@@ -70,7 +70,7 @@ Verify that the installation has been successful and that the localstack and k8s
 kubectl get all
 ```
 # Cleaning up
-You can simply delete the Kind cluster after workshop is completed by running
+You can simply delete the Kind cluster after workshop is completed by running this command:
 ```
 kind delete clusters kind
 ```
