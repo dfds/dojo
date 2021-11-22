@@ -129,17 +129,6 @@ spec:
   compositeTypeRef:
     apiVersion: crossplane.dfds.cloud/v1alpha1
     kind: CompositeDatabaseInstance
-  patchSets:
-  - name: metadata
-    patches:
-    - fromFieldPath: metadata.labels
-    - fromFieldPath: metadata.annotations[crossplane.dfds.cloud/app-name]
-  - name: external-name
-    patches:
-    - type: FromCompositeFieldPath
-      fromFieldPath: metadata.annotations[crossplane.io/external-name]
-      policy:
-        fromFieldPath: Required
   resources:
   - name: securitygroup
     base:
