@@ -9,6 +9,7 @@ These instructions will help you prepare for the kata and ensure that your train
 ### Prerequisites
 * Linux/Unix development enviornment. For Windows users: Windows Subsystem for Linux (WSL) v2, installed and configured in your machine (https://docs.microsoft.com/en-us/windows/wsl/install) and install Ubuntu distribution
 * [This repo](https://github.com/dfds/crossplane-offline) is cloned locally in a directory on your machine
+* Helm
 * [Docker](https://www.docker.com/get-started)
 * [Golang](https://golang.org/doc/install) version 1.6+ is recommended.
 * [Kind](https://kind.sigs.k8s.io/)

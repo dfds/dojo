@@ -25,3 +25,8 @@ creds.*
 
 # Terraform
 .terraform
+
+
+node_modules
+
+.env

@@ -1,0 +1,13 @@
+{
+  "name": "docker_app",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "First Last <first.last@example.com>",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "pg": "^8.7.1"
+  }
+}
