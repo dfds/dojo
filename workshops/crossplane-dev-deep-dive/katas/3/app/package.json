@@ -8,6 +8,7 @@
     "start": "node main.js"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "pg": "^8.7.1"
   }
 }
