@@ -15,5 +15,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+RUN wget https://truststore.pki.rds.amazonaws.com/eu-west-1/eu-west-1-bundle.pem
+
 EXPOSE 8080
 CMD [ "node", "main.js" ]
