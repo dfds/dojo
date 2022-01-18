@@ -13,33 +13,38 @@ January 2022
 
 ---
 
-## Agenda
+## Agenda (1/2)
 
 - Git
-  - Installing
-  - Configuring
-  - Concepts
-  - Basic commands
+  - Git concepts
+  - Installing Git
+  - Configuring Git
+  - Basic Git commands
 - GitHub
-  - Getting started
-  - Feature walk-through
+  - Getting started with GitHub
+  - GitHub feature walk-through
 
 ---
 
-## Agenda, cont.
+## Agenda (2/2)
 
 - VS Code
-  - Installing
-  - Basic Git usage
-- Working with branches
+  - Installing VS Code
+  - Introduction to VS Code
+  - Plugins in VS Code
+  - Git integration in VS Code
+- Working with Git branches
   - Why branches?
-  - Concepts
+  - Branch concepts
 
 ---
 
 ## Git
 
-Open-source, distributed version control system (VCS)
+![bg left:40% 80%](https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg)
+
+- Open-source, distributed version control system (VCS)
+- Created by Linus Torvalds in 2005 for development of the Linux kernel
 
 ---
 
@@ -72,14 +77,15 @@ Open-source, distributed version control system (VCS)
 
 ### Basic Git commands
 
-| Command | Effect |
-| ------- | ------ |
-| init    |
-| clone   |
-| pull    |
-| add     |
-| commit  |
-| push    |
+| Command           | Effect                                                     |
+| ----------------- | ---------------------------------------------------------- |
+| `init`            | Initialise a local Git repo in the current directory       |
+| `clone <repo>`    | Createa a local clone of the repo at the specified URL     |
+| `pull`            | Pull any remote changes from the remote repo (or *origin*) |
+| `add <file>`      | *Stage* specified, or all, files for a new *commit*        |
+| `commit -m <msg>` | Commit staged files and include the specified message      |
+| `push`            | Push local commits to *origin*                             |
+| `status`          | Display status of staged files, and local vs. remote repo  |
 
 ---
 
@@ -92,6 +98,9 @@ Open-source, distributed version control system (VCS)
 
 ## GitHub
 
+![bg left:40% 80%](https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg)
+
+- Free for all, paid tiers available
 - Git-as-a-Service
 - Issue tracking
 - Kanban boards
@@ -130,11 +139,14 @@ Open-source, distributed version control system (VCS)
 
 ## Visual Studio Code
 
+![bg left:40% 50%](https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg)
+
+- Free, open-source
+
 ---
 
 ### Getting started
 
-- Free, open-source
 - <https://code.visualstudio.com/>
 
 *Do not recommend installing via Software Center (per-machine).*
@@ -143,11 +155,13 @@ Open-source, distributed version control system (VCS)
 
 ## Working with branches
 
+![bg left:40% 50%](https://upload.wikimedia.org/wikipedia/commons/e/ed/Octicons-git-branch.svg)
+
+---
+
 - Why branches?
 - Concepts
   - PRs
   - PR reviews
   - Merge
   - Branch protection
-
----
