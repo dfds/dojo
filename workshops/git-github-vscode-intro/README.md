@@ -1,4 +1,17 @@
+---
+marp: true
+_class: lead
+paginate: true
+backgroundColor: #fff
+backgroundImage: url('https://marp.app/assets/hero-background.svg')
+---
+
 # Git, GitHub and VS Code 101
+
+Rasmus Rask
+January 2022
+
+---
 
 ## Agenda
 
@@ -8,59 +21,133 @@
   - Concepts
   - Basic commands
 - GitHub
-  - Using SSH
-  - Setting as upstream to local repo
+  - Getting started
+  - Feature walk-through
+
+---
+
+## Agenda, cont.
+
 - VS Code
   - Installing
   - Basic Git usage
-- Next level
-  - Branches
-  - PRs
-  - Branch protection
+- Working with branches
+  - Why branches?
+  - Concepts
+
+---
 
 ## Git
 
-### Installing
+Open-source, distributed version control system (VCS)
 
-### Concepts
+---
+
+### Git concepts
 
 - Distributed Version Control System
-- Everything is in .git folder - you can version control any
-  - No external server or s
+- Everything is in .git folder
+  - You can enable version control in any folder
+  - No external server or service required
+  - But you probably want one
+- File tracking, `.gitignore`
 - Repos, commits
+- Git client configuration and scopes
 
-### Basic commands
+---
 
-- init
-- clone
-- pull
-- add
-- commit
-- push
+### Installing Git
 
-### Exercises
+- Software Center or <https://git-scm.com/download/>
 
-1. Create local repo
+---
+
+### Configuring Git
+
+- LF
+- User, mail
+- ?
+
+---
+
+### Basic Git commands
+
+| Command | Effect |
+| ------- | ------ |
+| init    |
+| clone   |
+| pull    |
+| add     |
+| commit  |
+| push    |
+
+---
+
+### Git exercises
+
+1. Install and configure global settings
+2. Create local repo
+
+---
 
 ## GitHub
 
-### Features
-
-- More than Git-as-a-Service...
+- Git-as-a-Service
 - Issue tracking
 - Kanban boards
-- Actions
+- GitHub Actions
 
-### Code ver
+---
 
+### Getting started
 
+---
 
+### GitHub repos: Git-as-a-Service
 
-### Actions
+- Browsing code
+- Built-in VS Code - just press `.`
+- Authenticate using SSH key
+- Security scanning
 
+---
 
-## Next level
+### GitHub issues
 
-- Branches
-  - Commands
-- PRs
+<https://github.com/features/issues/>
+
+---
+
+### GitHub Actions
+
+---
+
+### Github exercises
+
+- Setting as upstream to local repo
+
+---
+
+## Visual Studio Code
+
+---
+
+### Getting started
+
+- Free, open-source
+- <https://code.visualstudio.com/>
+
+*Do not recommend installing via Software Center (per-machine).*
+
+---
+
+## Working with branches
+
+- Why branches?
+- Concepts
+  - PRs
+  - PR reviews
+  - Merge
+  - Branch protection
+
+---
