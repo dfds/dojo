@@ -2,17 +2,18 @@
 marp: true
 _class: lead
 paginate: true
+headingDivider: 2
 backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
+backgroundImage: url('../../assets/hero-background.svg')
+header: '**Git, GitHub and VS Code 101**'
+footer: 'DFDS Cloud Engineering, January 2022'
 duration: 180min
 ---
 
 # Git, GitHub and VS Code 101
 
-Rasmus Rask
-January 2022
-
----
+DFDS Cloud Engineering
+Updated January 2022
 
 ## To do
 
@@ -27,8 +28,6 @@ January 2022
 - Mention frequent, small commits
 - Update agenda
 
----
-
 ## Agenda (1/2)
 
 - Git
@@ -38,8 +37,6 @@ January 2022
 - GitHub
   - Getting started with GitHub
   - Walk-through of main GitHub features
-
----
 
 ## Agenda (2/2)
 
@@ -56,7 +53,7 @@ January 2022
 
 ## Git
 
-![bg left:40% 80%](https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg)
+![bg left:40% 80%](../../assets/git-logo.svg)
 
 - Source Code Management (SCM) tool
 - Free and open-source
@@ -117,7 +114,7 @@ Then follow the kata at
 
 ## GitHub
 
-![bg left:40% 80%](https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg)
+![bg left:40% 80%](../../assets/github-logo.svg)
 
 - Free for all, paid tiers available
 
@@ -134,7 +131,7 @@ Then follow the kata at
 
 ## Visual Studio Code
 
-![bg left:40% 50%](https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg)
+![bg left:40% 50%](../../assets/vscode-logo.svg)
 
 Extendable, free, open-source code editor
 
@@ -245,6 +242,7 @@ Host github.com
   - `Get-Content .\id_ed25519.pub | Set-Clipboard`
 - Verify GitHub authentication
   - `ssh -T git@github.com`
+  - `Hi <GitHubUsername>! You've successfully authenticated, but GitHub does not provide shell access.`
 
 ---
 
