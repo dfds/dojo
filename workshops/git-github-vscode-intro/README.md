@@ -4,6 +4,7 @@ _class: lead
 paginate: true
 backgroundColor: #fff
 backgroundImage: url('https://marp.app/assets/hero-background.svg')
+duration: 180min
 ---
 
 # Git, GitHub and VS Code 101
@@ -13,16 +14,30 @@ January 2022
 
 ---
 
+## To do
+
+- Prerequisites/assumptions
+  - Windows 10/11
+  - Local admin rights
+  - Dev GPO's
+- Brief markdown
+  - https://commonmark.org/help/
+- Clone repo after setting up SSH
+- Re-write kata 1 and include (remember elevated vs. user context)
+- Mention frequent, small commits
+- Update agenda
+
+---
+
 ## Agenda (1/2)
 
 - Git
   - Git concepts
-  - Installing Git
   - Configuring Git
   - Basic Git commands
 - GitHub
   - Getting started with GitHub
-  - GitHub feature walk-through
+  - Walk-through of main GitHub features
 
 ---
 
@@ -43,35 +58,35 @@ January 2022
 
 ![bg left:40% 80%](https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg)
 
-- Open-source, distributed version control system (VCS)
+- Source Code Management (SCM) tool
+- Free and open-source
 - Created by Linus Torvalds in 2005 for development of the Linux kernel
 
 ---
 
-### Git concepts
+### Git concepts (1/2)
 
 - Distributed Version Control System
-- Everything is in .git folder
+- *Can* work 100% local
   - You can enable version control in any folder
   - No external server or service required
   - But you probably want one
-- File tracking, `.gitignore`
-- Repos, commits
-- Git client configuration and scopes
+- Tracks changes to files
 
 ---
 
-### Installing Git
+### Git concepts (2/2)
 
-- Software Center or <https://git-scm.com/download/>
+- Bundle changed files into a commit
+  - Commit changes, or...
+  - ...revert to previous commit
 
 ---
 
-### Configuring Git
+### Exercise: Install Git
 
-- LF
-- User, mail
-- ?
+- Install via *Software Center*, or
+- Download and install from <https://git-scm.com/download/>
 
 ---
 
@@ -89,10 +104,14 @@ January 2022
 
 ---
 
-### Git exercises
+### Exercise: Get started with local Git repo
 
-1. Install and configure global settings
-2. Create local repo
+- Create a common directory to store code, e.g.:
+  - `C:\code`
+  - `~/code`
+
+Then follow the kata at
+<https://github.com/dfds/dojo/tree/master/workshops/git-github-deep-dive/katas/1/kata>
 
 ---
 
@@ -101,6 +120,11 @@ January 2022
 ![bg left:40% 80%](https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg)
 
 - Free for all, paid tiers available
+
+---
+
+### Demo: Walk-through of main GitHub features
+
 - Git-as-a-Service
 - Issue tracking
 - Kanban boards
@@ -108,52 +132,142 @@ January 2022
 
 ---
 
-### Getting started
-
----
-
-### GitHub repos: Git-as-a-Service
-
-- Browsing code
-- Built-in VS Code - just press `.`
-- Authenticate using SSH key
-- Security scanning
-
----
-
-### GitHub issues
-
-<https://github.com/features/issues/>
-
----
-
-### GitHub Actions
-
----
-
-### Github exercises
-
-- Setting as upstream to local repo
-
----
-
 ## Visual Studio Code
 
 ![bg left:40% 50%](https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg)
 
-- Free, open-source
+Extendable, free, open-source code editor
 
 ---
 
-### Getting started
+### Demo: Getting started with VS Code
 
-- <https://code.visualstudio.com/>
+- Overview
+- Keyboard shortcuts
+  - `Ctrl`+`Shift`+`P` (or simply `F1` apparently :exploding_head:)
+    - Show the (powerful!) command palette
+  - See <https://code.visualstudio.com/docs/getstarted/keybindings> for more info and cheat sheet
+
+---
+
+### Demo: VS Code Git integration
+
+---
+
+### VS Code extensions
+
+- VS Code is extendable via a wide range of extensions
+- Features include:
+  - VS Code UI themes
+  - Auto-formatting code
+  - Linting and security scanning
+- Out-of-scope for this workshop
+
+---
+
+### Exercise: Installing VS Code
+
+- Download and install from <https://code.visualstudio.com/> (local admin rights not required)
 
 *Do not recommend installing via Software Center (per-machine).*
 
 ---
 
-## Working with branches
+### Demo: Cool VS Code features
+
+Short introduction to useful VS Code features, you can explore further on your own:
+
+- Remote VS code - target WSL, remote computers, Docker containers
+  - See [Microsoft: VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview)
+- VS Code is built into GitHub - press `.` when browsing a repo
+
+## Tying it all together
+
+### Walk-through exercise: Clone a public GitHub repo locally
+
+<https://github.com/dfds/cloudwatchlogs-collector>
+
+---
+
+### Configuring Git
+
+- Git configuration has multiple scopes:
+  - `system`: Machine-wide (`$GIT_BIN_DIR/etc/gitconfig`)
+  - `global`: Current user, all repos (`~/.gitconfig`)
+  - `local`: Current repo only (`.git/config`)
+- The more specific scope, the higer precedence
+  - `local` overrides `global`, which overrides `system`
+
+---
+
+### Exercise: Examine and adjust Git configuration
+
+```powershell
+# List current configuration and scope
+git config --list --show-scope
+
+# Configure minimal user info and disable "autocrlf"
+git config --global user.name "Jane Doe"
+git config --global user.email jadoe@dfds.com
+git config --global core.autocrlf=false
+```
+
+---
+
+### SSH key authentication and GitHub
+
+- SSH keys are assymetrical - they have a public and private/sensitive part
+- You can add the *public* part of your SSH keys to your GitHub account
+- With the private part of those SSH keys, you can authenticate against your GitHub account
+
+---
+
+### Walk-through exercise: Setup SSH key authentication for GitHub (1/2)
+
+- Add the SSH client capability to Windows
+  - `Get-WindowsCapability -Online -Name OpenSSH.Client* | Add-WindowsCapability -Online`
+- Generate SSH key, enable `ssh-agent` and add key to agent
+  - <https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement#user-key-generation>
+- Configure SSH config to use key file for GitHub and forward agent (LF!):
+
+```text
+Host github.com
+        ForwardAgent yes
+```
+
+---
+
+### Walk-through exercise: Setup SSH key authentication for GitHub (2/2)
+
+- Configure Git to use Windows' OpenSSH binary and config
+  - `git config --global core.sshCommand "'$((Get-Command ssh).Source)' -T"`
+- Add key to GitHub profile
+  - `Get-Content .\id_ed25519.pub | Set-Clipboard`
+- Verify GitHub authentication
+  - `ssh -T git@github.com`
+
+---
+
+### Exercise: Track a local
+
+- Clone
+- Make changes
+- Git status
+- Setting as upstream to local repo
+
+```
+git remote add origin git@github.com:abstrask/github-workshop.git
+git branch -M main
+git push -u origin main
+```
+
+- Clone
+- Make changes
+- Git status
+
+---
+
+## Overview of Git branches
 
 ![bg left:40% 50%](https://upload.wikimedia.org/wikipedia/commons/e/ed/Octicons-git-branch.svg)
 
