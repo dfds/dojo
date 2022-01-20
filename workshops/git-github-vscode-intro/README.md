@@ -5,48 +5,63 @@ paginate: true
 headingDivider: 3
 backgroundColor: #fff
 backgroundImage: url('../../assets/hero-background.svg')
-header: '**Git, GitHub and VS Code 101**'
+header: '**Introduction to Git, GitHub and VS Code**'
 footer: 'DFDS Cloud Engineering, January 2022'
-duration: 180min
+approxDuration: 180min
 ---
 
-# Git, GitHub and VS Code 101
+# Introduction to Git, GitHub and VS Code
 
 DFDS Cloud Engineering
 Updated January 2022
 
-## To do
+## Introduction
 
-- First
-  - Clone repo after setting up SSH
-- After
-  - Prerequisites/assumptions
-    - Windows 10/11
-    - Local admin rights
-    - Dev GPO's
-  - Update agenda
-  - Re-write kata 1 and include (remember elevated vs. user context)
+This presentation is available, both as MarkDown source and rendered PDF, <br>in our open-source *Dojo* repository on GitHub.
 
-## Agenda (1/2)
+<https://github.com/dfds/dojo/blob/master/workshops/git-github-vscode-intro/>
+
+In this repo you can also find many other workshops and associated *katas*.
+
+## Prerequisites & assumptions
+
+The exercises in this workshop has the following prerequisites:
+
+- Up-to-date Windows 10/11 installation
+- Have access to run things "as administrator"
+- Computer account is in a `Dev` client OU, which has developer policies applied
+- All work done in terminal means in a PowerShell terminal
+- Windows Terminal is highly recommended, but not particularly needed here
+
+## Agenda (1)
 
 - Git
   - Git concepts
-  - Configuring Git
+  - Exercise: Install Git
   - Basic Git commands
+  - Exercise: Get started with local Git repo
 - GitHub
-  - Getting started with GitHub
-  - Walk-through of main GitHub features
+  - Demo: Walk-through of main GitHub features
 
-## Agenda (2/2)
+## Agenda (2)
 
-- VS Code
-  - Installing VS Code
-  - Introduction to VS Code
-  - Plugins in VS Code
-  - Git integration in VS Code
-- Working with Git branches
-  - Why branches?
-  - Branch concepts
+- Visual Studio Code
+  - Demo: Getting started with VS Code
+  - VS Code extensions
+  - Exercise: Installing VS Code
+  - Demo: Cool VS Code features
+
+## Agenda (3)
+
+- Tying it together
+  - Configuring Git
+  - Exercise: Examine and adjust Git configuration
+  - SSH key authentication and GitHub
+  - Walk-through exercise: Setup SSH key authentication for GitHub
+  - Exercise: Clone a public GitHub repo locally
+  - Exercise: Start tracking a local repo
+- Overview of Git branches
+- Where to go from here
 
 ## Git
 
@@ -88,15 +103,28 @@ Updated January 2022
 | `commit -m <msg>` | Commit staged files and include the specified message      |
 | `push`            | Push local commits to *origin*                             |
 | `status`          | Display status of staged files, and local vs. remote repo  |
+| `log`             | Display the commit history of the repo                     |
 
 ### Exercise: Get started with local Git repo
 
-- Create a common directory to store code, e.g.:
-  - `C:\code`
-  - `~/code`
+- Create a common directory to store code, e.g.: `C:\code` or `~/code`
+- Create a new sub-directory here (e.g. `github-workshop`), and initialise a local Git repo:
 
-Then follow the kata at
-<https://github.com/dfds/dojo/tree/master/workshops/git-github-deep-dive/katas/1/kata>
+```powershell
+cd (New-Item -Name github-workshop -Type Directory)
+git init
+```
+
+- Create a file, stage and commit it:
+
+```powershell
+"Hello" | Out-File -Path hello.txt
+git add hello.txt
+git commit -m "Initial commit"
+```
+
+- Check the commit log to see details about your commit:
+  - `git log`
 
 ## GitHub
 
@@ -121,7 +149,7 @@ Extendable, free, open-source code editor
 
 - Overview
 - Keyboard shortcuts :keyboard:
-  - `Ctrl`+`Shift`+`P` (or simply `F1` apparently :exploding_head:)
+  - `Ctrl`+`Shift`+`P` (or simply `F1`, apparently :exploding_head:)
     - Show the (powerful!) command palette
     - Displays assigned shortcuts (learn and use them)
   - Cheat sheet and more info, see <https://code.visualstudio.com/docs/getstarted/keybindings>.
@@ -150,7 +178,10 @@ Short introduction to useful VS Code features, you can explore further on your o
 
 - Remote VS code - target WSL, remote computers, Docker containers
   - See [Microsoft: VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview)
-- VS Code is built into GitHub - press `.` when browsing a repo
+- VS Code is built into GitHub - just press `.` when browsing a repo
+- "Settings Sync" - syncronise your VS Code settings and preferences across devices
+  - Including VS Code in GitHub
+  - See <https://code.visualstudio.com/docs/editor/settings-sync>
 
 ## Tying it together
 
@@ -170,6 +201,7 @@ Short introduction to useful VS Code features, you can explore further on your o
 
 - Examine the current Git configuration settings and their scope
 - Configure name and email address
+- Ensure default branch name for new repos is `main`
 - Disable automatic End-of-Line character conversion
 
 ```powershell
@@ -179,7 +211,8 @@ git config --list --show-scope
 # Configure minimal user info and disable "autocrlf"
 git config --global user.name "Jane Doe"
 git config --global user.email jadoe@dfds.com
-git config --global core.autocrlf=false
+git config --global init.defaultbranch main
+git config --global core.autocrlf false
 ```
 
 ### SSH key authentication and GitHub
@@ -204,7 +237,7 @@ Start-Service ssh-agent
 ### Walk-through exercise: Setup SSH key authentication for GitHub (2)
 
 - Add key to agent
-  - `ssh-add ~\.ssh\id_ed25519`
+  - `ssh-add ~/.ssh/id_ed25519`
 - Configure SSH config to use key file for GitHub and forward agent (LF!):
 
 ```text
@@ -251,19 +284,19 @@ Hi <GitHubUsername>! You've successfully authenticated, but GitHub does not prov
 - In the terminal change into the repo directory, and run `git status`
 - Delete the directory with the cloned repo
 
-### Exercise: Start tracking a local repo
+### Exercise: Start tracking a local repo (1)
 
-- Create a new, local repo, and add a text file
+We are going to link the local repository, we created in an earlier exercise, to GitHub.
 
-```powershell
-cd (New-Item -Name github-workshop -Type Directory)
-git init -b main
-"Hello" | Out-File -Path hi.txt
-```
-
-- Create a new repository in GitHub, e.g. "github-workshop"
+- Create a new repository in GitHub
   - <https://github.com/new>
-- In the terminal, configure the new GitHub repo as the *origin* and push your local repo to it
+  - The repo name does not **have** to match the directory, but it's recommended
+- Change into the directory of the local repo in your terminal
+- Ensure the local repo has at least one commit (check with `git log`)
+
+### Exercise: Start tracking a local repo (2)
+
+- Configure the new GitHub repo as the *origin* and push your local repo to it:
 
 ```powershell
 git remote add origin git@github.com:<GithubUsername>/<RepoName>.git
@@ -271,22 +304,39 @@ git branch -M main
 git push -u origin main
 ```
 
+Example of expected output:
+
+```text
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 217 bytes | 217.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:abstrask/github-workshop.git
+ * [new branch]      main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.
+```
+
 ## Overview of Git branches
 
 ![bg left:40% 50%](https://upload.wikimedia.org/wikipedia/commons/e/ed/Octicons-git-branch.svg)
 
 - Why branches?
-- Concepts
-  - PRs
-  - PR reviews
-  - Merge
-  - Branch protection
+- Pull Requests (PRs)
+- Pull Reuest reviews
+- Merge branch (to another branch)
+- Branch protection
 
 ## Where to go from here
 
-- Brief markdown
-  - https://commonmark.org/help/
-  - This slidedeck
-- Create repos in GH
-- Project boards
-- Modify issues, move around
+- Familiarise yourself with MarkDown
+  - Cheat sheet: <https://commonmark.org/help/>
+  - Example: [The MarkDown source of is presentation](https://github.com/dfds/dojo/blob/master/workshops/git-github-vscode-intro/)
+- Repositories in GitHub
+  - Create a sandbox repo
+  - Add/modify files - both locally and directly in GitHub
+  - Stage, commit and push changes
+- Github issue management
+  - Create issues in your sandbox repo
+  - Assign people and labels to issues
+  - Create a project board
+  - Add issues to board, move them around
