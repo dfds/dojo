@@ -107,7 +107,7 @@ The exercises in this workshop has the following prerequisites:
 
 ### Exercise: Get started with local Git repo
 
-- Create a common directory to store code, e.g.: `C:\code` or `~/code`
+- Create a common directory to store code, e.g.: `C:\code`
 - Create a new sub-directory here (e.g. `github-workshop`), and initialise a local Git repo:
 
 ```powershell
@@ -191,9 +191,9 @@ Short introduction to useful VS Code features, you can explore further on your o
 
 - Some settings need to be configured to work with remote repositories
 - Git configuration has multiple scopes:
-  - `system`: Machine-wide (`$GIT_BIN_DIR/etc/gitconfig`)
-  - `global`: Current user, all repos (`~/.gitconfig`)
-  - `local`: Current repo only (`.git/config`)
+  - `system`: Machine-wide (`%PROGRAMFILES%\Git\etc\gitconfig`)
+  - `global`: Current user, all repos (`%USERPROFILE%\.gitconfig`)
+  - `local`: Current repo only (`.git\config`)
 - The more specific scope, the higer precedence
   - `local` overrides `global`, which overrides `system`
 
@@ -223,26 +223,30 @@ git config --global core.autocrlf false
 
 ### Walk-through exercise: Setup SSH key authentication for GitHub (1)
 
-- Add the SSH client capability to Windows
+- Add the SSH client capability to Windows (*must run as administrator/elevated*):
   - `Get-WindowsCapability -Online -Name OpenSSH.Client* | Add-WindowsCapability -Online`
-- Generate SSH key
-  - `ssh-keygen -t ed25519`
 - Enable `ssh-agent` (*must run as administrator/elevated*):
 
 ```powershell
 Get-Service ssh-agent | Set-Service -StartupType Manual
 Start-Service ssh-agent
 ```
+- Generate SSH key
+  - `ssh-keygen -t ed25519`
 
 ### Walk-through exercise: Setup SSH key authentication for GitHub (2)
 
 - Add key to agent
-  - `ssh-add ~/.ssh/id_ed25519`
-- Configure SSH config to use key file for GitHub and forward agent (LF!):
+  - `ssh-add $env:USERPROFILE\.ssh\id_ed25519`
+
+- Configure SSH to use `ssh-agent` to authenticate against GitHub
+  - Create or edit the file `%USERPROFILE%\.ssh\config` with VS Code
+  - Ensure EOL is set to `LF` (Unix-style)
+  - The file should include:
 
 ```text
 Host github.com
-        ForwardAgent yes
+  ForwardAgent yes
 ```
 
 ### Walk-through exercise: Setup SSH key authentication for GitHub (3)
@@ -250,7 +254,7 @@ Host github.com
 - Configure Git to use Windows' OpenSSH binary and config
   - `git config --global core.sshCommand "'$((Get-Command ssh).Source)' -T"`
 - Copy public key to clipboard and add to GitHub profile
-  - `Get-Content .\id_ed25519.pub | Set-Clipboard`
+  - `Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub | Set-Clipboard`
   - <https://github.com/settings/keys>
 - Verify GitHub authentication
   - `ssh -T git@github.com`
@@ -330,7 +334,7 @@ Branch 'main' set up to track remote branch 'main' from 'origin'.
 
 - Familiarise yourself with MarkDown
   - Cheat sheet: <https://commonmark.org/help/>
-  - Example: [The MarkDown source of is presentation](https://github.com/dfds/dojo/blob/master/workshops/git-github-vscode-intro/)
+  - Example: [The MarkDown source of this presentation](https://github.com/dfds/dojo/blob/master/workshops/git-github-vscode-intro/)
 - Repositories in GitHub
   - Create a sandbox repo
   - Add/modify files - both locally and directly in GitHub
