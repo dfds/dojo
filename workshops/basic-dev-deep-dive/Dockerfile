@@ -2,7 +2,7 @@
 # CREATE UPDATED BASE IMAGE
 # ========================================
 
-FROM python:3.7.11-slim-buster AS base
+FROM python:3.9.10-slim-bullseye AS base
 
 RUN apt-get update \
     && apt-get dist-upgrade -y \
