@@ -1,0 +1,13 @@
+https://github.com/Azure-Samples/application-insights-aspnet-sample-opentelemetry
+
+
+
+Using Application Insights SDK
+Clone this repository
+Open terminal under quickstart/sample
+Create file quickstart/sample/.env with following content:
+USE_APPLICATIONINSIGHTS=true
+USE_OPENTELEMETRY=false
+AI_INSTRUMENTATIONKEY=<ENTER-APPLICATION-INSIGHTS-INSTRUMENTATION-KEY>
+Execute docker-compose up (-d if you don't wish to see console logs)
+View logs, traces and metrics in Azure Portal Application Insights
