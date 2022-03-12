@@ -2,7 +2,7 @@
 # CREATE UPDATED BASE IMAGE
 # ========================================
 
-FROM python:3.7.11-slim-buster AS base
+FROM python:3.11.0a5-slim-buster AS base
 
 RUN apt-get update \
     && apt-get dist-upgrade -y \
