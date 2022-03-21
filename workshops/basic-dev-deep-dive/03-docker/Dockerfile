@@ -2,7 +2,7 @@
 # CREATE UPDATED BASE IMAGE
 # ========================================
 
-FROM python:3.9.10-slim-bullseye AS base
+FROM python:slim-bullseye AS base
 
 RUN apt-get update \
     && apt-get dist-upgrade -y \
