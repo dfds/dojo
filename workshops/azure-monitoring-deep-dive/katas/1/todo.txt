@@ -1,0 +1,5 @@
+https://www.serverless360.com/blog/azure-log-analytics-workspace (setup workspace)
+
+Create a dashboard with standard CPU metrics
+
+Create simple .net app w. instrumentation

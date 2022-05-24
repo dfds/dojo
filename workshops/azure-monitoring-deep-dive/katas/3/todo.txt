@@ -1,0 +1,5 @@
+Configure ApplicationInsights Serilog sink
+
+Create a few trace logs
+
+Setup a dashboard to visualize new trace logs

@@ -1,0 +1,3 @@
+Create custom metrics in .NET app via NuGet package
+
+Setup a simple alert in Azure Monitor based on metrics to send email
