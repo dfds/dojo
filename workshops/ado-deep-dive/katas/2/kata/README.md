@@ -19,17 +19,17 @@ In order to get our CLI working with Azure DevOps we need to install the [Azure 
 az extension add --name azure-devops
 ```
 
-***Note*** <br/>
+***Note***
 You must have at least v2.0.69 of the Azure CLI installed to use this extension. We can verify the Azure CLI version via the following command: `az --version`.
 
 ### 2. Authenticate via Azure CLI
-To perform operations against the DFDS Azure cloud we need to authenticate with our Azure AD account to generate the necessary tokens required by the Azure CLI to communicate with the cloud. Thankfully the AZ CLI supports the OAuth2 device code flow, which can be initiated with the following command:
+To perform operations against the DFDS Azure cloud we need to authenticate with our DFDS login credentials.  This will generate the tokens required by the Azure CLI to communicate with the cloud. Thankfully the AZ CLI supports the OAuth2 device code flow, which can be initiated with the following command:
 
 ```
 az login --allow-no-subscriptions
 ```
 
-***Note*** <br/>
+***Note***
 DFDS does not have individual subscriptions for all teams and yours might not be an exception. This is why we use the `--allow-no-subscriptions` flag to instruct the Azure CLI to service our authentication attempt regardless of any subscription affiliations we might have associated with our Azure AD users.
 
 ### 3. Configure Azure DevOps CLI
@@ -40,17 +40,26 @@ az devops configure --defaults organization=https://dev.azure.com/{ado-org-name}
 ```
 
 ### 4. Create a service account
-Having setup the CLI we can now commence with the process of creating the service account required by Azure DevOps to connect with our Hellman cluster: 
+Having setup the CLI we can now commence with the process of creating the service account required by Azure DevOps to connect with our Hellman cluster:
 
 ```
 az devops service-endpoint create --service-endpoint-configuration=service_endpoint_configuration.json
 ```
 
-Just to explain: <br/>
-`az devops service-endpoint create --service-endpoint-configuration=service_endpoint_configuration.json` - This one-liner uses a pre-configured json file which contains the request payload expected by Azure DevOps REST API.
+This above one-liner uses a pre-configured json file which contains the request payload expected by Azure DevOps REST API.  THe file can be found within the folder named 'final' in this Kata.
 
-### 5. Create a pipeline
-Once the service connection is in place we can move on to creating our pipeline. Luckily the guys at Redmond has made it easy for us with another one-liner and an interactive process:
+### 5. Create a Repository
+
+In an upcoming step we will create a pipeline.  This will be created and then stored in a Repository.  If you already have an Azure DevOps Repo that you wish to use then you can skip this step, or, if you wish, you can execute the command below to have a new Azure DevOps Repo created:
+
+```
+az repos create --name {my-new-repo-name}
+```
+
+Be sure to replace {my-new-repo-name} with a unique name and note that the curly braces are not required.  If the process of creating the new Repo is succesful then a JSON payload with the details for the new Repo will be returned.
+
+### 6. Create a pipeline
+Once the service connection is in place we can move on to creating our pipeline. Luckily the guys at Redmond have made it easy for us with another one-liner and an interactive process.  Be sure to replace the variables in curly braces with suitable names for the pipeline and the ADO Repository where the resultant pipeline will be stored.
 
 ```
 az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch main --repository-type tfsgit
@@ -60,7 +69,7 @@ Once the interactive process launches select the default option (1) to setup a s
 
 ```
 # Docker
-# Build a Docker image 
+# Build a Docker image
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
@@ -72,7 +81,7 @@ resources:
 stages:
 - stage: Build
   displayName: Build image
-  jobs:  
+  jobs:
   - job: Build
     displayName: Build
     pool:
@@ -89,8 +98,33 @@ stages:
           arguments: '-f $(Build.SourcesDirectory)/{path-to-folder-container-k8s-assets}/'
 ```
 
-Just to explain: <br/>
-`az pipelines create --name {ado-pipeline-name} --skip-first-run --repository {ado-project-repo-name} --branch main --repository-type tfsgit` - Launches an interactive console that guides users through setting up a new pipeline for their repository.
+The above command launches an interactive console that guides users through setting up a new pipeline for their repository.
+
+Once you have made the required changes you can save and close your text editor.  You will then be prompted if you wish to proceed in creating the pipeline.  Simply select the default choice of 1 to continue.  You will then be asked how you want to commit the files to the repository.  Choose option 1 to have the change committed directly to the master branch.
+
+And, that's it.  The new pipeline is now created and the generated YAML file can be located in the ADO repository.
+
+### 7. Cleanup Steps
+
+If you wish you may also complete this final step in order to clean up the content that has just been created.
+
+```
+# First you need to locate the ID of the repository to delete using this command
+az repos show --repository {my-repository-name}
+
+# Note down the GUID against id in the returned JSON and run this command
+az repos delete --id {repository-id}
+
+# Use this command to locate the service-endpoint we previously created
+az devops service-endpoint list --query "[?name=='Kubernetes Sample Connection']"
+
+# In the returned JSON note down the GUID against the id field.
+# Be careful to choose the id related to the endpoint and not the one in the 'createdBy' block.
+# Use the ID in the following command
+az devops service-endpoint delete --id {service-endpoint-id}
+```
+
+This concludes the process of cleaning up the environment.
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
