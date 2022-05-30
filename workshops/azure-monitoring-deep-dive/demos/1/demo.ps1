@@ -8,7 +8,7 @@ cd application-insights-aspnet-sample-opentelemetry/quickstart/sample/
 $envValues=@'
 USE_APPLICATIONINSIGHTS=true
 USE_OPENTELEMETRY=false
-AI_INSTRUMENTATIONKEY=<ENTER-APPLICATION-INSIGHTS-INSTRUMENTATION-KEY>
+AI_INSTRUMENTATIONKEY=03d03408-cd84-429d-a4ee-72b496f645fb
 '@
 
 #Create .env file
