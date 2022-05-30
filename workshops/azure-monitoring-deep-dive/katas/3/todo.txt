@@ -1,5 +1,4 @@
-Configure ApplicationInsights Serilog sink
+- Use https://docs.microsoft.com/en-us/azure/azure-monitor/app/ilogger
+- Dfds Logging package
+- Dfds Metrics package
 
-Create a few trace logs
-
-Setup a dashboard to visualize new trace logs

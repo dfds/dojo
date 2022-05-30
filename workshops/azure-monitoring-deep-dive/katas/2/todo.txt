@@ -1,3 +1,1 @@
-Create custom metrics in .NET app via NuGet package
-
-Setup a simple alert in Azure Monitor based on metrics to send email
+https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#adding-telemetry-processors
