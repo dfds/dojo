@@ -350,7 +350,7 @@ docker run \
 -e path_to_file="s3://dfds-k8sworkshop-bucket/testfile.txt" \
 awscli
 ```
-You can exit by clicking "ctrl+c" on your keyboard. 
+You can exit by clicking "ctrl+c" on your keyboard.
 
 Notice that we didn't have to specify the aws s3 cp command when running the container and that it kept running even after the first output.
 
@@ -639,7 +639,7 @@ If neither of the previous are there it will ask for access through something ca
 In AWS there is a service that lets amazon resources ask for their current access level and get temporary access keys for these permissions. If no other are specified it will pull these.
 Our worker nodes are in AWS so our pods can use the access level of the nodes to do what they need.
 
-You might ask how the nodes in the cluster can access the bucket that we just created? And in short it can't. But we can configure it to it. We do this using something called [KIAM](https://playbooks.dfds.cloud/processes/k8s-pods-aws-access-assume-role.html#namespace-configuration)(Kubernetes Identity and Access Management)
+You might ask how the nodes in the cluster can access the bucket that we just created? And in short it can't. But we can configure it to it. We do this using something called [IRSA](https://wiki.dfds.cloud/en/playbooks/deployment/k8s-pods-aws-access-assume-role)(IAM Roles for Service Accounts). Also see: https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html for more information.
 
 If you look in the folders Terraform file you will notice there has been added some stuff. We now also create a roll and assign it permissions. The special part about this role is that it is configured to be used by the pods running inside the cluster in our namespace.
 
