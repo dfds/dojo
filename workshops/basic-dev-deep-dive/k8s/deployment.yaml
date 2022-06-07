@@ -6,6 +6,14 @@ type: Opaque
 stringData:
     path_to_file: "s3://dfds-k8sworkshop-bucket/testfile.txt"
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::547767961372:role/test-role
+    eks.amazonaws.com/sts-regional-endpoints: "true"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,9 +29,8 @@ spec:
     metadata:
       labels:
         app: awscli
-      annotations:
-        iam.amazonaws.com/role: arn:aws:iam::547767961372:role/test-role
     spec:
+      serviceAccountName: test-sa
       containers:
       - name: awscli
         image: 579478677147.dkr.ecr.eu-central-1.amazonaws.com/ded/workshops:$(Build.BuildId)
