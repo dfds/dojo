@@ -10,7 +10,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * [.NET Core](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 
 ## Exercise
-This exercise will focus on working with the Application Insights SDK in a .NET Core application to help you better understand how to ship logs & metrics to your Azure Monitoring workspace in order to trace user activities across a distributed system.
+This exercise will focus on setting up the Application Insights SDK in a .NET Core application to help you ship logs & metrics to a Azure Monitoring workspace in order to trace user activities across a distributed system.
 
 ### 1. Create a kata directory
 First we setup a directory for our exercise files. It's pretty straight forward:
