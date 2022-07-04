@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+    demo:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        ports:
+            - "8000:80"
+        depends_on:
+            - db
+    db:
+        image: "mcr.microsoft.com/mssql/server"
+        ports:
+            - "1433:1433"
+        environment:
+            SA_PASSWORD: "yourCrazy(!)Password"
+            ACCEPT_EULA: "Y"
