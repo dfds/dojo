@@ -4,7 +4,7 @@ DFDS MFA Training - Code Kata #4
 This training exercise is a **beginner-level** course on micro frontend architecture that serves as a starting point for developers looking to onboard the MFA efforts at DFDS.
 
 ## Getting started
-These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one of more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/ded-dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dfds-dojo/pulls).
+These instructions will help you prepare for the kata exercise and ensure that your local machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one or more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/ded-dojo/issues) or fix it yourself and create a [pull request](https://github.com/dfds/dfds-dojo/pulls).
 
 ### Prerequisites
 * [Visual Studio Code](https://code.visualstudio.com/download)
