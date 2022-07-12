@@ -1,7 +1,7 @@
 DFDS Event API Deep Dive - Code kata #2
 ======================================
 
-This training exercise is a **beginner-level** course on Async API and how it can help developers provide discovery meta-data for their Event APIs in DFDS. 
+This training exercise is a **beginner-level** course on [AsyncAPI](https://www.asyncapi.com/docs/reference/specification/v2.1.0) and how it can help developers provide discovery meta-data services for their event APIs in DFDS. 
 
 ## Getting started
 These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one or more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
@@ -10,7 +10,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * [.NET Core](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 
 ## Exercise
-TODO
+In this exercise we will use the Neuroglia.AsyncApi & MQTTnet packages to create a simple .NET Core Background service that runs a MQTT client which emits a ProductSoldEvent message that others clients can subscribe too. 
 
 ### 1. Create a kata directory
 First we setup a directory for our exercise files. It's pretty straight forward:
@@ -21,7 +21,7 @@ cd kata2
 ```
 
 ### 2. Create a ASP.NET Core Web App project
-Then create a ASP.NET Core Web App boilerplate project using the dotnet CLI:
+Secondly we need to create a ASP.NET Core Web App boilerplate project using the dotnet CLI:
 
 ```
 dotnet new webapp,razor
@@ -34,7 +34,7 @@ Just to explain: <br/>
 
 
 ### 3. Add required NuGet packages for our sample service
-Use the dotnet CLI to install the 3rd party libs needed to setup a working AsyncAPI sample:
+Once our new boilerplate is up and running we need to add the third-party dependencies (NuGet packages) needed to implement a working AsyncAPI sample:
 
 ```
 dotnet add package Neuroglia.AsyncApi.AspNetCore.UI
@@ -47,8 +47,8 @@ Just to explain: <br/>
 `package` - specifies the type of item being added to the project
 
 
-### 4. Create a simple ProductEvent implementation
-TODO
+### 4. Create a simple ProductSoldEvent implementation
+Now we can begin working on the actual implementation and our first task we be to create a ProductSoldEvent that can be emitted from our Event API to its subscribers:
 
 ```
 using Neuroglia.AsyncApi;
@@ -74,7 +74,7 @@ public class ProductSoldEvent
 
 
 ### 5. Implement a BackgroundService that exposes a Event API
-TODO
+With our ProductSoldEvent implementation in place we can now finalize the Event API by implementing the ProductService as follows:
 
 ```
 using Microsoft.Extensions.Hosting;
@@ -156,7 +156,7 @@ public class ProductService : BackgroundService
 
 
 ### 6. Add AsyncAPI generation & ProductService to DI in Startup.cs
-TODO
+Once our event & service is complete all that remains to be done is to register them with the DI container in the ConfigureServices method in `Startup.cs` and setup the AsyncAPiGeneration for our meta-data endpoint:
 
 ```
 services.AddAsyncApiGeneration(builder => builder.WithMarkupType<StreetLightsService>()
@@ -181,14 +181,11 @@ services.AddSingleton<IHostedService>(provider => provider.GetRequiredService<Pr
 
 
 ### 7. Build & run solution
-TODO
+Lastly we need to build & run the code, which is as simple as running the following dotnet CLI command:
 
 ```
 dotnet run
 ```
-
-
-
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
