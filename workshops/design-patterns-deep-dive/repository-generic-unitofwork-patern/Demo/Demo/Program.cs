@@ -28,7 +28,8 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var demoDbContext = scope.ServiceProvider.GetRequiredService<DemoDbContext>();
-    demoDbContext.Database.Migrate();
+    // for docker container
+   // demoDbContext.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.

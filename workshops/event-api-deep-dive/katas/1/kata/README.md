@@ -8,6 +8,7 @@ These instructions will help you prepare for the kata and ensure that your train
 
 ### Prerequisites
 * [.NET Core](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+* [wscat](https://www.npmjs.com/package/wscat)
 
 ## Exercise
 This exercise will focus on using .NET Core to host a simple WebSocket endpoint that can echo messages back to the sender in order to verify that a full-duplex connection has succesfully been established between the client and the server.
@@ -36,17 +37,21 @@ Just to explain: <br/>
 ### 3. Update Program.cs to enable WebSocket support
 Once the boilerplate is generated we can begin modifying the Program.cs to enable the ASP.NET Core WebSocket feature:
 
-```
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-
-var app = builder.Build();
+```c#
+using Microsoft.AspNetCore.WebSockets;
+using System.Net.WebSockets;
 
 var webSocketOptions = new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromMinutes(2)
 };
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+builder.Services.AddWebSockets((options) => options = webSocketOptions);
+
+var app = builder.Build();
 
 app.UseWebSockets(webSocketOptions);
 
@@ -67,7 +72,7 @@ Just to explain: <br/>
 ### 4. Implement simple "Echo" middleware
 Lastly we need to add middleware that can echo messages from our WS clients. Its important to keep in mind that when using a WebSocket you must keep the middleware pipeline running for the duration of the connection. While this might all sounds very confusing, thanks to recent improvements in ASP.NET Core its actually quiet simple to accomplish by appending the new "Echo" middleware via a few lambdas to the end of our `Program.cs` as follows:
 
-```
+```c#
 app.Use(async (context, next) =>
 {
     if (context.Request.Path == "/ws")
@@ -87,7 +92,7 @@ app.Use(async (context, next) =>
         await next(context);
     }
 
-    private static async Task Echo(WebSocket webSocket)
+    static async Task Echo(WebSocket webSocket)
     {
         var buffer = new byte[1024 * 4];
         var receiveResult = await webSocket.ReceiveAsync(
@@ -117,6 +122,33 @@ Just to explain: <br/>
 `app.Use(async (context, next)` - add a new middleware lambda to the HTTP pipeline in .NET Core<br/>
 `using var webSocket = await context.WebSockets.AcceptWebSocketAsync()` - enables async communication with WS clients. <br/>
 `await Echo(webSocket)` - receives a message and immediately sends back the same message to the client. Messages are sent and received in a loop until the client closes the connection.<br/>
+
+Before running the application, just change the launchSettings as below to avoid ssl certification issues
+```
+"profiles": {
+"kata1": {
+    "commandName": "Project",
+    "dotnetRunMessages": true,
+    "launchBrowser": true,
+    "applicationUrl": "https://localhost:7100;http://localhost:5039",
+    "environmentVariables": {
+    "ASPNETCORE_ENVIRONMENT": "Development"
+    }
+}
+}
+```
+### 5. Build & run solution
+We need to build & run the code, which is as simple as running the following dotnet CLI command:
+
+```
+dotnet run
+```
+
+### 6. Test the application
+Just run the following command in terminal or command prompt:
+```
+wscat -c ws://localhost:5039/ws
+```
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
