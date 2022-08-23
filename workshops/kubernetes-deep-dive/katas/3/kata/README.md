@@ -70,7 +70,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: ¨5000
+    targetPort: 5000
 ```
 
 Just to explain: <br/>
