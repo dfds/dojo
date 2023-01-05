@@ -13,7 +13,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * Kata 1
 
 ## Exercise
-Your second assignment will see you install a Crossplane provider into your Kubernetes cluster using the Crossplane CLI and verify its installation. 
+Your second assignment will see you install a Crossplane provider into your Kubernetes cluster using the Crossplane CLI and verify its installation.
 You will also upgrade this package to the latest version and switch between provider revisions
 
 ### 1. Install provider package
@@ -51,6 +51,11 @@ kubectl get providerrevision
 ```
 
 Note that we now have 2 revisions of the same crossplane provider. Our new version should show in Active state
+
+## CRD Documentation
+
+* The Crossplane API documentation can be found on <https://doc.crds.dev/github.com/crossplane/crossplane>
+* The API documentation for the AWS Provides for Crossplane can be found at <https://doc.crds.dev/github.com/crossplane/provider-aws>
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
