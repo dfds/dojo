@@ -66,7 +66,13 @@ Check that the security group is showing in a READY and SYNCED state.
 kubectl get securitygroup
 ```
 
-You may also view in the AWS console to confirm that the group now exists
+You may also view in the AWS console to confirm that the group now exists.
+
+Optionally you can also view the creation from the command line if you have the AWS CLI installed.
+
+```bash
+aws --region eu-west-1 ec2 describe-security-groups --filters "Name=tag:Name,Values=my-security-group"
+```
 
 ### 4. Create a db.yaml file on your filesystem
 
