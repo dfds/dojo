@@ -66,6 +66,12 @@ Check that the security group is showing in a READY and SYNCED state.
 kubectl get securitygroup
 ```
 
+If the status is not READY and SYNCED, it might be helpful to describe the security group(s):
+
+```bash
+kubectl describe securitygroup
+```
+
 You may also view in the AWS console to confirm that the group now exists.
 
 Optionally you can also view the creation from the command line if you have the AWS CLI installed.
