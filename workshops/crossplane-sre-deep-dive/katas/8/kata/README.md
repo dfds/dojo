@@ -19,7 +19,7 @@ Your eigth assignment will see you deploy resources from your configuration pack
 
 Outside of the 'my-configuration' directory you created in the last kata, we will create a manifest to deploy a resource from our package. Create a package-resource.yaml with the below content:
 
-```
+```yaml
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: DatabaseInstance
 metadata:
@@ -38,7 +38,7 @@ spec:
     matchLabels:
       purpose: database
       provider: aws
-  
+
   writeConnectionSecretToRef:
     name: my-package-resource-secret
 ```
@@ -47,7 +47,7 @@ spec:
 
 Next we will deploy the manifest:
 
-```
+```bash
 kubectl apply -f package-resource.yaml
 ```
 
@@ -55,23 +55,23 @@ kubectl apply -f package-resource.yaml
 
 Let's verify that our resources have been created:
 
-```
+```bash
 kubectl get databaseinstance -n my-namespace
 kubectl get securitygroup
 kubectl get rdsinstance
 ```
 
 Once the RDS instance has finished creating and the database instances recognises this and shows Ready, you should be able to see the secret in your namespace
-```
+
+```bash
 kubectl get secret my-package-resource-secret -n my-namespace
 ```
 
 ### 4. Cleanup resources
 
-```
+```bash
 kubectl delete -f package-resource.yaml
 ```
-
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

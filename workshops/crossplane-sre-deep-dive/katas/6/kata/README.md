@@ -20,7 +20,7 @@ First we can deploy an instance of our new composite resource.
 
 Create an instance.yaml with the following contents:
 
-```
+```yaml
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: CompositeDatabaseInstance
 metadata:
@@ -46,7 +46,7 @@ spec:
 
 Next we will apply the manifest
 
-```
+```bash
 kubectl apply -f instance.yaml
 ```
 
@@ -54,7 +54,7 @@ kubectl apply -f instance.yaml
 
 Verify the deployment by issuing a get and describe
 
-```
+```bash
 kubectl get compositedatabaseinstance
 kubectl describe compositedatabaseinstance
 kubectl get securitygroup
@@ -67,7 +67,7 @@ It could take 5 minutes for the deployment to complete
 
 Now let's make a static claim to the resource we just created. A static claim will take sole ownership of the resource
 
-```
+```yaml
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: DatabaseInstance
 metadata:
@@ -94,7 +94,7 @@ spec:
 
 Now apply the manifest to deploy the claim
 
-```
+```bash
 kubectl apply -f static.yaml
 ```
 
@@ -102,7 +102,7 @@ kubectl apply -f static.yaml
 
 Observe the status of the database instance. Note how it is scoped to the namespace and that a secret also exists
 
-```
+```bash
 kubectl get databaseinstance -n my-namespace
 kubectl get secret -n my-namespace
 ```
@@ -111,7 +111,7 @@ kubectl get secret -n my-namespace
 
 Next we will create a dynamic claim. This should provision an instance dynamically on request from the claim
 
-```
+```yaml
 apiVersion: crossplane.dfds.cloud/v1alpha1
 kind: DatabaseInstance
 metadata:
@@ -130,7 +130,7 @@ spec:
     matchLabels:
       purpose: database
       provider: aws
-  
+
   writeConnectionSecretToRef:
     name: my-dynamic-claim-secret
 ```
@@ -139,23 +139,24 @@ spec:
 
 Now apply the dynamic claim
 
-```
+```bash
 kubectl apply -f dynamic.yaml
 ```
 
 This should take about 5 minutes
 
 ### 8. Verify dynamic databaseinstance, secret and resource creation
-```
+
+```bash
 kubectl get databaseinstance -n my-namespace
 kubectl get securitygroup
 kubectl get rdsinstance
 ```
 
-Once the rds instance has finished creating, and the databaseinstance detects this and shows as Ready (this could take a few minutes), 
+Once the rds instance has finished creating, and the databaseinstance detects this and shows as Ready (this could take a few minutes),
 we should see the secret appear in our namespace
 
-```
+```bash
 kubectl get secret -n my-namespace
 ```
 
@@ -163,7 +164,7 @@ kubectl get secret -n my-namespace
 
 We need to clean up our resources so that we do not incur unnecessary costs in our cloud account
 
-```
+```bash
 kubectl delete -f static.yaml
 kubectl delete -f dynamic.yaml
 
@@ -171,7 +172,7 @@ kubectl delete -f dynamic.yaml
 
 We should also cleanup Kata 5 definitions if we are continuing to Kata 7 so that they do not conflict with the package we create
 
-```
+```bash
 kubectl delete -f composition.yaml
 kubectl delete -f definition.yaml
 ```

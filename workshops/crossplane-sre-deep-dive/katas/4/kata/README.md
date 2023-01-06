@@ -13,7 +13,7 @@ These instructions will help you prepare for the kata and ensure that your train
 * Kata 3
 
 ## Exercise
-Your third assignment will see you provision some database infrastructure into your cloud provider. 
+Your third assignment will see you provision some database infrastructure into your cloud provider.
 
 ### 1. Create a secg.yaml file on your system
 
@@ -36,7 +36,7 @@ spec:
       value: my-security-group
     groupName: my-security-group
     description: Security Group for RDS
-    ingress: 
+    ingress:
     - fromPort: 5432
       toPort: 5432
       ipProtocol: tcp
@@ -51,7 +51,7 @@ spec:
 
 Deploy the manifest to create the security group in AWS
 
-```
+```bash
 kubectl apply -f secg.yaml
 ```
 
@@ -59,7 +59,7 @@ kubectl apply -f secg.yaml
 
 Check that the security group is showing in a READY and SYNCED state.
 
-```
+```bash
 kubectl get securitygroup
 ```
 
@@ -69,7 +69,7 @@ You may also view in the AWS console to confirm that the group now exists
 
 First we will create a manifest to describe an RDS database instance we want to provision. Create a db.yaml file
 
-```
+```yaml
 ---
 apiVersion: database.aws.crossplane.io/v1beta1
 kind: RDSInstance
@@ -95,32 +95,30 @@ spec:
     name: my-database-creds
 ```
 
-
 ### 5. View possible options for kind
 
 If you are curious, you can use the following command to see the options you can specify
 
-```
+```bash
 kubectl explain rdsinstance --recursive | less
 ```
 
-Note that this does not tell you any special value requirements other than string, int etc. You can look at the Github source code to find any input requirements for the fields - https://github.com/crossplane/provider-aws/blob/master/package/crds/database.aws.crossplane.io_rdsinstances.yaml 
+Note that this does not tell you any special value requirements other than string, int etc. You can look at the Github source code to find any input requirements for the fields - https://github.com/crossplane/provider-aws/blob/master/package/crds/database.aws.crossplane.io_rdsinstances.yaml
 
 ### 6. Deploy the DB manifest
 
 We will deploy manifest into our cluster
 
-```
+```bash
 kubectl apply -f db.yaml
 ```
 
 ### 7. Observe creation
-```
+
+```bash
 kubectl get rdsinstance
 kubectl describe secret my-database-creds -n my-namespace
 ```
-
-
 
 Note that if we describe the credentials again, we can see a password and username field
 
@@ -139,13 +137,13 @@ Next we will change the allocatedStorage value applied to our RDS Instance.
 
 Update the db.yaml file
 
-```
+```yaml
 allocatedStorage: 30
 ```
 
 Apply this change
 
-```
+```bash
 kubectl apply -f db.yaml
 ```
 
@@ -153,13 +151,13 @@ kubectl apply -f db.yaml
 
 Describe the RDS instance to see that there has been a successful request to update the external resource
 
-```
+```bash
 kubectl describe rdsinstance my-database
 ```
 
 Get the RDS Instance to see the state change to modifying and ready to false (this can take a minute or two to start reconciling)
 
-```
+```bash
 kubectl get rdsinstance
 ```
 
@@ -172,14 +170,14 @@ Eventually the modification should complete
 
 We should clean up resources so that we do not incur any unnecessary costs
 
-```
+```bash
 kubectl delete -f db.yaml
 kubectl delete -f secg.yaml
 ```
 
 If you are not continuing to Kata 5, also clean up:
 
-```
+```bash
 kubectl delete -f providerconfig.yaml
 kubectl delete provider.pkg provider-aws-name
 helm uninstall crossplane -n crossplane-system
