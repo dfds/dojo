@@ -20,16 +20,11 @@ RUN apt -y install kubectl=1.23.15-00
 ## Install AWS CLI
 ENV AWS_CLI_VERSION=2.7.35
 
-ADD src/aws-cli.asc /
-
 RUN curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip -o awscliv2.zip \
-    && curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip.sig  -o awscliv2.sig \
-    && gpg --import aws-cli.asc \
-    && gpg --verify awscliv2.sig awscliv2.zip \
     && unzip awscliv2.zip \
     && ./aws/install \
     && rm -rf ./aws \
-    && rm -f awscliv2.zip aws-cli.asc awscliv2.sig
+    && rm -f awscliv2.zip
 
 ## Install saml2aws
 ENV VERSION=2.36.2
