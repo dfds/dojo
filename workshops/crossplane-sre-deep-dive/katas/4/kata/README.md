@@ -1,18 +1,21 @@
-DFDS Crossplane - Code kata #4
-======================================
+# DFDS Crossplane - Code kata #4
 
 This training exercise is a **beginner-level** course on Crossplane that serves as a starting point for SRE's looking to install and maintain Crossplane at DFDS.
 
 ## Getting started
+
 These instructions will help you prepare for the kata and ensure that your training machine has the tools installed you will need to complete the assignment(s). If you find yourself in a situation where one or more tools might not be available for your training environment please reach out to your instructor for assistance on how to proceed, post an [issue in our repository](https://github.com/dfds/dojo/issues) or fix it yourself and update the kata via a [pull request](https://github.com/dfds/dojo/pulls).
 
 ### Prerequisites
+
 * Kubernetes Cluster
 * Kubectl
 * Helm
 * Kata 3
+* AWS CLI (optional)
 
 ## Exercise
+
 Your third assignment will see you provision some database infrastructure into your cloud provider.
 
 ### 1. Create a secg.yaml file on your system
@@ -21,7 +24,7 @@ By default, unless we specify, our RDS instance will get created in the default 
 
 Create a secg.yaml file
 
-```
+```yaml
 ---
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: SecurityGroup
@@ -63,7 +66,19 @@ Check that the security group is showing in a READY and SYNCED state.
 kubectl get securitygroup
 ```
 
-You may also view in the AWS console to confirm that the group now exists
+If the status is not READY and SYNCED, it might be helpful to describe the security group(s):
+
+```bash
+kubectl describe securitygroup
+```
+
+You may also view in the AWS console to confirm that the group now exists.
+
+Optionally you can also view the creation from the command line if you have the AWS CLI installed.
+
+```bash
+aws --region eu-west-1 ec2 describe-security-groups --filters "Name=tag:Name,Values=my-security-group"
+```
 
 ### 4. Create a db.yaml file on your filesystem
 
@@ -130,7 +145,6 @@ Wait until the RDS Instance has finished deploying and in a ready state (this sh
 
 Note that if we describe the credentials again once the database is fully deployed, this secret should now contain the endpoint and port
 
-
 ### 8. Change allocated storage
 
 Next we will change the allocatedStorage value applied to our RDS Instance.
@@ -165,7 +179,6 @@ You should also see this updating in the AWS Web Console.
 
 Eventually the modification should complete
 
-
 ### 10. Cleanup resources
 
 We should clean up resources so that we do not incur any unnecessary costs
@@ -181,8 +194,8 @@ If you are not continuing to Kata 5, also clean up:
 kubectl delete -f providerconfig.yaml
 kubectl delete provider.pkg provider-aws-name
 helm uninstall crossplane -n crossplane-system
-
 ```
 
 ## Want to help make our training material better?
- * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
+
+* Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).
