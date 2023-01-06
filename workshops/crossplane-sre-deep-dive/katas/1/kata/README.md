@@ -20,13 +20,13 @@ Your first assignment will see you install Crossplane into your Kubernetes Clust
 
 Create a crossplane-system in your Kubernetes cluster to hold Crossplane system components
 
-```
+```bash
 kubectl create namespace crossplane-system
 ```
 
 Verify the namespace exists
 
-```
+```bash
 kubectl get namespaces
 ```
 
@@ -34,14 +34,14 @@ kubectl get namespaces
 
 We need to add the stable crossplane repository in order to install Crossplane into our namespace
 
-```
+```bash
 helm repo add crossplane-stable https://charts.crossplane.io/stable
 helm repo update
 ```
 
 Verify the repo has added successfully
 
-```
+```bash
 helm repo list
 ```
 
@@ -49,13 +49,13 @@ helm repo list
 
 We need to install crossplane to our namespace using the crossplane chart from the stable repository
 
-```
+```bash
 helm install crossplane --namespace crossplane-system crossplane-stable/crossplane --version 1.3.0
 ```
 
 Verify that the helm chart has successfully installed
 
-```
+```bash
 helm list -n crossplane-system
 ```
 
@@ -63,7 +63,7 @@ helm list -n crossplane-system
 
 Verify that the installation has been successful and that the crossplane pods are running
 
-```
+```bash
 kubectl get all -n crossplane-system
 ```
 
@@ -71,7 +71,7 @@ kubectl get all -n crossplane-system
 
 Install the Crossplane CLI so that we are ready to easily perform some crossplane tasks
 
-```
+```bash
 curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.sh | sh
 sudo mv kubectl-crossplane /usr/local/bin
 ```
@@ -79,7 +79,8 @@ sudo mv kubectl-crossplane /usr/local/bin
 > **Windows Powershell Users**: You need to download [Crank.exe](https://releases.crossplane.io/stable/current/bin/windows_amd64/crank.exe), rename it to kubectl-crossplane.exe and save it to a directory in your user PATH
 
 Verify that the CLI is installed
-```
+
+```bash
 kubectl crossplane --version
 ```
 

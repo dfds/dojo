@@ -118,7 +118,7 @@ If you are curious, you can use the following command to see the options you can
 kubectl explain rdsinstance --recursive | less
 ```
 
-Note that this does not tell you any special value requirements other than string, int etc. You can look at the Github source code to find any input requirements for the fields - <https://github.com/crossplane/provider-aws/blob/master/package/crds/database.aws.crossplane.io_rdsinstances.yaml>
+Note that this does not tell you any special value requirements other than string, int etc. You can look at the Github source code to find any input requirements for the fields - https://github.com/crossplane/provider-aws/blob/master/package/crds/database.aws.crossplane.io_rdsinstances.yaml
 
 ### 6. Deploy the DB manifest
 

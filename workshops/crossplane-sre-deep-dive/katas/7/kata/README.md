@@ -20,7 +20,8 @@ Your seventh assignment will see you create a configuration package
 ### 1. Create a configuration directory
 
 First we need to create a configuration directory and copy in our definition and composition manifests from kata 5
-```
+
+```bash
 mkdir my-configuration
 cd my-configuration
 cp /path/to/definition.yaml .
@@ -31,7 +32,7 @@ cp /path/to/composition.yaml .
 
 Next we need to add a crossplane.yaml file to our directory. This file describes our configuration and any dependencies
 
-```
+```yaml
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Configuration
 metadata:
@@ -43,28 +44,28 @@ spec:
     - provider: crossplane/provider-aws
       version: "v0.19.0"
 ```
+
 ### 3. Authenticate with Docker
 
 We need to authenticate with Dockerhub in order to be able to push our configuration package
 
-```
+```bash
 docker login -u my-username
 ```
-
 
 ### 4. Build and push the configuration
 
 Ensure you change the following commands to refer to your dockerhub account name instead of my-dockerhub.
 
-Build the configuration locally, notice how it creates a .xpkg file. 
+Build the configuration locally, notice how it creates a .xpkg file.
 
-```
+```bash
 kubectl crossplane build configuration
 ```
 
-Push it to your dockerhub repository with the push command below. The push command will automatically find the .xpkg file and push the image 
+Push it to your dockerhub repository with the push command below. The push command will automatically find the .xpkg file and push the image
 
-```
+```bash
 kubectl crossplane push configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
@@ -74,18 +75,17 @@ You may observe on the dockerhub website that you have successfully pushed your 
 
 Next we will install our configuration package into our cluster so that people can consume resources
 
-```
+```bash
 kubectl crossplane install configuration my-dockerhub/my-configuration:v0.0.1-alpha.0
 ```
 
 ### 6. Verify installation
 
-```
+```bash
 kubectl get configuration.pkg
 kubectl get xrd
 kubectl get crd | grep dfds
 ```
-
 
 ## Want to help make our training material better?
  * Want to **log an issue** or **request a new kata**? Feel free to visit our [GitHub site](https://github.com/dfds/dojo/issues).

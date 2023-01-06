@@ -21,7 +21,7 @@ First we need to create a Composite Resource Definition (XRD) that describes the
 
 Create a definition.yaml
 
-```
+```yaml
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
@@ -43,8 +43,8 @@ spec:
     plural: databaseinstances
   versions:
   - name: v1alpha1
-    served: true 
-    referenceable: true 
+    served: true
+    referenceable: true
     schema:
       openAPIV3Schema:
         type: object
@@ -96,7 +96,7 @@ spec:
 
 Apply the manifest file to deploy the XRD into your cluster
 
-```
+```bash
 kubectl apply -f definition.yaml
 ```
 
@@ -104,7 +104,7 @@ kubectl apply -f definition.yaml
 
 Get the currently installed XRD's and verify that 2 new CRD's have also been deployed
 
-```
+```bash
 kubectl get xrd
 kubectl get crd | grep dfds
 ```
@@ -117,7 +117,7 @@ Now we will create a composition manifest which declares the resources that are 
 
 Create a composition.yaml and populate with the following contents
 
-```
+```yaml
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
@@ -146,14 +146,14 @@ spec:
                 - cidrIp: 0.0.0.0/0
                   description: postgresql
         providerConfigRef:
-          name: my-aws-provider-config                  
+          name: my-aws-provider-config
     patches:
     - fromFieldPath: "metadata.name"
       toFieldPath: "spec.forProvider.groupName"
       transforms:
       - type: string
         string:
-          fmt: "%s-rds-security-group"      
+          fmt: "%s-rds-security-group"
   - name: rdinstance
     base:
       apiVersion: database.aws.crossplane.io/v1beta1
@@ -167,7 +167,7 @@ spec:
           vpcSecurityGroupIDSelector:
             matchControllerRef: true
         providerConfigRef:
-          name: my-aws-provider-config            
+          name: my-aws-provider-config
         writeConnectionSecretToRef:
           namespace: crossplane-system
     patches:
@@ -208,7 +208,7 @@ spec:
 
 Apply the manifest to deploy the composition to your cluster
 
-```
+```bash
 kubectl apply -f composition.yaml
 ```
 
@@ -216,7 +216,7 @@ kubectl apply -f composition.yaml
 
 Verify that the composition now exists in your cluster
 
-```
+```bash
 kubectl get composition
 ```
 

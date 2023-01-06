@@ -14,13 +14,13 @@ These instructions will help you prepare for the kata and ensure that your train
 * AWS Admin Credentials
 
 ## Exercise
-Your third assignment will see you configure your provider by provisioning a ProviderConfig. 
+Your third assignment will see you configure your provider by provisioning a ProviderConfig.
 
 ### 1. Create a creds.conf file on your filesystem
 
 Crossplane works by using credentials from your Cloud Provider. We will temporarily create a creds.conf file on the local file system. Do not commit this to any repository
 
-```
+```ini
 [default]
 aws_access_key_id = KEY_HERE
 aws_secret_access_key = SECRET_HERE
@@ -31,7 +31,7 @@ aws_secret_access_key = SECRET_HERE
 
 Next, create a namespace which will hold our secret
 
-```
+```bash
 kubectl create namespace my-namespace
 ```
 
@@ -39,19 +39,19 @@ kubectl create namespace my-namespace
 
 Then we must create a secret in our namespace from the creds.conf file
 
-```
+```bash
 kubectl create secret generic aws-creds -n my-namespace --from-file=creds=./creds.conf
 ```
 
 Verify that the secret exists
 
-```
+```bash
 kubectl describe secret aws-creds -n my-namespace
 ```
 
 Then delete our creds.conf file from our filesystem
 
-```
+```bash
 rm creds.conf
 ```
 
@@ -59,7 +59,7 @@ rm creds.conf
 
 We must create a ProviderConfig which uses our secret so that we have permissions to deploy resources in our cloud account. Create a file on the local filesystem called providerconfig.yaml
 
-```
+```yaml
 apiVersion: aws.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
@@ -77,13 +77,13 @@ spec:
 
 Deploy this manifest to our cluster. ProviderConfigs exist at the cluster level and can not be namespaced
 
-```
+```bash
 kubectl apply -f providerconfig.yaml
 ```
 
 Verify that the providerconfig exists
 
-```
+```bash
 kubectl get ProviderConfig
 ```
 
