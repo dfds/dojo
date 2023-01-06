@@ -6,7 +6,7 @@ FROM base as install-stage
 
 ## Install core packages
 RUN apt update
-RUN apt -y install sudo curl python3-pip apt-transport-https ca-certificates apt-utils
+RUN apt -y install sudo curl python3-pip apt-transport-https ca-certificates apt-utils unzip
 RUN pip3 install --upgrade pip
 
 ## Add Kubernetes repository list
@@ -15,23 +15,24 @@ RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /
 
 ## Install kubectl
 RUN apt update
-RUN apt -y install kubectl
+RUN apt -y install kubectl=1.23.15-00
 
 ## Install AWS CLI
-RUN pip3 install awscli --upgrade
+ENV AWS_CLI_VERSION=2.7.35
 
-## Install aws-iam-authenticator
-ENV VERSION=1.14.6
-ENV BUILD_DATE=2019-08-22
-ENV DOWNLOAD_URL=https://amazon-eks.s3-us-west-2.amazonaws.com/${VERSION}/${BUILD_DATE}/bin/linux/amd64/aws-iam-authenticator
-ENV LOCAL_FILE=./aws-iam-authenticator
+ADD src/aws-cli.asc /
 
-RUN curl -Lo $LOCAL_FILE $DOWNLOAD_URL
-RUN chmod +x $LOCAL_FILE
-RUN sudo mv $LOCAL_FILE /usr/local/bin
+RUN curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip -o awscliv2.zip \
+    && curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip.sig  -o awscliv2.sig \
+    && gpg --import aws-cli.asc \
+    && gpg --verify awscliv2.sig awscliv2.zip \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf ./aws \
+    && rm -f awscliv2.zip aws-cli.asc awscliv2.sig
 
 ## Install saml2aws
-ENV VERSION=2.20.0
+ENV VERSION=2.36.2
 ENV DOWNLOAD_URL=https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz
 ENV LOCAL_FILE=./saml2aws.tar.gz
 

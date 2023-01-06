@@ -39,7 +39,7 @@ FROM base as install-stage
 RUN apt update
 
 # Install required packages using the APT package manager
-RUN apt -y install sudo curl python3-pip apt-transport-https ca-certificates apt-utils
+RUN apt -y install sudo curl python3-pip apt-transport-https ca-certificates apt-utils unzip
 
 # Upgrade the version of PIP
 RUN pip3 install --upgrade pip
@@ -58,39 +58,31 @@ RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /
 RUN apt update
 
 # Install Kubectl.  The prior steps configured the package manager so it could locate and obtain this package.
-RUN apt -y install kubectl
+RUN apt -y install kubectl=1.23.15-00
 ```
 ### 6. Install AWS CLI
-After installing Kubectl we need to install the `awscli` so we can use it to authenticate our DFDS user credentials and fetch an access token to interface with the AWS API:
+After installing Kubectl we need to install version 2 of the `awscli` so we can use it to authenticate our DFDS user credentials and fetch an access token to interface with the AWS API:
 
 ```
-# Install the awscli package and ensure that it's upgraded to the latest available version
-RUN pip3 install awscli --upgrade
-```
-### 7. Install aws-iam-authenticator
-Once the `awscli` is in place we need to install the `aws-iam-authenticator`.  This allows AWS IAM credentials to be used to authenticate to a Kubernetes cluster.
-```
-# Set some environment varaibles
-ENV VERSION=1.14.6
-ENV BUILD_DATE=2019-08-22
-ENV DOWNLOAD_URL=https://amazon-eks.s3-us-west-2.amazonaws.com/${VERSION}/${BUILD_DATE}/bin/linux/amd64/aws-iam-authenticator
-ENV LOCAL_FILE=./aws-iam-authenticator
+ENV AWS_CLI_VERSION=2.7.35
 
-# Use CURL to obtain the required file from the S3 bucket
-RUN curl -Lo $LOCAL_FILE $DOWNLOAD_URL
+ADD src/aws-cli.asc /
 
-# Set the permission on the downloaded file to allow it to be executed
-RUN chmod +x $LOCAL_FILE
-
-# And move the file to /usr/local/bin so it's stored with other binaries and included on the search path
-RUN sudo mv $LOCAL_FILE /usr/local/bin
+RUN curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip -o awscliv2.zip \
+    && curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip.sig  -o awscliv2.sig \
+    && gpg --import aws-cli.asc \
+    && gpg --verify awscliv2.sig awscliv2.zip \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf ./aws \
+    && rm -f awscliv2.zip aws-cli.asc awscliv2.sig
 ```
 
-### 8. Install saml2aws
+### 7. Install saml2aws
 The last piece of the puzzle in our `install-stage` is the `saml2aws` which wraps the `awscli` and makes it possible for us to authenticate via SAML2:
 
 ```
-ENV VERSION=2.20.0
+ENV VERSION=2.36.2
 ENV DOWNLOAD_URL=https://github.com/Versent/saml2aws/releases/download/v${VERSION}/saml2aws_${VERSION}_linux_amd64.tar.gz
 ENV LOCAL_FILE=./saml2aws.tar.gz
 
@@ -100,7 +92,7 @@ RUN rm $LOCAL_FILE
 RUN sudo mv saml2aws /usr/local/bin
 ```
 
-### 9. Setup configure-stage
+### 8. Setup configure-stage
 Once our base `install-stage` is finalized we can commence to the `configure-stage` where we will configure `kubectl` to access Hellman:
 
 ```
@@ -126,7 +118,7 @@ ENV AWS_PROFILE=saml
 # Configure the SAML2AWS command line tool for future usage.  This tells it to use DFDS' ADFS instance in Azure when handling SAML requests.
 RUN saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt
 ```
-### 10. Setup authentication-stage image
+### 9. Setup authentication-stage image
 The last stage in our "build-chain" is the `authentication-stage` where we will use `saml2aws` to fetch login credentials and launch a `bash` shell with our pre-configured `kubectl` process:
 
 ```
