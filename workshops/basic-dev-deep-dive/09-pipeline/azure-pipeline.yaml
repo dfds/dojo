@@ -4,164 +4,154 @@ name: $(Build.BuildId)
 trigger:
   branches:
     include:
-    - master
+      - master
   paths:
     # Changes to these files does not trigger a new build / release
     exclude:
-    - README.md
-    - LICENSE
-    - azure-pipeline.yaml
+      - README.md
+      - LICENSE
+      - azure-pipeline.yaml
 
 # Disables triggering Pipeline run at creation of every Pull Request
 pr: none
 
 # Default agent pool to use for build pipeline
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 # Global variables for the pipeline
 variables:
-  k8s-service-connection: 'Kubernetes-Hellman-Saml2aws'
-  kubernetes-namespace: 'ded-workshops-ljmra'
+  k8s-service-connection: "Kubernetes-Hellman-Saml2aws"
+  kubernetes-namespace: "ded-workshops-ljmra"
 
 stages:
-# Continuous Integration steps
-- stage: CI
-  displayName: 'Continuous Integration'
-  jobs:
-  - job: Validate   
-   # Validate pipeline / group variables
-    steps:   
-    - bash:
-        echo 'Checking for required authentication variables...'
-        bash -c '[[ -z $AWS_PROFILE || -z $SAML2AWS_ROLE || -z $SAML2AWS_PASSWORD || -z $SAML2AWS_USERNAME ]] && exit 1 || true'
-      displayName: Testing environment variables
+  # Continuous Integration steps
+  - stage: CI
+    displayName: "Continuous Integration"
+    jobs:
+      - job: Validate
+        # Validate pipeline / group variables
+        steps:
+          - bash: echo 'Checking for required authentication variables...'
+              bash -c '[[ -z $AWS_PROFILE || -z $SAML2AWS_ROLE || -z $SAML2AWS_PASSWORD || -z $SAML2AWS_USERNAME ]] && exit 1 || true'
+            displayName: Testing environment variables
 
-  - job: Build
-    # Use multistage image to compile code and build image
-    displayName: 'Build image and push to ECR'
-    steps:
-    - task: Docker@2
-      displayName: 'Build Container Image'
-      inputs:
-        command: 'build'
-        Dockerfile: '**/Dockerfile'
-        arguments: '-t awscli'
-
-    # Push the image to ECR with a tag based on the current buildnumber
-    - task: ECRPushImage@1
-      displayName: 'Push Image to Shared ECR'
-      inputs:
-        awsCredentials: 'Shared-Prod ECR-Push'
-        regionName: 'eu-central-1'
-        imageSource: 'imagename'
-        sourceImageName: 'awscli'
-        repositoryName: 'ded/workshops'
-        pushTag: '$(Build.BuildId)'
-
-  - job: Publish
-    steps:
-    # Upload Kubernetes manifests to current artifact Pipeline from folder /k8s
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/9-pipeline'
-        artifact: 'manifests'
-        publishLocation: 'pipeline'
-        displayName: 'Publish Artifact: manifests'
-
-    # Upload terraform files to current artifact pipelune from folder /terraform
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/9-pipeline'
-        artifact: 'terraform'
-        publishLocation: 'pipeline'
-        displayName: 'Publish Artifact: terraform'
-
-# Continuous Deployment steps
-- stage: CD
-  displayName: 'Continuous Deployment'
-  dependsOn: CI
-  # Run CD only if CI succeeds and if pipeline runs from Master branch
-  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master')) 
-
-  jobs:  
-  # Deployment job for kubernetes deployments
-  - deployment: K8s
-    displayName: 'Deploy to Kubernetes'
-    environment: 'Hellman'
-    strategy: 
-      runOnce:
-        deploy:
-          steps:
-          # Use SAML2AWS for Kubernetes authentication
-          - task: Bash@3
+      - job: Build
+        # Use multistage image to compile code and build image
+        displayName: "Build image and push to ECR"
+        steps:
+          - task: Docker@2
+            displayName: "Build Container Image"
             inputs:
-              targetType: 'inline'
-              script: |
-                # Software versions
-                SAML2AWS_VERSION="2.20.0"
-                AWS_IAM_VERSION="1.14.6"
-                AWS_IAM_BUILD_DATE="2019-08-22"
-                
-                # Install aws-iam-authenticator
-                DOWNLOAD_URL=https://amazon-eks.s3-us-west-2.amazonaws.com/${AWS_IAM_VERSION}/${AWS_IAM_BUILD_DATE}/bin/linux/amd64/aws-iam-authenticator
-                LOCAL_FILE=./aws-iam-authenticator
-                curl -Lo $LOCAL_FILE $DOWNLOAD_URL
-                chmod +x $LOCAL_FILE
-                sudo mv $LOCAL_FILE /usr/local/bin
-                
-                # Install saml2aws
-                DOWNLOAD_URL=https://github.com/Versent/saml2aws/releases/download/v${SAML2AWS_VERSION}/saml2aws_${SAML2AWS_VERSION}_linux_amd64.tar.gz
-                LOCAL_FILE=./saml2aws.tar.gz
-                curl -Lo $LOCAL_FILE $DOWNLOAD_URL
-                tar xvzf $LOCAL_FILE
-                rm $LOCAL_FILE
-                sudo mv saml2aws /usr/local/bin
-                
-                # Configure saml2aws
-                saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt
-                
-                # Export saml2aws unattended pipeline script
-                saml2aws login --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --skip-prompt --force
-                eval $(saml2aws script --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto)
-            env:
-              SAML2AWS_PASSWORD: $(SAML2AWS_PASSWORD)
-          
-          # Download manifest from current artifacts pipeline
-          - download: current
-            artifact: manifests
-            displayName: 'Download Artifact: manifests'
+              command: "build"
+              Dockerfile: "**/Dockerfile"
+              arguments: "-t awscli"
 
-          # Download terraform from current artifacts pipeline
-          - download: current
-            artifact: terraform
-            displayName: 'Download Artifact: terraform'
+          # Push the image to ECR with a tag based on the current buildnumber
+          - task: ECRPushImage@1
+            displayName: "Push Image to Shared ECR"
+            inputs:
+              awsCredentials: "Shared-Prod ECR-Push"
+              regionName: "eu-central-1"
+              imageSource: "imagename"
+              sourceImageName: "awscli"
+              repositoryName: "ded/workshops"
+              pushTag: "$(Build.BuildId)"
 
-          # Set up s3 bucket
-          - task: Bash@3
-            displayName: 'Set up s3 bucket'
+      - job: Publish
+        steps:
+          # Upload Kubernetes manifests to current artifact Pipeline from folder /k8s
+          - task: PublishPipelineArtifact@1
             inputs:
-              workingDirectory: '$(Pipeline.Workspace)/terraform'
-              targetType: 'inline'
-              script: |
-                terraform init
-                terraform apply -auto-approve     
-          
-          # Replace token values in yaml files with pipeline variables
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace tokens in yaml files'
+              targetPath: "$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/9-pipeline"
+              artifact: "manifests"
+              publishLocation: "pipeline"
+              displayName: "Publish Artifact: manifests"
+
+          # Upload terraform files to current artifact pipelune from folder /terraform
+          - task: PublishPipelineArtifact@1
             inputs:
-              rootDirectory: '$(Pipeline.Workspace)/manifests/'
-              targetFiles: '*.yaml'
-              tokenPrefix: '$('
-              tokenSuffix: ')'
-          
-          # Apply Kubernetes manifests
-          - task: Kubernetes@1
-            displayName: 'Apply manifests'
-            inputs:
-              connectionType: Kubernetes Service Connection
-              kubernetesServiceEndpoint: '$(k8s-service-connection)'
-              namespace: '$(kubernetes-namespace)'
-              command: apply
-              arguments: '-f $(Pipeline.Workspace)/manifests/'
+              targetPath: "$(System.DefaultWorkingDirectory)/lowLevelWalkthrough/9-pipeline"
+              artifact: "terraform"
+              publishLocation: "pipeline"
+              displayName: "Publish Artifact: terraform"
+
+  # Continuous Deployment steps
+  - stage: CD
+    displayName: "Continuous Deployment"
+    dependsOn: CI
+    # Run CD only if CI succeeds and if pipeline runs from Master branch
+    condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+    jobs:
+      # Deployment job for kubernetes deployments
+      - deployment: K8s
+        displayName: "Deploy to Kubernetes"
+        environment: "Hellman"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                # Use SAML2AWS for Kubernetes authentication
+                - task: Bash@3
+                  inputs:
+                    targetType: "inline"
+                    script: |
+                      # Software versions
+                      SAML2AWS_VERSION="2.36.2"
+
+                      # Install saml2aws
+                      DOWNLOAD_URL=https://github.com/Versent/saml2aws/releases/download/v${SAML2AWS_VERSION}/saml2aws_${SAML2AWS_VERSION}_linux_amd64.tar.gz
+                      LOCAL_FILE=./saml2aws.tar.gz
+                      curl -Lo $LOCAL_FILE $DOWNLOAD_URL
+                      tar xvzf $LOCAL_FILE
+                      rm $LOCAL_FILE
+                      sudo mv saml2aws /usr/local/bin
+
+                      # Configure saml2aws
+                      saml2aws configure --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --session-duration=28800 --skip-prompt
+
+                      # Export saml2aws unattended pipeline script
+                      saml2aws login --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --skip-prompt --force
+                      eval $(saml2aws script --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto)
+                  env:
+                    SAML2AWS_PASSWORD: $(SAML2AWS_PASSWORD)
+
+                # Download manifest from current artifacts pipeline
+                - download: current
+                  artifact: manifests
+                  displayName: "Download Artifact: manifests"
+
+                # Download terraform from current artifacts pipeline
+                - download: current
+                  artifact: terraform
+                  displayName: "Download Artifact: terraform"
+
+                # Set up s3 bucket
+                - task: Bash@3
+                  displayName: "Set up s3 bucket"
+                  inputs:
+                    workingDirectory: "$(Pipeline.Workspace)/terraform"
+                    targetType: "inline"
+                    script: |
+                      terraform init
+                      terraform apply -auto-approve
+
+                # Replace token values in yaml files with pipeline variables
+                - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                  displayName: "Replace tokens in yaml files"
+                  inputs:
+                    rootDirectory: "$(Pipeline.Workspace)/manifests/"
+                    targetFiles: "*.yaml"
+                    tokenPrefix: "$("
+                    tokenSuffix: ")"
+
+                # Apply Kubernetes manifests
+                - task: Kubernetes@1
+                  displayName: "Apply manifests"
+                  inputs:
+                    connectionType: Kubernetes Service Connection
+                    kubernetesServiceEndpoint: "$(k8s-service-connection)"
+                    namespace: "$(kubernetes-namespace)"
+                    command: apply
+                    arguments: "-f $(Pipeline.Workspace)/manifests/"

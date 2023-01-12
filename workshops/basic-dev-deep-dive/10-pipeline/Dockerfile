@@ -26,10 +26,13 @@ RUN apt-get update \
 # AWS CLI
 # ========================================
 
-ENV AWSCLI_VERSION=1.17.0
+ENV AWS_CLI_VERSION=2.7.35
 
-RUN python3 -m pip install --upgrade pip \
-    && pip3 install pipenv awscli==${AWSCLI_VERSION}
+RUN curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip -o awscliv2.zip \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf ./aws \
+    && rm -f awscliv2.zip
 
 
 # ========================================

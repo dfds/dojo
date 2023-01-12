@@ -8,7 +8,6 @@ To follow this workshop you will have to the following tools installed:
 * [AWS CLI](https://aws.amazon.com/cli/)
 * [KubeCTL](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [Saml2aws](https://github.com/Versent/saml2aws)
-* [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 
 Docker is a well known tool which is easily found on the internet. It is required to have a docker hub account to get it from the [official source](https://hub.docker.com/?overlay=onboarding) but the install process is described here: [Install Docker Desktop on Windows](https://docs.docker.com/docker-for-windows/install/)
 
@@ -26,7 +25,6 @@ What are the tools for?
 * We will use AWS CLI to manage cloud resources and make a sample application
 * We will use KubeCTL to verify our deployments and debug them
 * We will use saml2aws to grant access to our cloud environment via our company account
-* We will use aws-iam-authenticator to convert our cloud environment login to a login for the kubernetes platform
 
 Before you begin you should have each of these tools installed, joined the ded-workshops capability at [build.dfds.cloud](https://build.dfds.cloud/capabilitydashboard?capabilityId=f45ec4da-e5d8-4c3e-b688-59e9b1de3fd1) and downloaded the [default kubeconfig file](https://build.dfds.cloud/downloads/kubeconfig)
 
