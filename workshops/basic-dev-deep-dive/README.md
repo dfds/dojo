@@ -1,6 +1,10 @@
 # ado-k8s-aws-getstarted
 This is sample code for getting up and running with sample code that lets you create an s3 bucket, create a docker image and read from the bucket from within a container running on kubernetes. All through a pipeline while utilizing built in features to secure your workload.
 
+## OUT OF DATE
+
+Beware. This kata is out-of-date, and certain services(amongst others, ADFS auth with saml2aws) may no longer be available.
+
 ## Pre-reqs
 To follow this workshop you will have to the following tools installed:
 * [Docker](https://hub.docker.com/?overlay=onboarding)

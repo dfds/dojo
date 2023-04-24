@@ -1,6 +1,11 @@
 DFDS Kubectl Training - Code kata #1
 ======================================
 
+
+## OUT OF DATE
+
+Beware. This kata is out-of-date, and certain services(amongst others, ADFS auth with saml2aws) may no longer be available.
+
 This training exercise is a **beginner-level** course on Kubectl which serves as a starting point for developers looking to connect with Hellman.
 
 ## Getting started
