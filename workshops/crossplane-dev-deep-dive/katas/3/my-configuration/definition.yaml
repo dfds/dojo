@@ -1,0 +1,68 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: compositedatabaseinstances.crossplane.dfds.cloud
+spec:
+  connectionSecretKeys:
+  - username
+  - password
+  - hostname
+  - port
+  defaultCompositionRef:
+    name: compositedatabaseinstances.crossplane.dfds.cloud
+  group: crossplane.dfds.cloud
+  names:
+    kind: CompositeDatabaseInstance
+    plural: compositedatabaseinstances
+  claimNames:
+    kind: DatabaseInstance
+    plural: databaseinstances
+  versions:
+  - name: v1alpha1
+    served: true 
+    referenceable: true 
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  engineVersion:
+                    description: Database engine version
+                    type: string
+                    enum: ["10", "11", "12", "13"]
+                  allocatedStorage:
+                    type: integer
+                  region:
+                    description: Geographic location of this Database server.
+                    type: string
+                  dbInstanceClass:
+                    type: string
+                    enum: ["db.t2.small", "db.t3.small"]
+                  masterUsername:
+                    type: string
+                  engine:
+                    type: string
+                    enum: ["postgres"]
+                  skipFinalSnapshotBeforeDeletion:
+                    type: boolean
+                required:
+                - engineVersion
+                - allocatedStorage
+                - region
+                - dbInstanceClass
+                - masterUsername
+                - engine
+                - skipFinalSnapshotBeforeDeletion
+            required:
+            - parameters
+          status:
+            type: object
+            properties:
+              address:
+                description: Address of this Database server.
+                type: string

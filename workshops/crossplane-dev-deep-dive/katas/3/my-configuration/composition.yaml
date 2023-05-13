@@ -1,0 +1,84 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: compositedatabaseinstances.crossplane.dfds.cloud
+  labels:
+    purpose: database
+    provider: aws
+spec:
+  compositeTypeRef:
+    apiVersion: crossplane.dfds.cloud/v1alpha1
+    kind: CompositeDatabaseInstance
+  resources:
+  - name: securitygroup
+    base:
+      apiVersion: ec2.aws.crossplane.io/v1beta1
+      kind: SecurityGroup
+      spec:
+        forProvider:
+          region: eu-west-1
+          description: Allow access to PostgreSQL
+          ingress:
+            - fromPort: 5432
+              toPort: 5432
+              ipProtocol: tcp
+              ipRanges:
+                - cidrIp: 0.0.0.0/0
+                  description: postgresql
+        providerConfigRef:
+          name: my-namespace-aws               
+    patches:
+    - fromFieldPath: "metadata.name"
+      toFieldPath: "spec.forProvider.groupName"
+      transforms:
+      - type: string
+        string:
+          fmt: "%s-rds-security-group"      
+  - name: rdinstance
+    base:
+      apiVersion: database.aws.crossplane.io/v1beta1
+      kind: RDSInstance
+      spec:
+        forProvider:
+          dbInstanceClass: db.t3.small
+          engine: postgres
+          masterUsername: masteruser
+          skipFinalSnapshotBeforeDeletion: true
+          vpcSecurityGroupIDSelector:
+            matchControllerRef: true
+        providerConfigRef:
+          name: my-namespace-aws             
+        writeConnectionSecretToRef:
+          namespace: crossplane-system
+    patches:
+    - fromFieldPath: "metadata.uid"
+      toFieldPath: "spec.writeConnectionSecretToRef.name"
+      transforms:
+      - type: string
+        string:
+          fmt: "%s-databaseserver"
+    - fromFieldPath: "spec.parameters.engineVersion"
+      toFieldPath: "spec.forProvider.engineVersion"
+    - fromFieldPath: "spec.parameters.region"
+      toFieldPath: "spec.forProvider.region"
+      transforms:
+      - type: map
+        map:
+          eu-west-1: eu-west-1
+    - fromFieldPath: "spec.parameters.allocatedStorage"
+      toFieldPath: "spec.forProvider.allocatedStorage"
+    - fromFieldPath: "spec.parameters.dbInstanceClass"
+      toFieldPath: "spec.forProvider.dbInstanceClass"
+    connectionDetails:
+    - fromConnectionSecretKey: username
+    - fromConnectionSecretKey: password
+    - name: hostname
+      fromConnectionSecretKey: endpoint
+    - type: FromValue
+      name: port
+      value: "5432"
+    readinessChecks:
+    - type: MatchString
+      fieldPath: "status.atProvider.dbInstanceStatus"
+      matchString: "available"
+  writeConnectionSecretsToNamespace: crossplane-system

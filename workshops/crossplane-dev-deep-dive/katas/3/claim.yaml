@@ -1,0 +1,21 @@
+apiVersion: crossplane.dfds.cloud/v1alpha1
+kind: DatabaseInstance
+metadata:
+  namespace: my-namespace
+  name: my-claim
+spec:
+  parameters:
+    region: eu-west-1
+    dbInstanceClass: db.t3.small
+    masterUsername: masteruser
+    allocatedStorage: 20
+    engine: postgres
+    engineVersion: "13"
+    skipFinalSnapshotBeforeDeletion: true
+  compositionSelector:
+    matchLabels:
+      purpose: database
+      provider: aws
+  
+  writeConnectionSecretToRef:
+    name: my-claim-secret
